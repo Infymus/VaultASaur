@@ -60,18 +60,18 @@ namespace VaultASaur.Forms
 
         private void GetPreferences()
         {
-            pKeepDays.Text = dbPreference.GetInt(tPrefConstants.KeepDay).ToString();
-            pTorrentApp.Text = dbPreference.GetString(tPrefConstants.TorrentApp);
-            pTorrentParam.Text = dbPreference.GetString(tPrefConstants.TorrentParam);
-            pTorrentSaveDirectory.Text = dbPreference.GetString(tPrefConstants.TorrentSaveDirectory);
+            //pKeepDays.Text = dbPreference.GetInt(tPrefConstants.KeepDay).ToString();
+            //pTorrentApp.Text = dbPreference.GetString(tPrefConstants.TorrentApp);
+            //pTorrentParam.Text = dbPreference.GetString(tPrefConstants.TorrentParam);
+            //pTorrentSaveDirectory.Text = dbPreference.GetString(tPrefConstants.TorrentSaveDirectory);
         }
 
         private void SetPreferences()
         {
-            dbPreference.SetInt(tPrefConstants.KeepDay, Convert.ToInt32(pKeepDays.Text));
-            dbPreference.SetString(tPrefConstants.TorrentApp, pTorrentApp.Text);
-            dbPreference.SetString(tPrefConstants.TorrentParam, pTorrentParam.Text);
-            dbPreference.SetString(tPrefConstants.TorrentSaveDirectory, pTorrentSaveDirectory.Text);
+            //dbPreference.SetInt(tPrefConstants.KeepDay, Convert.ToInt32(pKeepDays.Text));
+            //dbPreference.SetString(tPrefConstants.TorrentApp, pTorrentApp.Text);
+            //dbPreference.SetString(tPrefConstants.TorrentParam, pTorrentParam.Text);
+            //dbPreference.SetString(tPrefConstants.TorrentSaveDirectory, pTorrentSaveDirectory.Text);
         }
 
         private void pKeepDays_KeyPress(object sender, KeyPressEventArgs e)

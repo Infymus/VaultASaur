@@ -37,7 +37,7 @@ namespace VaultASaur.DataBase
             string sqlStr = $@"INSERT INTO {MasterData.GetTableName_Vault}
                 (SITENAME, USERNAME, PASSWORD, PASSWORDHINT, EMAIL, QUESTION1, QUESTION2, QUESTION3, URL, DESCRIPT, EMAIL, ISACTIVE)
 				VALUES
-				(@SITENAME, @USERNAME, @PASSWORD, @PASSWORDHINT, @EMAIL, @QUESTION1, @QUESTION2, @QUESTION3, @URL, @DESCRIPT, @EMAIL, @ISACTIVE)");
+				(@SITENAME, @USERNAME, @PASSWORD, @PASSWORDHINT, @EMAIL, @QUESTION1, @QUESTION2, @QUESTION3, @URL, @DESCRIPT, @EMAIL, @ISACTIVE)";
             var parameters = new Dictionary<string, object>
             {
                 { "@SITENAME", inVaultRec.SiteName },

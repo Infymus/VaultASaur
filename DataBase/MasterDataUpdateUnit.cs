@@ -17,8 +17,6 @@ namespace VaultASaur.DataBase
         {
             tErrorResult t;
 
-            #region Table Creation
-
             // ===========================================================================================
             // create the initial table_main - It contains the DBID or Database Version id.
             sqlStr = $@"CREATE TABLE IF NOT EXISTS {MasterData.GetTableName_Main} 
@@ -67,56 +65,17 @@ namespace VaultASaur.DataBase
             t = MasterData.ExecuteSQL(sqlStr, null);
             if (t.errorResult)
                 return t;
-            #endregion
 
             // %%%%%%%%%%%%%%% UPDATES FROM HERE ON ONLY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% //
-
-            #region Updates to Tables Here On Only
 
             // UPDATE 101
             if (MasterData.CompareVersion(101))
             {
                 // Add the default preferences
-
-
-                //                public enum tPrefConstants
-                //{
-                //    // General Preferences
-                //    RegionCode,
-                //    dbGridColorGridLines,
-                //    CheckForUpdates,
-                //    EditorLoadSaveButtons,
-                //    // Topics
-                //    topicSortView,
-                //    topicIsActive,
-                //    DBTopicGridWidth,
-                //    //
-                //    TorrentApp,
-                //    TorrentParam,
-                //    PromptDownload,
-                //    TorrentFilterAdd,
-                //    FeedDBNavPanelVisible,
-                //    KeepDay,
-                //    TorrentSaveDirectory,
-                //    TorrentSaveType,
-                //    AskToQuit,
-                //    LogFile,
-                //    AllowDuplicateFeedTitles,
-                //    FilterMatchDownloadOrQueue,
-                //    StartMinimized,
-                //    DeepLogging,
-                //    StopOnRSSGetFailure,
-                //    ReProcessRSSFeeds,
-                //    RSSOptionTorrentOrMagnet,
-                //    DownloadFeedQueueDelay,
-                //    StripTorrentEnclosures
-                //}
-
-                // Preferences
-                dbPreference.SetInt(tPrefConstants.KeepDay, 365);
-                dbPreference.SetString(tPrefConstants.TorrentApp, "C:\\Program Files\\qBittorrent\\qbittorrent.exe");
-                dbPreference.SetString(tPrefConstants.TorrentParam, "%T");
-                dbPreference.SetString(tPrefConstants.TorrentSaveDirectory, "");
+                //dbPreference.SetInt(tPrefConstants.KeepDay, 365);
+                //dbPreference.SetString(tPrefConstants.TorrentApp, "C:\\Program Files\\qBittorrent\\qbittorrent.exe");
+                //dbPreference.SetString(tPrefConstants.TorrentParam, "%T");
+                //dbPreference.SetString(tPrefConstants.TorrentSaveDirectory, "");
 
                 //tTorrentRec tAddTor = dbTorrent.InitializeRecord();
 
@@ -142,11 +101,6 @@ namespace VaultASaur.DataBase
                 //dbTorrent.Add(tAddTor);
 
             }
-
-
-
-
-            #endregion
 
             // %%%%%%%%%%%%%%% NO MORE UPDATES AFTER THIS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% //
 
