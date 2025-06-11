@@ -16,5 +16,6 @@ namespace VaultASaur.ErrorHandling
         public long AsLong;
         public double AsDouble;
         public DateTime AsDateTime;
+        public bool NewDataBase = false;
     }
 }

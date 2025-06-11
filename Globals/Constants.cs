@@ -22,11 +22,12 @@ namespace VaultASaur.Globals
         public const string ProgramName = "VaultASaur";
         public const string ProgramMutex = "VaultASaurMutex";
         public const string ProgramCopyright = "(c)2015-2025 Infymus";
-        public const string ProgramCaption = "Torrent RSS Aggregation";
         public static string AppConfigHeader = "VaultASaur";
         public static string appConfigFile = "appsettings.json";
         public static string appConfigDir = AppContext.BaseDirectory;
         public const string VAULTASAUR_PASSWORD_GUID = "AF4FCD01-B71C-451B-9387-233F7312F575";
+
+        public static string VaultPassword = "";
 
     }
 }

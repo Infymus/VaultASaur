@@ -27,6 +27,29 @@ namespace VaultASaur
                 if (t.errorResult)
                     throw new Exception(t.errorMessage);
 
+                // New Database so we need a new PassPhrase
+                if (t.NewDataBase)
+                {
+
+                }
+
+                // Show the VaultPasswordForm as a dialog
+                using (VaultPasswordForm passwordForm = new VaultPasswordForm())
+                {
+                    DialogResult result = passwordForm.ShowDialog();
+
+                    // Only run MainForm if the password was correct
+                    if (result == DialogResult.OK)
+                    {
+                        Application.Run(new MainForm());
+                    }
+                    else
+                    {
+                        // Optionally log or notify failed attempt
+                        MessageBox.Show("Access denied. Exiting application.", "Authentication Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+
                 // Run the Forms
                 Application.Run(new MainForm());
             }

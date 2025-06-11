@@ -15,7 +15,10 @@ namespace VaultASaur.DataBase
         //
         public static tErrorResult UpdateTables()
         {
-            tErrorResult t;
+            tErrorResult t = new tErrorResult();
+
+            if (!MasterData.TableExists(MasterData.GetTableName_Vault))
+                t.NewDataBase = true;
 
             // ===========================================================================================
             // create the initial table_main - It contains the DBID or Database Version id.
