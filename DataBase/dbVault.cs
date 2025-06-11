@@ -37,7 +37,7 @@ namespace VaultASaur.DataBase
             string sqlStr = $@"INSERT INTO {MasterData.GetTableName_Vault}
                 (SITENAME, USERNAME, PASSWORD, PASSWORDHINT, EMAIL, QUESTION1, QUESTION2, QUESTION3, URL, DESCRIPT, EMAIL, ISACTIVE)
 				VALUES
-				(@SITENAME, @USERNAME, @PASSWORD, @PASSWORDHINT, @EMAIL, @QUESTION1, @QUESTION2, @QUESTION3, @URL, @DESCRIPT, @EMAIL, @ISACTIVE)");
+				(@SITENAME, @USERNAME, @PASSWORD, @PASSWORDHINT, @EMAIL, @QUESTION1, @QUESTION2, @QUESTION3, @URL, @DESCRIPT, @EMAIL, @ISACTIVE)";
             var parameters = new Dictionary<string, object>
             {
                 { "@SITENAME", inVaultRec.SiteName },
@@ -155,7 +155,7 @@ namespace VaultASaur.DataBase
             string connectionString = MasterData.ConnectionString();
             using var conn = new SQLiteConnection(connectionString);
             conn.Open();
-            var cmd = new SQLiteCommand(@$"SELECT * From FROM {MasterData.GetTableName_Vault}", conn);
+            var cmd = new SQLiteCommand(@$"SELECT * FROM {MasterData.GetTableName_Vault}", conn);
             var adapter = new SQLiteDataAdapter(cmd);
             var dt = new DataTable();
             adapter.Fill(dt);

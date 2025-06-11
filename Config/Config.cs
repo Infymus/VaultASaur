@@ -7,19 +7,11 @@ namespace VaultASaur.Config
 {
     public static class AppConfig
     {
-        // Private Config Settings
-
         private static string AppConfigReadConfig()
         {
             return File.ReadAllText($@"{Constants.appConfigDir}\{Constants.appConfigFile}");
         }
 
-        // Read Methods
-
-        /*
-         Function INIReadBoolean( INIKey, INIItem : String; DefValue : Boolean) : Boolean;
-         Function INIReadFloat( INIKey, INIItem : String; DefValue : Double) : Double;
-        */
         public static string ReadString(string inSetting, string inDefault)
         {
             var config = new ConfigurationBuilder()
@@ -45,14 +37,6 @@ namespace VaultASaur.Config
             }
             return inDefault;
         }
-
-        // Write Methods
-
-        /*Procedure INIWriteString( INIKey, INIItem : String; INIValue : String);
-Procedure INIWriteInteger( INIKey, INIItem : String; INIValue : Integer);
-Procedure INIWriteBoolean( INIKey, INIItem : String; INIValue : Boolean);
-Procedure INIWriteFloat( INIKey, INIItem : String; INIValue : Double);
-        */
 
         public static void WriteValue(string inSetting, string inValue)
         {

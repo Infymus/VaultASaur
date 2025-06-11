@@ -1,10 +1,7 @@
 using VaultASaur.DataBase;
+using VaultASaur.ErrorHandling;
 using VaultASaur.Forms;
 using VaultASaur.Globals;
-using VaultASaur.ErrorHandling;
-using VaultASaur.DataBase;
-using VaultASaur.Forms;
-using VaultASaur.ErrorHandling;
 
 namespace VaultASaur
 {

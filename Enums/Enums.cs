@@ -12,13 +12,6 @@ namespace VaultASaur.Enums
         FormVault
     }
 
-    public enum Regions
-    {
-        RegionUS = 0,
-        RegionUK = 1,
-        RegionCAN = 2
-    }
-
     public enum ActiveStates
     {
         StateInactive = 0,
@@ -32,24 +25,6 @@ namespace VaultASaur.Enums
         ActionSave,
         ActionConfirm,
         ActionOK
-    }
-
-    public enum CheckUpdateTypes
-    {
-        CheckUpdateNormal,
-        CheckUpdateSilent,
-        CheckUpdateFound,
-        CheckUpdateError,
-        CheckUpdateNone
-    }
-
-    public enum FeedStatusTypes
-    {
-        FeedReady = 0,
-        FeedDownloaded = 1,
-        FeedDuplicate = 2,
-        FeedCorrupt = 3,
-        FeedInactive = 4
     }
 
     public enum QueueStatusTypes
@@ -71,61 +46,6 @@ namespace VaultASaur.Enums
         Expressions,
         DownloadNow,
         Scrape
-    }
-
-    public enum IsActiveTypes
-    {
-        Inactive,
-        Active
-    }
-
-    public enum ExpressionFilterTypes
-    {
-        None = 0,
-        TVShow = 1,
-        TVTalkShow = 2
-    }
-
-    public enum PercentTypes
-    {
-        On,
-        Off
-    }
-
-    public enum TorrentSaveTypes
-    {
-        SaveToFile = 0,
-        SaveToTorrent = 1
-    }
-
-    public enum FilterMatchDownloadOrQueueTypes
-    {
-        DownloadAutomatically = 0,
-        DownloadToQueue = 1
-    }
-
-    public enum SiteDownloadOptionTypes
-    {
-        DLNow = 0,
-        DLQueue = 1
-    }
-
-    public enum LogTypes
-    {
-        Normal,
-        Deep
-    }
-
-    public enum EditFeedTypes
-    {
-        Feed = 1,
-        Queue = 2
-    }
-
-    public enum URLFeedTypes
-    {
-        Magnet = 0,
-        Torrent = 1
     }
 
     public enum HelpTopicTypes
@@ -155,12 +75,5 @@ namespace VaultASaur.Enums
         FormSize,
         Hint
     }
-
-    public enum tTorrentType
-    {
-        Magnet = 0,
-        Torrent = 1
-    }
-
 
 }
