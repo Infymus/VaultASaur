@@ -1,11 +1,11 @@
-﻿using VaultASaur.Enums;
-using VaultASaur.ErrorHandling;
-using VaultASaur.Objects;
-using VaultASaur.ToolsBox;
+﻿using VaultASaur3.Enums;
+using VaultASaur3.ErrorHandling;
+using VaultASaur3.Objects;
+using VaultASaur3.ToolsBox;
 using System.Data.SQLite;
 using System.Net.Http.Headers;
 
-namespace VaultASaur.DataBase
+namespace VaultASaur3.DataBase
 {
 
     public static class dbPreference
@@ -73,12 +73,6 @@ namespace VaultASaur.DataBase
                 }
             }
             return t;
-        }
-
-        public static int Count()
-        {
-            string sqlStr = $@"SELECT COUNT(*) FROM {MasterData.GetTableName_Preference} WHERE ISACTIVE = 1";
-            return MasterData.Count(sqlStr);
         }
 
         public static bool PreferenceExists(tPrefConstants inPrefName)

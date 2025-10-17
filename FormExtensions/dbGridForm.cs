@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace VaultASaur.Extensions
+namespace VaultASaur3.Extensions
 {
     public partial class dbGridForm : Form
     {

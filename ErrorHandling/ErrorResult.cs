@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace VaultASaur.ErrorHandling
+﻿namespace VaultASaur3.ErrorHandling
 {
     public class tErrorResult
     {
@@ -16,6 +10,5 @@ namespace VaultASaur.ErrorHandling
         public long AsLong;
         public double AsDouble;
         public DateTime AsDateTime;
-        public bool NewDataBase = false;
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace VaultASaur.Forms
+﻿namespace VaultASaur3.Forms
 {
     partial class BaseForm
     {
@@ -63,9 +63,9 @@
             // 
             baseDockPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             baseDockPanel.Dock = DockStyle.Fill;
-            baseDockPanel.Location = new Point(0, 101);
+            baseDockPanel.Location = new Point(0, 115);
             baseDockPanel.Name = "baseDockPanel";
-            baseDockPanel.Size = new Size(566, 325);
+            baseDockPanel.Size = new Size(566, 311);
             baseDockPanel.TabIndex = 15;
             // 
             // bottomDockPanel
@@ -95,7 +95,7 @@
             workPanel.Dock = DockStyle.Top;
             workPanel.Location = new Point(0, 65);
             workPanel.Name = "workPanel";
-            workPanel.Size = new Size(566, 36);
+            workPanel.Size = new Size(566, 50);
             workPanel.TabIndex = 12;
             // 
             // baseSepPanel

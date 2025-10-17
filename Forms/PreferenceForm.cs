@@ -6,16 +6,16 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VaultASaur.DataBase;
-using VaultASaur.Enums;
-using VaultASaur.Extensions;
-using VaultASaur.Images;
+using VaultASaur3.DataBase;
+using VaultASaur3.Enums;
+using VaultASaur3.Extensions;
+using VaultASaur3.Images;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using Ookii.Dialogs.WinForms;
-using static VaultASaur.Extensions.tDialogBox;
+using static VaultASaur3.Extensions.tDialogBox;
 using TaskDialogIcon = Ookii.Dialogs.WinForms.TaskDialogIcon;
 
-namespace VaultASaur.Forms
+namespace VaultASaur3.Forms
 {
     public partial class frm_PreferenceForm : BaseForm
     {
@@ -57,21 +57,46 @@ namespace VaultASaur.Forms
                     break;
             }
         }
-
+      //                public enum tPrefConstants
+                //{
+                //    // General Preferences
+                //    RegionCode,
+                //    dbGridColorGridLines,
+                //    CheckForUpdates,
+                //    EditorLoadSaveButtons,
+                //    // Topics
+                //    topicSortView,
+                //    topicIsActive,
+                //    DBTopicGridWidth,
+                //    //
+                //    TorrentApp,
+                //    TorrentParam,
+                //    PromptDownload,
+                //    TorrentFilterAdd,
+                //    FeedDBNavPanelVisible,
+                //    KeepDay,
+                //    TorrentSaveDirectory,
+                //    TorrentSaveType,
+                //    AskToQuit,
+                //    LogFile,
+                //    AllowDuplicateFeedTitles,
+                //    FilterMatchDownloadOrQueue,
+                //    StartMinimized,
+                //    DeepLogging,
+                //    StopOnRSSGetFailure,
+                //    ReProcessRSSFeeds,
+                //    RSSOptionTorrentOrMagnet,
+                //    DownloadFeedQueueDelay,
+                //    StripTorrentEnclosures
+                //}
         private void GetPreferences()
         {
-            //pKeepDays.Text = dbPreference.GetInt(tPrefConstants.KeepDay).ToString();
-            //pTorrentApp.Text = dbPreference.GetString(tPrefConstants.TorrentApp);
-            //pTorrentParam.Text = dbPreference.GetString(tPrefConstants.TorrentParam);
-            //pTorrentSaveDirectory.Text = dbPreference.GetString(tPrefConstants.TorrentSaveDirectory);
+            pKeepDays.Text = dbPreference.GetInt(tPrefConstants.AutoClose).ToString();
         }
 
         private void SetPreferences()
         {
-            //dbPreference.SetInt(tPrefConstants.KeepDay, Convert.ToInt32(pKeepDays.Text));
-            //dbPreference.SetString(tPrefConstants.TorrentApp, pTorrentApp.Text);
-            //dbPreference.SetString(tPrefConstants.TorrentParam, pTorrentParam.Text);
-            //dbPreference.SetString(tPrefConstants.TorrentSaveDirectory, pTorrentSaveDirectory.Text);
+            dbPreference.SetInt(tPrefConstants.AutoClose, Convert.ToInt32(pKeepDays.Text));
         }
 
         private void pKeepDays_KeyPress(object sender, KeyPressEventArgs e)

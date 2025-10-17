@@ -1,19 +1,37 @@
-﻿namespace VaultASaur.Objects
+﻿namespace VaultASaur3.Objects
 {
-    public class tVaultRec
-    {
-        public string ID { get; set; }
-        public string SiteName { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public string PasswordHint { get; set; }
-        public string Email { get; set; }
-        public string Question1 { get; set; }
-        public string Question2 { get; set; }
-        public string Question3 { get; set; }
-        public string URL { get; set; }
-        public string Descript { get; set; }
-        public int IsActive { get; set; }
-    }
-}
+   public class tVaultRec
+   {
+      public long ID { get; set; }
+      public int IsActive { get; set; }
+      public string SITENAME { get; set; }
+      public string USERNAME { get; set; }
+      public string PASSWORD { get; set; }
+      public string EMAIL { get; set; }
+      public string SITEURL { get; set; }
+      public string SECQUEST1 { get; set; }
+      public string SECQUEST2 { get; set; }
+      public string SECQUEST3 { get; set; }
+      public string SECQUEST4 { get; set; }
+      public string PASSHINT { get; set; }
 
+      public string SITEDESC { get; set; }
+
+      public tVaultRec()
+      {
+         ID = 0;
+         IsActive = 1;
+         SITENAME = "";
+         USERNAME = "";
+         PASSWORD = "";
+         EMAIL = "";
+         SITEURL = "";
+         SECQUEST1 = "";
+         SECQUEST2 = "";
+         SECQUEST3 = "";
+         SECQUEST4 = "";
+         PASSHINT = "";
+         SITEDESC = "";
+      }
+   }
+}

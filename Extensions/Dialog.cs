@@ -3,7 +3,7 @@ using System.ComponentModel;
 using TaskDialogButton = Ookii.Dialogs.WinForms.TaskDialogButton;
 using TaskDialogIcon = Ookii.Dialogs.WinForms.TaskDialogIcon;
 
-namespace VaultASaur.Extensions
+namespace VaultASaur3.Extensions
 {
 
     public static class tDialogBox
@@ -60,7 +60,7 @@ namespace VaultASaur.Extensions
 
         public static string File_Dialog_OpenFile(string title = "Select a file", string initialDirectory = "", string filter = "All Files (*.*)|*.*")
         {
-            var dialog = new Ookii.Dialogs.WinForms.VistaOpenFileDialog
+            var dialog = new VistaOpenFileDialog
             {
                 Title = title,
                 Filter = filter,

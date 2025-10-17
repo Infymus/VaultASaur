@@ -1,4 +1,4 @@
-﻿namespace VaultASaur.Objects
+﻿namespace VaultASaur3.Objects
 {
     public class tPreferenceRec
     {

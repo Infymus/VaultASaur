@@ -1,4 +1,4 @@
-﻿using Org.BouncyCastle.Crypto;
+﻿﻿using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Engines;
 using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Crypto.Paddings;
@@ -6,9 +6,9 @@ using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Security;
 using System.Text;
 
-namespace VaultASaur.Encryption
+namespace VaultASaur3.Encryption
 {
-    internal class EncryptDecrypt
+    public static class EncryptDecrypt
     {
         private const int SaltSize = 16;
         private const int Iterations = 10000;
