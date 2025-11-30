@@ -56,7 +56,8 @@ Generated_Code/
 *.tlog
 *.pdb
 *.db
-*.sql
+*.sqlite
+*.sqlite3
 
 ## Ignore temporary files ##
 *.tmp
