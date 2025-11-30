@@ -1,6 +1,5 @@
 ﻿using System.Data;
 using System.Diagnostics;
-using System.Security.Policy;
 using VaultASaur3.DataBase;
 using VaultASaur3.Encryption;
 using VaultASaur3.Enums;
@@ -87,6 +86,7 @@ namespace VaultASaur3.Forms
          // Add a sub menu to the ToolBox
          toolBar.AddPopupMenuToButton(Actions.CMD_TOOLBOX);
          toolBar.AddMenuItem(Actions.CMD_TOOLBOX, Actions.CMD_EXPORT, "Export Database", cmd => HandleAction(cmd));
+         toolBar.AddMenuItem(Actions.CMD_TOOLBOX, Actions.CMD_IMPORT, "Import Database", cmd => HandleAction(cmd));
 
          // Database Grid
          DataListGrid.Init(torrentListPanel, "FNAME");
@@ -175,6 +175,9 @@ namespace VaultASaur3.Forms
                break;
             case Actions.CMD_EXPORT:
                ExportSites();
+               break;
+            case Actions.CMD_IMPORT:
+               ImportSites();
                break;
          }
       }
@@ -373,8 +376,19 @@ namespace VaultASaur3.Forms
             t.IsActive = 0;
          dbVault.Encrypt(ref t, fPasswordPhrase);
          tErrorResult dbResult = dbVault.Update(t);
+
+         DataListGrid.MoveNextRow();
+         tVaultRec nextRow = dbVault.GetDTRow(DataListGrid, fPasswordPhrase);
          DataListGrid.DataSource = dbVault.GridLoadData(dbActive);
-         DataListGrid.MoveToPointer(dbResult.AsLong, "ID");
+
+         if (dbActive == ActiveStates.StateAll)
+         {
+            DataListGrid.MoveToPointer(dbResult.AsLong, "ID");
+         }
+         else
+         {
+            DataListGrid.MoveToPointer(nextRow.ID, "ID");
+         }
       }
 
       public void ViewSite()
@@ -429,14 +443,56 @@ namespace VaultASaur3.Forms
       public void ExportSites()
       {
          TaskDialogButton warning;
-         warning = Dialog_Box("Warning", $"WARNING: It is risky to export your Vault Site Database to an unencrypted JSON file!", "Are you sure?",
+         warning = Dialog_Box("Warning", $"It is risky to export your Vault Site Database to an unencrypted JSON file!", "Are you sure?",
                       new[] { DialogButton.OK, DialogButton.Cancel }, TaskDialogIcon.Information);
          if (warning.Text == DialogButton.Cancel.ToString())
             return;
-         
-         open a dialog form, if they click save, then save it, else cancel it
 
-         dbVault.ExportDatabase(fPasswordPhrase);
+         string saveFilename = "";
+
+
+         using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+         {
+            saveFileDialog.Filter = "JSON Files (*.json)|*.json";
+            saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            saveFileDialog.Title = "Select JSON Database File";
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+               saveFilename = saveFileDialog.FileName;
+            }
+         }
+
+         if (saveFilename != "")
+         {
+            dbVault.ExportDatabase(saveFilename, fPasswordPhrase);
+         }
+      }
+
+      public void ImportSites()
+      {
+         TaskDialogButton warning;
+         warning = Dialog_Box("Warning", $"Import a decrypted JSON file? It will avoid duplicates but Can't be sure.", "Are you sure?",
+                      new[] { DialogButton.OK, DialogButton.Cancel }, TaskDialogIcon.Information);
+         if (warning.Text == DialogButton.Cancel.ToString())
+            return;
+
+         string openFileName = "";
+
+         using (OpenFileDialog openFileDialog = new OpenFileDialog())
+         {
+            openFileDialog.Filter = "JSON Files (*.json)|*.json";
+            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            openFileDialog.Title = "Select JSON Database File";
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+               openFileName = openFileDialog.FileName;
+            }
+         }
+
+         if (openFileName != "")
+         {
+            dbVault.ImportDatabase(openFileName, fPasswordPhrase);
+         }
       }
 
    }

@@ -104,13 +104,13 @@
          // 
          // pwTextBox
          // 
-         pwTextBox.BackColor = Color.FromArgb(255, 128, 128);
+         pwTextBox.BackColor = Color.Red;
          pwTextBox.BorderStyle = BorderStyle.FixedSingle;
          pwTextBox.Font = new Font("Verdana", 9F, FontStyle.Bold);
-         pwTextBox.ForeColor = Color.Black;
+         pwTextBox.ForeColor = Color.White;
          pwTextBox.Location = new Point(11, 36);
          pwTextBox.Name = "pwTextBox";
-         pwTextBox.PasswordChar = '*';
+         pwTextBox.PasswordChar = '#';
          pwTextBox.Size = new Size(279, 22);
          pwTextBox.TabIndex = 1;
          pwTextBox.KeyPress += pwTextBox_KeyPress;

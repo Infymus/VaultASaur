@@ -34,6 +34,12 @@ namespace VaultASaur3.Forms
          toolBar.CreateButton(Actions.CMD_COPY_USERNAME, "Open Browser and Visit Site", buttonCmd => HandleAction(buttonCmd));
          toolBar.CreateButtonSep();
          toolBar.CreateButton(Actions.CMD_CLOSE, "Close", buttonCmd => HandleAction(buttonCmd));
+
+         // Hide Everything
+         db_Password1.PasswordChar = '#';
+         db_Question1.PasswordChar = '#';
+         db_Question2.PasswordChar = '#';
+         db_Question3.PasswordChar = '#';
       }
 
       // Handles Button Click
@@ -60,10 +66,10 @@ namespace VaultASaur3.Forms
       {
          if (ShowPasswordCheck.Checked == false)
          {
-            db_Password1.PasswordChar = '*';
-            db_Question1.PasswordChar = '*';
-            db_Question2.PasswordChar = '*';
-            db_Question3.PasswordChar = '*';
+            db_Password1.PasswordChar = '#';
+            db_Question1.PasswordChar = '#';
+            db_Question2.PasswordChar = '#';
+            db_Question3.PasswordChar = '#';
 
          }
          else
@@ -88,7 +94,7 @@ namespace VaultASaur3.Forms
       private void db_active_Click(object sender, EventArgs e)
       {
          db_active.SuspendLayout();
-         
+
          db_active.Checked = !db_active.Checked;
          db_active.ResumeLayout();
       }

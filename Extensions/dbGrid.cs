@@ -10,8 +10,9 @@ namespace VaultASaur3.Extensions;
 /// It allows the creation of a DB grid and docking.
 /// Contains all the controls for navigation.
 /// </summary>
-{
+
 public class tDataGridView
+{
    private DataGridView _grid;
    private ContextMenuStrip _menu;
    private ImageForm imgForm;
@@ -476,16 +477,18 @@ public class tDataGridView
             Font baseFont = row.DefaultCellStyle.Font ?? _grid.DefaultCellStyle.Font;
             if (isActive == 0)
             {
-               row.DefaultCellStyle.Font = _italicFont;
+               row.DefaultCellStyle.Font = new Font(_italicFont, FontStyle.Italic);
+               row.DefaultCellStyle.ForeColor = Color.Blue;
             }
             else
             {
-               row.DefaultCellStyle.Font = _regularFont;
+               row.DefaultCellStyle.Font = new Font(baseFont, FontStyle.Bold);
+               row.DefaultCellStyle.ForeColor = Color.Red;
             }
          }
       }
    }
-
+   
    public void MovePreviousRow()
    {
       BindingSource.MovePrevious();

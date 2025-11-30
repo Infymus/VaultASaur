@@ -71,10 +71,10 @@
          // 
          // db_SiteName
          // 
-         db_SiteName.BackColor = Color.FromArgb(255, 128, 128);
+         db_SiteName.BackColor = Color.Red;
          db_SiteName.BorderStyle = BorderStyle.FixedSingle;
          db_SiteName.Font = new Font("Verdana", 9F, FontStyle.Bold);
-         db_SiteName.ForeColor = Color.Black;
+         db_SiteName.ForeColor = Color.White;
          db_SiteName.Location = new Point(10, 23);
          db_SiteName.Margin = new Padding(4, 3, 4, 3);
          db_SiteName.Name = "db_SiteName";
@@ -95,10 +95,10 @@
          // 
          // db_Username
          // 
-         db_Username.BackColor = Color.FromArgb(255, 128, 128);
+         db_Username.BackColor = Color.Red;
          db_Username.BorderStyle = BorderStyle.FixedSingle;
          db_Username.Font = new Font("Verdana", 9F, FontStyle.Bold);
-         db_Username.ForeColor = Color.Black;
+         db_Username.ForeColor = Color.White;
          db_Username.Location = new Point(10, 70);
          db_Username.Margin = new Padding(4, 3, 4, 3);
          db_Username.Name = "db_Username";
@@ -176,14 +176,14 @@
          // 
          // db_Password2
          // 
-         db_Password2.BackColor = Color.FromArgb(255, 128, 128);
+         db_Password2.BackColor = Color.Red;
          db_Password2.BorderStyle = BorderStyle.FixedSingle;
-         db_Password2.Font = new Font("Verdana", 9F, FontStyle.Bold);
-         db_Password2.ForeColor = Color.Black;
+         db_Password2.Font = new Font("Tahoma", 9F, FontStyle.Bold);
+         db_Password2.ForeColor = Color.White;
          db_Password2.Location = new Point(10, 78);
          db_Password2.Margin = new Padding(4, 3, 4, 3);
          db_Password2.Name = "db_Password2";
-         db_Password2.PasswordChar = '*';
+         db_Password2.PasswordChar = '#';
          db_Password2.Size = new Size(278, 22);
          db_Password2.TabIndex = 3;
          db_Password2.TextChanged += PasswordTextChanged;
@@ -202,14 +202,14 @@
          // 
          // db_Password1
          // 
-         db_Password1.BackColor = Color.FromArgb(255, 128, 128);
+         db_Password1.BackColor = Color.Red;
          db_Password1.BorderStyle = BorderStyle.FixedSingle;
-         db_Password1.Font = new Font("Verdana", 9F, FontStyle.Bold);
-         db_Password1.ForeColor = Color.Black;
+         db_Password1.Font = new Font("Tahoma", 9F, FontStyle.Bold);
+         db_Password1.ForeColor = Color.White;
          db_Password1.Location = new Point(10, 34);
          db_Password1.Margin = new Padding(4, 3, 4, 3);
          db_Password1.Name = "db_Password1";
-         db_Password1.PasswordChar = '*';
+         db_Password1.PasswordChar = '#';
          db_Password1.Size = new Size(276, 22);
          db_Password1.TabIndex = 1;
          db_Password1.TextChanged += PasswordTextChanged;
@@ -315,7 +315,7 @@
          db_Question1.Location = new Point(13, 392);
          db_Question1.Margin = new Padding(4, 3, 4, 3);
          db_Question1.Name = "db_Question1";
-         db_Question1.PasswordChar = '*';
+         db_Question1.PasswordChar = '#';
          db_Question1.Size = new Size(180, 22);
          db_Question1.TabIndex = 19;
          // 
@@ -339,7 +339,7 @@
          db_Question2.Location = new Point(203, 392);
          db_Question2.Margin = new Padding(4, 3, 4, 3);
          db_Question2.Name = "db_Question2";
-         db_Question2.PasswordChar = '*';
+         db_Question2.PasswordChar = '#';
          db_Question2.Size = new Size(180, 22);
          db_Question2.TabIndex = 21;
          // 
@@ -363,7 +363,7 @@
          db_Question3.Location = new Point(391, 392);
          db_Question3.Margin = new Padding(4, 3, 4, 3);
          db_Question3.Name = "db_Question3";
-         db_Question3.PasswordChar = '*';
+         db_Question3.PasswordChar = '#';
          db_Question3.Size = new Size(180, 22);
          db_Question3.TabIndex = 23;
          // 
@@ -401,7 +401,7 @@
          label11.TabIndex = 24;
          label11.Text = "Password Hint:";
          // 
-         // AddSiteForm
+         // AddEditSiteForm
          // 
          AutoScaleDimensions = new SizeF(7F, 15F);
          AutoScaleMode = AutoScaleMode.Font;
@@ -431,7 +431,7 @@
          Controls.Add(baseToolBar);
          FormBorderStyle = FormBorderStyle.FixedSingle;
          Margin = new Padding(4, 3, 4, 3);
-         Name = "AddSiteForm";
+         Name = "AddEditSiteForm";
          StartPosition = FormStartPosition.CenterScreen;
          Text = "AddSiteForm";
          passGroupBox.ResumeLayout(false);

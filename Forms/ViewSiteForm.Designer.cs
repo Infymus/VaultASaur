@@ -114,7 +114,6 @@
          // 
          db_PasswordHint.BackColor = Color.White;
          db_PasswordHint.BorderStyle = BorderStyle.FixedSingle;
-         db_PasswordHint.Enabled = false;
          db_PasswordHint.Font = new Font("Verdana", 9F, FontStyle.Bold);
          db_PasswordHint.ForeColor = Color.Black;
          db_PasswordHint.Location = new Point(9, 344);
@@ -136,15 +135,13 @@
          // 
          // db_Question3
          // 
-         db_Question3.BackColor = Color.White;
+         db_Question3.BackColor = Color.Red;
          db_Question3.BorderStyle = BorderStyle.FixedSingle;
-         db_Question3.Enabled = false;
          db_Question3.Font = new Font("Verdana", 9F, FontStyle.Bold);
-         db_Question3.ForeColor = Color.Black;
+         db_Question3.ForeColor = Color.White;
          db_Question3.Location = new Point(387, 302);
          db_Question3.Margin = new Padding(4, 3, 4, 3);
          db_Question3.Name = "db_Question3";
-         db_Question3.PasswordChar = '*';
          db_Question3.Size = new Size(180, 22);
          db_Question3.TabIndex = 42;
          // 
@@ -161,15 +158,13 @@
          // 
          // db_Question2
          // 
-         db_Question2.BackColor = Color.White;
+         db_Question2.BackColor = Color.Red;
          db_Question2.BorderStyle = BorderStyle.FixedSingle;
-         db_Question2.Enabled = false;
          db_Question2.Font = new Font("Verdana", 9F, FontStyle.Bold);
-         db_Question2.ForeColor = Color.Black;
+         db_Question2.ForeColor = Color.White;
          db_Question2.Location = new Point(199, 302);
          db_Question2.Margin = new Padding(4, 3, 4, 3);
          db_Question2.Name = "db_Question2";
-         db_Question2.PasswordChar = '*';
          db_Question2.Size = new Size(180, 22);
          db_Question2.TabIndex = 40;
          // 
@@ -186,15 +181,13 @@
          // 
          // db_Question1
          // 
-         db_Question1.BackColor = Color.White;
+         db_Question1.BackColor = Color.Red;
          db_Question1.BorderStyle = BorderStyle.FixedSingle;
-         db_Question1.Enabled = false;
          db_Question1.Font = new Font("Verdana", 9F, FontStyle.Bold);
-         db_Question1.ForeColor = Color.Black;
+         db_Question1.ForeColor = Color.White;
          db_Question1.Location = new Point(9, 302);
          db_Question1.Margin = new Padding(4, 3, 4, 3);
          db_Question1.Name = "db_Question1";
-         db_Question1.PasswordChar = '*';
          db_Question1.Size = new Size(180, 22);
          db_Question1.TabIndex = 38;
          // 
@@ -213,7 +206,6 @@
          // 
          db_URL.BackColor = Color.White;
          db_URL.BorderStyle = BorderStyle.FixedSingle;
-         db_URL.Enabled = false;
          db_URL.Font = new Font("Verdana", 9F, FontStyle.Bold);
          db_URL.ForeColor = Color.Black;
          db_URL.Location = new Point(9, 260);
@@ -237,7 +229,6 @@
          // 
          db_Email.BackColor = Color.White;
          db_Email.BorderStyle = BorderStyle.FixedSingle;
-         db_Email.Enabled = false;
          db_Email.Font = new Font("Verdana", 9F, FontStyle.Bold);
          db_Email.ForeColor = Color.Black;
          db_Email.Location = new Point(9, 218);
@@ -274,7 +265,6 @@
          // 
          db_Desc.BackColor = Color.White;
          db_Desc.BorderStyle = BorderStyle.FixedSingle;
-         db_Desc.Enabled = false;
          db_Desc.Font = new Font("Verdana", 9F, FontStyle.Bold);
          db_Desc.ForeColor = Color.Black;
          db_Desc.Location = new Point(9, 176);
@@ -296,11 +286,10 @@
          // 
          // db_Username
          // 
-         db_Username.BackColor = Color.White;
+         db_Username.BackColor = Color.Red;
          db_Username.BorderStyle = BorderStyle.FixedSingle;
-         db_Username.Enabled = false;
          db_Username.Font = new Font("Verdana", 9F, FontStyle.Bold);
-         db_Username.ForeColor = Color.Black;
+         db_Username.ForeColor = Color.White;
          db_Username.Location = new Point(9, 87);
          db_Username.Margin = new Padding(4, 3, 4, 3);
          db_Username.Name = "db_Username";
@@ -322,7 +311,6 @@
          // 
          db_SiteName.BackColor = Color.White;
          db_SiteName.BorderStyle = BorderStyle.FixedSingle;
-         db_SiteName.Enabled = false;
          db_SiteName.Font = new Font("Verdana", 9F, FontStyle.Bold);
          db_SiteName.ForeColor = Color.Black;
          db_SiteName.Location = new Point(9, 33);
@@ -344,15 +332,13 @@
          // 
          // db_Password1
          // 
-         db_Password1.BackColor = Color.White;
+         db_Password1.BackColor = Color.Red;
          db_Password1.BorderStyle = BorderStyle.FixedSingle;
-         db_Password1.Enabled = false;
          db_Password1.Font = new Font("Verdana", 9F, FontStyle.Bold);
-         db_Password1.ForeColor = Color.Black;
+         db_Password1.ForeColor = Color.White;
          db_Password1.Location = new Point(9, 129);
          db_Password1.Margin = new Padding(4, 3, 4, 3);
          db_Password1.Name = "db_Password1";
-         db_Password1.PasswordChar = '*';
          db_Password1.Size = new Size(276, 22);
          db_Password1.TabIndex = 46;
          // 

@@ -26,6 +26,8 @@ namespace VaultASaur3.Forms
          InitializeComponent();
          this.Text = $"{Constants.ProgramName} {ToolBox.GetBuildInfoAsString()}";
          ToolBox.WindowSizePosition(this, Constants.ProgramName, Constants.AppWidth, Constants.AppHeight);
+         buttonVault.Enabled = true;
+         buttonLock.Enabled = false;
          OpenVault();
       }
 
@@ -187,7 +189,7 @@ namespace VaultASaur3.Forms
                new[] { DialogButton.OK }, TaskDialogIcon.Shield);
          }
       }
-                                                                                                       
+
       private void CheckForPassword()
       {
          string passCheckGuid = dbPreference.GetString(tPrefConstants.GuidPassword);
@@ -230,6 +232,8 @@ namespace VaultASaur3.Forms
          fPasswordPhrase = "";
          fPasswordCreated = false;
          MainFormControl.CloseVault();
+         buttonVault.Enabled = true;
+         buttonLock.Enabled = false;
       }
 
       /// <summary>
@@ -277,7 +281,10 @@ namespace VaultASaur3.Forms
             if (DecKeyStr == Constants.VaultPasswordGuid)
             {
                MainFormControl.PasswordPhrase = fPasswordPhrase;
+
                MainFormControl.CreateItem(FormControls.FormVault, this.mainDockPanel);
+               buttonVault.Enabled = false;
+               buttonLock.Enabled = true;
             }
             else
             {

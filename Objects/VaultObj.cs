@@ -34,4 +34,45 @@
          SITEDESC = "";
       }
    }
+
+
+   public class tJsonVaultRec
+   {
+      [System.Text.Json.Serialization.JsonPropertyName("ID")]
+      public string JsonID { get; set; } = string.Empty;
+
+      [System.Text.Json.Serialization.JsonPropertyName("SiteName")]
+      public string SiteName { get; set; } = string.Empty;
+
+      [System.Text.Json.Serialization.JsonPropertyName("Username")]
+      public string Username { get; set; } = string.Empty;
+
+      [System.Text.Json.Serialization.JsonPropertyName("Password")]
+      public string Password { get; set; } = string.Empty;
+
+      [System.Text.Json.Serialization.JsonPropertyName("PasswordHint")]
+      public string PasswordHint { get; set; } = string.Empty;
+
+      [System.Text.Json.Serialization.JsonPropertyName("Email")]
+      public string Email { get; set; } = string.Empty;
+
+      [System.Text.Json.Serialization.JsonPropertyName("Question1")]
+      public string Question1 { get; set; } = string.Empty;
+
+      [System.Text.Json.Serialization.JsonPropertyName("Question2")]
+      public string Question2 { get; set; } = string.Empty;
+
+      [System.Text.Json.Serialization.JsonPropertyName("Question3")]
+      public string Question3 { get; set; } = string.Empty;
+
+      [System.Text.Json.Serialization.JsonPropertyName("URL")]
+      public string URL { get; set; } = string.Empty;
+
+      [System.Text.Json.Serialization.JsonPropertyName("Description")]
+      public string Description { get; set; } = string.Empty;
+
+      [System.Text.Json.Serialization.JsonPropertyName("Active")]
+      public bool Active { get; set; }
+   }
+
 }

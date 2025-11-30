@@ -1,12 +1,13 @@
 ﻿using System.Data;
 using System.Data.SQLite;
+using System.Text.Json;
 using VaultASaur3.Encryption;
 using VaultASaur3.Enums;
 using VaultASaur3.ErrorHandling;
 using VaultASaur3.Extensions;
 using VaultASaur3.Objects;
 using VaultASaur3.ToolsBox;
-using System.Text.Json;
+
 
 namespace VaultASaur3.DataBase
 {
@@ -353,6 +354,28 @@ namespace VaultASaur3.DataBase
          t.SECQUEST4 = EncryptDecrypt.Encrypt("", inPasswordPhrase);
       }
 
+      public static bool CheckDuplicates(tVaultRec t)
+      {
+         bool found = false;
+         try
+         {
+            using var conn = new SQLiteConnection(MasterData.ConnectionString());
+            conn.Open();
+            string sqlStr = $@"SELECT 1 FROM {MasterData.GetTableName_Vault} WHERE UPPER(SITENAME) = @SITENAMEUPPER LIMIT 1";
+            using var cmd = new SQLiteCommand(sqlStr, conn);
+            cmd.Parameters.AddWithValue("@SITENAMEUPPER", t.SITENAME);
+            var result = cmd.ExecuteScalar();
+            if (result != null)
+            {
+               found = true;
+            }
+         }
+         catch (Exception ex)
+         {
+         }
+         return found;
+      }
+
       public static void ExportDatabase(string inFileName, string inPasswordPhrase)
       {
          using var conn = new SQLiteConnection(MasterData.ConnectionString());
@@ -372,7 +395,7 @@ namespace VaultASaur3.DataBase
          }
          var options = new JsonSerializerOptions { WriteIndented = true };
          string jsonString = JsonSerializer.Serialize(decryptedVaultEntries, options);
-                  
+
          try
          {
             File.WriteAllText(inFileName, jsonString);
@@ -382,12 +405,85 @@ namespace VaultASaur3.DataBase
          }
       }
 
-      public static void ImportDatabase()
+      public static void ImportDatabase(string inFileName, string inPasswordPhrase)
       {
+         try
+         {
+            // 1. Read the raw, potentially encrypted content from the file.
+            string oldUNPWContent = File.ReadAllText(inFileName);
+
+            // 3. Deserialize the plaintext JSON string into a list of DTOs.
+            var jsonRecords = JsonSerializer.Deserialize<List<tJsonVaultRec>>(oldUNPWContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (jsonRecords == null || !jsonRecords.Any())
+            {
+               return;
+            }
+
+            int importCount = 0;
+            int duplicateCount = 0;
+
+            foreach (var jsonRec in jsonRecords)
+            {
+               // 4. Map the JSON DTO to the database Vault Record structure (tVaultRec).
+               var vaultRec = new tVaultRec
+               {
+                  SITENAME = jsonRec.SiteName,
+                  USERNAME = jsonRec.Username,
+                  PASSWORD = jsonRec.Password,
+                  EMAIL = jsonRec.Email,
+                  SITEURL = jsonRec.URL,
+                  PASSHINT = jsonRec.PasswordHint,
+                  SITEDESC = jsonRec.Description,
+                  IsActive = jsonRec.Active ? 1 : 0,
+                  // Map Question fields (JSON only has 3, DB has 4)
+                  SECQUEST1 = jsonRec.Question1,
+                  SECQUEST2 = jsonRec.Question2,
+                  SECQUEST3 = jsonRec.Question3,
+                  SECQUEST4 = "" // SECQUEST4 is empty in JSON, set to empty string
+               };
+
+               // 5. Check for duplicates before processing.
+               if (CheckDuplicates(vaultRec))
+               {
+                  duplicateCount++;
+                  Console.WriteLine($"[Import] Skipping duplicate record for Site: {vaultRec.SITENAME}");
+                  continue;
+               }
+
+               // 6. Encrypt the sensitive fields BEFORE insertion.
+               Encrypt(ref vaultRec, inPasswordPhrase);
+
+               // 7. Add the encrypted record to the database.
+               var result = Add(vaultRec);
+
+               if (!result.errorResult)
+               {
+                  importCount++;
+               }
+               else
+               {
+                  Console.WriteLine($"[Error] Failed to import record for {vaultRec.SITENAME}: {result.errorMessage}");
+               }
+            }
+
+            Console.WriteLine($"[Import] Import complete. Total records processed: {jsonRecords.Count}. Imported: {importCount}. Skipped Duplicates: {duplicateCount}.");
+         }
+         catch (FileNotFoundException)
+         {
+            Console.WriteLine($"[Error] The file was not found: {inFileName}");
+         }
+         catch (JsonException ex)
+         {
+            Console.WriteLine($"[Error] Failed to deserialize JSON. Check file format. Details: {ex.Message}");
+         }
+         catch (Exception ex)
+         {
+            Console.WriteLine($"[Critical Error] An unexpected error occurred during import: {ex.Message}");
+         }
       }
-
-
-
-
    }
+
+
 }
+
