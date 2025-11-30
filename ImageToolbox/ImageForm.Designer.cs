@@ -149,6 +149,7 @@
          IMG_30x30.Images.SetKeyName(108, "world.bmp");
          IMG_30x30.Images.SetKeyName(109, "yes2.bmp");
          IMG_30x30.Images.SetKeyName(110, "new_button.jpg");
+         IMG_30x30.Images.SetKeyName(111, "exit2.jpg");
          // 
          // ImageForm
          // 

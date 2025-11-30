@@ -1,12 +1,14 @@
 ﻿using System.Data;
+using System.Diagnostics;
+using System.Security.Policy;
 using VaultASaur3.DataBase;
 using VaultASaur3.Encryption;
 using VaultASaur3.Enums;
 using VaultASaur3.ErrorHandling;
 using VaultASaur3.Extensions;
+using VaultASaur3.Globals;
 using VaultASaur3.Objects;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using VaultASaur3.ToolsBox;
 using static VaultASaur3.Extensions.tDialogBox;
 using TaskDialogButton = Ookii.Dialogs.WinForms.TaskDialogButton;
 using TaskDialogIcon = Ookii.Dialogs.WinForms.TaskDialogIcon;
@@ -22,13 +24,14 @@ namespace VaultASaur3.Forms
       private string fPasswordPhrase;
       private int fVaultSecondsLimit = 300;
       private int fVaultSecondsToLive = 300;
+      private ActiveStates dbActive = ActiveStates.StateActive;
 
       public frm_VaultForm()
       {
          InitializeComponent();
 
          // Set the Caption
-         SetCaptionName("VAULT");
+         this.Text = $"Vault - {Constants.ProgramName} {ToolBox.GetBuildInfoAsString()}";
 
          // Hide Some Defaults
          topNamePanel.Visible = false;
@@ -74,6 +77,8 @@ namespace VaultASaur3.Forms
          toolBar.AddMenuItem(Actions.CMD_ACTIVITY, Actions.CMD_SHOW_ACTIVE_SITES, "Show Only Active Sites", cmd => HandleAction(cmd));
          toolBar.AddMenuItem(Actions.CMD_ACTIVITY, Actions.CMD_SHOW_INACTIVE_SITES, "Show Only Inactive Sites", cmd => HandleAction(cmd));
          toolBar.AddPopupMenuSep(Actions.CMD_ACTIVITY);
+         toolBar.AddMenuItem(Actions.CMD_ACTIVITY, Actions.CMD_EDIT, "Activate Site", cmd => HandleAction(cmd));
+         toolBar.AddPopupMenuSep(Actions.CMD_ACTIVITY);
          toolBar.AddMenuItem(Actions.CMD_ACTIVITY, Actions.CMD_ACTIVATE, "Activate Site", cmd => HandleAction(cmd));
          toolBar.AddMenuItem(Actions.CMD_ACTIVITY, Actions.CMD_DEACTIVATE, "Deactivate Site", cmd => HandleAction(cmd));
          toolBar.AddPopupMenuSep(Actions.CMD_ACTIVITY);
@@ -84,26 +89,22 @@ namespace VaultASaur3.Forms
          toolBar.AddMenuItem(Actions.CMD_TOOLBOX, Actions.CMD_EXPORT, "Export Database", cmd => HandleAction(cmd));
 
          // Database Grid
-         DataListGrid.Init(torrentListPanel);
-         DataListGrid.DataSource = dbVault.GridLoadData();
+         DataListGrid.Init(torrentListPanel, "FNAME");
+         DataListGrid.DataSource = dbVault.GridLoadData(dbActive);
          DataListGrid.BindingSource.DataSource = DataListGrid.DataSource;
          DataListGrid.AddColumn("SITENAME", "SITE NAME", 300, Color.Red);
          DataListGrid.SearchField = "SITENAME";
 
          // Add a Pop Menu to the Database Grid
          DataListGrid.AddMenu();
-         DataListGrid.AddMenuItem(Actions.CMD_DOWNLOAD_NOW, HandleAction);
-         DataListGrid.AddMenuItem(Actions.CMD_DOWNLOAD_QUEUE, HandleAction);
+         DataListGrid.AddMenuItem(Actions.CMD_SHOW_ALL_SITES, HandleAction);
+         DataListGrid.AddMenuItem(Actions.CMD_SHOW_ACTIVE_SITES, HandleAction);
+         DataListGrid.AddMenuItem(Actions.CMD_SHOW_INACTIVE_SITES, HandleAction);
          DataListGrid.CreateButtonSep();
-         DataListGrid.AddMenuItem(Actions.CMD_CREATE_FILTER, HandleAction);
-         DataListGrid.AddMenuItem(Actions.CMD_OPEN_IN_BROWSER, HandleAction);
-         DataListGrid.CreateButtonSep();
-         DataListGrid.AddMenuItem(Actions.CMD_VIEW, HandleAction);
          DataListGrid.AddMenuItem(Actions.CMD_EDIT, HandleAction);
-         DataListGrid.AddMenuItem(Actions.CMD_DELETE, HandleAction);
          DataListGrid.CreateButtonSep();
-         DataListGrid.AddMenuItem(Actions.CMD_CLIPBOARD_ENCLOSURE, HandleAction);
-         DataListGrid.AddMenuItem(Actions.CMD_CLIPBOARD_TITLE, HandleAction);
+         DataListGrid.AddMenuItem(Actions.CMD_ACTIVATE, HandleAction);
+         DataListGrid.AddMenuItem(Actions.CMD_DEACTIVATE, HandleAction);
          DataListGrid.CreateButtonSep();
          DataListGrid.AddMenuItem(Actions.CMD_CANCEL, HandleAction);
 
@@ -123,7 +124,7 @@ namespace VaultASaur3.Forms
          switch (buttonCmd)
          {
             case Actions.CMD_VIEW:
-               MessageBox.Show("This will CMD_VIEW rss");
+               ViewSite();
                break;
             case Actions.CMD_TOOLBOX:
                break;
@@ -136,8 +137,6 @@ namespace VaultASaur3.Forms
             case Actions.CMD_DELETE:
                DeleteSelectedRows();
                break;
-            case Actions.CMD_HELP:
-               break;
             case Actions.CMD_FIRST:
                DataListGrid.MoveFirstRow();
                break;
@@ -149,6 +148,33 @@ namespace VaultASaur3.Forms
                break;
             case Actions.CMD_LAST:
                DataListGrid.MoveLastRow();
+               break;
+            case Actions.CMD_WWW:
+               OpenWWW();
+               break;
+            case Actions.CMD_URL:
+               CopyURL();
+               break;
+            case Actions.CMD_SHOW_ALL_SITES:
+               dbActive = ActiveStates.StateAll;
+               RefreshDB();
+               break;
+            case Actions.CMD_SHOW_ACTIVE_SITES:
+               dbActive = ActiveStates.StateActive;
+               RefreshDB();
+               break;
+            case Actions.CMD_SHOW_INACTIVE_SITES:
+               dbActive = ActiveStates.StateInactive;
+               RefreshDB();
+               break;
+            case Actions.CMD_ACTIVATE:
+               ActivateDeactivate(ActiveStates.StateActive);
+               break;
+            case Actions.CMD_DEACTIVATE:
+               ActivateDeactivate(ActiveStates.StateInactive);
+               break;
+            case Actions.CMD_EXPORT:
+               ExportSites();
                break;
          }
       }
@@ -166,7 +192,7 @@ namespace VaultASaur3.Forms
       /// </summary>
       public void RefreshDB()
       {
-         var updatedData = dbVault.GridLoadData();
+         var updatedData = dbVault.GridLoadData(dbActive);
          DataListGrid.DataSource = null;
          DataListGrid.DataSource = updatedData;
          UpdateDBState();
@@ -177,7 +203,26 @@ namespace VaultASaur3.Forms
       /// </summary>
       private void UpdateDBState()
       {
-         MasterData.UpdateGridCount(ref statBarLabel, ref DataListGrid);
+         if (DataListGrid.Count == 0)
+         {
+            statBarLabel.Text = "0 Sites";
+         }
+         else
+         {
+            statBarLabel.Text = $"{DataListGrid.RowNum.ToString()} of {DataListGrid.Count} Vault Sites";
+            switch (dbActive)
+            {
+               case ActiveStates.StateActive:
+                  statBarLabel.Text += " | Active Sites Only";
+                  break;
+               case ActiveStates.StateInactive:
+                  statBarLabel.Text += " | Inactive Sites Only";
+                  break;
+               case ActiveStates.StateAll:
+                  statBarLabel.Text += " | All Sites";
+                  break;
+            }
+         }
 
          // Is it empty?
          if (DataListGrid.Count == 0)
@@ -185,18 +230,22 @@ namespace VaultASaur3.Forms
             dbState = MasterData.dbState.dsInitialize;
          }
 
-         // enable and disable buttons
-         //toolBar.EnableButton(Actions.CMD_DOWNLOAD_NOW, dbEditing);
-         //toolBar.EnableButton(Actions.CMD_DOWNLOAD_QUEUE, dbEditing);
-         //toolBar.EnableButton(Actions.CMD_EDIT, DataListGrid.Count != 0);
-         //toolBar.EnableButton(Actions.CMD_ACTIVITY, dbEditing);
-         //toolBar.EnableButton(Actions.CMD_DELETE, dbEditing);
-         //toolBar.EnableButton(Actions.CMD_CREATE_FILTER, dbEditing);
-         //toolBar.EnableButton(Actions.CMD_VIEW, dbEditing);
-         //toolBar.EnableButton(Actions.CMD_OPEN_IN_BROWSER, dbEditing);
-         //toolBar.EnableButton(Actions.CMD_URL, dbEditing);
-         //toolBar.EnableButton(Actions.CMD_WWW, dbEditing);
+         // Enable and disable buttons depending on state of the DB
+         toolBar.EnableButton(Actions.CMD_VIEW, DataListGrid.Count > 0);
+         toolBar.EnableButton(Actions.CMD_EDIT, DataListGrid.Count > 0);
+         toolBar.EnableButton(Actions.CMD_DELETE, DataListGrid.Count > 0);
+         toolBar.EnableButton(Actions.CMD_FIRST, DataListGrid.Count > 0);
+         toolBar.EnableButton(Actions.CMD_PREV, DataListGrid.Count > 0);
+         toolBar.EnableButton(Actions.CMD_NEXT, DataListGrid.Count > 0);
+         toolBar.EnableButton(Actions.CMD_LAST, DataListGrid.Count > 0);
+         toolBar.EnableButton(Actions.CMD_DELETE, DataListGrid.Count > 0);
+         toolBar.EnableButton(Actions.CMD_ACTIVATE, DataListGrid.Count > 0);
+         toolBar.EnableButton(Actions.CMD_DEACTIVATE, DataListGrid.Count > 0);
 
+         // DB specific
+         tVaultRec t = dbVault.GetDTRow(DataListGrid, fPasswordPhrase);
+         toolBar.EnableButton(Actions.CMD_URL, DataListGrid.Count > 0 && t.SITEURL != "");
+         toolBar.EnableButton(Actions.CMD_WWW, DataListGrid.Count > 0 && t.SITEURL != "");
       }
 
       private void HandlePercentUpdate(object sender, string message)
@@ -240,7 +289,9 @@ namespace VaultASaur3.Forms
             return;
          MasterData.DeleteAll(dbTypes.Vault);
          RefreshDB();
+         RefreshDB();
       }
+
 
       public void ResizeEvent(object sender, EventArgs e)
       {
@@ -262,7 +313,7 @@ namespace VaultASaur3.Forms
       public void NewSite()
       {
          tVaultRec t = new tVaultRec();
-         AddSiteForm siteForm = new AddSiteForm(t);
+         AddEditSiteForm siteForm = new AddEditSiteForm(t);
          siteForm.ShowDialog();
          if (siteForm.PassResult == FormResult.Ok)
          {
@@ -279,7 +330,7 @@ namespace VaultASaur3.Forms
             t.SECQUEST4 = EncryptDecrypt.Encrypt("", fPasswordPhrase);
             t.PASSHINT = siteForm.Hint;
             tErrorResult dbResult = dbVault.Add(t);
-            DataListGrid.DataSource = dbVault.GridLoadData();
+            DataListGrid.DataSource = dbVault.GridLoadData(dbActive);
             DataListGrid.MoveToPointer(dbResult.AsLong, "ID");
          }
          siteForm.Close();
@@ -287,24 +338,10 @@ namespace VaultASaur3.Forms
 
       public void EditSite()
       {
-         DataRow reader = DataListGrid.GetDataRow();
-         tVaultRec t = new tVaultRec
-         {
-            ID = Convert.ToInt64(reader["ID"]),
-            SITENAME = reader["SITENAME"].ToString() ?? string.Empty,
-            USERNAME = EncryptDecrypt.Decrypt(reader["USERNAME"].ToString() ?? string.Empty, fPasswordPhrase), 
-            PASSWORD = EncryptDecrypt.Decrypt(reader["PASSWORD"].ToString() ?? string.Empty, fPasswordPhrase), 
-            EMAIL = reader["EMAIL"].ToString() ?? string.Empty,
-            SITEURL = reader["SITEURL"].ToString() ?? string.Empty,
-            SECQUEST1 = EncryptDecrypt.Decrypt(reader["SECQUEST1"].ToString() ?? string.Empty, fPasswordPhrase),
-            SECQUEST2 = EncryptDecrypt.Decrypt(reader["SECQUEST2"].ToString() ?? string.Empty, fPasswordPhrase),
-            SECQUEST3 = EncryptDecrypt.Decrypt(reader["SECQUEST3"].ToString() ?? string.Empty, fPasswordPhrase),
-            SECQUEST4 = EncryptDecrypt.Decrypt(reader["SECQUEST4"].ToString() ?? string.Empty, fPasswordPhrase),
-            PASSHINT = reader["PASSHINT"].ToString() ?? string.Empty,
-            SITEDESC = reader["SITEDESC"].ToString() ?? string.Empty,
-            IsActive = Convert.ToInt32(reader["ISACTIVE"])
-         };
-         AddSiteForm siteForm = new AddSiteForm(t);
+         if (DataListGrid.Count == 0)
+            return;
+         tVaultRec t = dbVault.GetDTRow(DataListGrid, fPasswordPhrase);
+         AddEditSiteForm siteForm = new AddEditSiteForm(t);
          siteForm.ShowDialog();
          if (siteForm.PassResult == FormResult.Ok)
          {
@@ -321,12 +358,86 @@ namespace VaultASaur3.Forms
             t.SECQUEST4 = EncryptDecrypt.Encrypt("", fPasswordPhrase);
             t.PASSHINT = siteForm.Hint;
             tErrorResult dbResult = dbVault.Update(t);
-            DataListGrid.DataSource = dbVault.GridLoadData();
+            DataListGrid.DataSource = dbVault.GridLoadData(dbActive);
             DataListGrid.MoveToPointer(dbResult.AsLong, "ID");
          }
          siteForm.Close();
       }
 
-      
+      public void ActivateDeactivate(ActiveStates inState)
+      {
+         tVaultRec t = dbVault.GetDTRow(DataListGrid, fPasswordPhrase);
+         if (inState == ActiveStates.StateActive)
+            t.IsActive = 1;
+         if (inState == ActiveStates.StateInactive)
+            t.IsActive = 0;
+         dbVault.Encrypt(ref t, fPasswordPhrase);
+         tErrorResult dbResult = dbVault.Update(t);
+         DataListGrid.DataSource = dbVault.GridLoadData(dbActive);
+         DataListGrid.MoveToPointer(dbResult.AsLong, "ID");
+      }
+
+      public void ViewSite()
+      {
+         tVaultRec t = dbVault.GetDTRow(DataListGrid, fPasswordPhrase);
+         ViewSiteForm siteViewForm = new ViewSiteForm();
+         siteViewForm.UserName = t.USERNAME;
+         siteViewForm.Sitename = t.SITENAME;
+         siteViewForm.Password = t.PASSWORD;
+         siteViewForm.isActive = t.IsActive == 1 ? true : false;
+         siteViewForm.SiteURL = t.SITEURL;
+         siteViewForm.SecQuest1 = t.SECQUEST1;
+         siteViewForm.SecQuest2 = t.SECQUEST2;
+         siteViewForm.SecQuest3 = t.SECQUEST3;
+         siteViewForm.PassHint = t.PASSHINT;
+         siteViewForm.UpdateDB();
+         siteViewForm.ShowDialog();
+         siteViewForm.Close();
+      }
+
+      public void CopyURL()
+      {
+         tVaultRec t = dbVault.GetDTRow(DataListGrid, fPasswordPhrase);
+         if (t.SITEURL != "")
+            Clipboard.SetText(t.SITEURL);
+      }
+
+      public void OpenWWW()
+      {
+         tVaultRec t = dbVault.GetDTRow(DataListGrid, fPasswordPhrase);
+         if (t.SITEURL != "")
+         {
+            Process.Start(new ProcessStartInfo
+            {
+               FileName = t.SITEURL,
+               UseShellExecute = true
+            });
+         }
+      }
+      private void unButton_Click(object sender, EventArgs e)
+      {
+         tVaultRec t = dbVault.GetDTRow(DataListGrid, fPasswordPhrase);
+         Clipboard.SetText(t.USERNAME);
+      }
+
+      private void pwButton_Click(object sender, EventArgs e)
+      {
+         tVaultRec t = dbVault.GetDTRow(DataListGrid, fPasswordPhrase);
+         Clipboard.SetText(t.PASSWORD);
+      }
+
+      public void ExportSites()
+      {
+         TaskDialogButton warning;
+         warning = Dialog_Box("Warning", $"WARNING: It is risky to export your Vault Site Database to an unencrypted JSON file!", "Are you sure?",
+                      new[] { DialogButton.OK, DialogButton.Cancel }, TaskDialogIcon.Information);
+         if (warning.Text == DialogButton.Cancel.ToString())
+            return;
+         
+         open a dialog form, if they click save, then save it, else cancel it
+
+         dbVault.ExportDatabase(fPasswordPhrase);
+      }
+
    }
 }

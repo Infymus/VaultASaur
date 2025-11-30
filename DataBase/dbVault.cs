@@ -3,8 +3,10 @@ using System.Data.SQLite;
 using VaultASaur3.Encryption;
 using VaultASaur3.Enums;
 using VaultASaur3.ErrorHandling;
+using VaultASaur3.Extensions;
 using VaultASaur3.Objects;
 using VaultASaur3.ToolsBox;
+using System.Text.Json;
 
 namespace VaultASaur3.DataBase
 {
@@ -200,12 +202,27 @@ namespace VaultASaur3.DataBase
          return t;
       }
 
-      public static DataTable GridLoadData()
+      public static DataTable GridLoadData(ActiveStates inActiveState)
       {
-         string connectionString = MasterData.ConnectionString();
-         using var conn = new SQLiteConnection(connectionString);
+         using var conn = new SQLiteConnection(MasterData.ConnectionString());
          conn.Open();
-         var cmd = new SQLiteCommand(@$"SELECT * FROM {MasterData.GetTableName_Vault} ORDER BY SITENAME COLLATE NOCASE", conn);
+         string sqlStr = @$"SELECT * FROM {MasterData.GetTableName_Vault}";
+
+         switch (inActiveState)
+         {
+            case ActiveStates.StateActive:
+               sqlStr += $@" WHERE ""ISACTIVE"" = 1";
+               break;
+            case ActiveStates.StateInactive:
+               sqlStr += $@" WHERE ""ISACTIVE"" = 0";
+               break;
+            case ActiveStates.StateAll:
+               // Show All
+               break;
+         }
+
+         sqlStr += " ORDER BY SITENAME COLLATE NOCASE";
+         var cmd = new SQLiteCommand(sqlStr, conn);
          var adapter = new SQLiteDataAdapter(cmd);
          var dt = new DataTable();
          adapter.Fill(dt);
@@ -267,9 +284,102 @@ namespace VaultASaur3.DataBase
          return e;
       }
 
-      public static void ExportDatabase()
+      public static tVaultRec DecryptDataRow(DataRow reader, string fPasswordPhrase)
       {
+         try
+         {
+            return new tVaultRec
+            {
+               ID = Convert.ToInt64(reader["ID"]),
+               SITENAME = reader["SITENAME"].ToString() ?? string.Empty,
+               USERNAME = EncryptDecrypt.Decrypt(reader["USERNAME"].ToString() ?? string.Empty, fPasswordPhrase),
+               PASSWORD = EncryptDecrypt.Decrypt(reader["PASSWORD"].ToString() ?? string.Empty, fPasswordPhrase),
+               EMAIL = reader["EMAIL"].ToString() ?? string.Empty,
+               SITEURL = reader["SITEURL"].ToString() ?? string.Empty,
+               SECQUEST1 = EncryptDecrypt.Decrypt(reader["SECQUEST1"].ToString() ?? string.Empty, fPasswordPhrase),
+               SECQUEST2 = EncryptDecrypt.Decrypt(reader["SECQUEST2"].ToString() ?? string.Empty, fPasswordPhrase),
+               SECQUEST3 = EncryptDecrypt.Decrypt(reader["SECQUEST3"].ToString() ?? string.Empty, fPasswordPhrase),
+               SECQUEST4 = EncryptDecrypt.Decrypt(reader["SECQUEST4"].ToString() ?? string.Empty, fPasswordPhrase),
+               PASSHINT = reader["PASSHINT"].ToString() ?? string.Empty,
+               SITEDESC = reader["SITEDESC"].ToString() ?? string.Empty,
+               IsActive = Convert.ToInt32(reader["ISACTIVE"])
+            };
+         }
+         catch (Exception ex)
+         {
+            return new tVaultRec();
+         }
+      }
 
+      public static tVaultRec GetDTRow(tDataGridView inGrid, string fPasswordPhrase)
+      {
+         if (inGrid.Count == 0)
+            return new tVaultRec();
+         DataRow reader = inGrid.GetDataRow();
+         if (reader == null)
+            return new tVaultRec();
+         try
+         {
+            return new tVaultRec
+            {
+               ID = Convert.ToInt64(reader["ID"]),
+               SITENAME = reader["SITENAME"].ToString() ?? string.Empty,
+               USERNAME = EncryptDecrypt.Decrypt(reader["USERNAME"].ToString() ?? string.Empty, fPasswordPhrase),
+               PASSWORD = EncryptDecrypt.Decrypt(reader["PASSWORD"].ToString() ?? string.Empty, fPasswordPhrase),
+               EMAIL = reader["EMAIL"].ToString() ?? string.Empty,
+               SITEURL = reader["SITEURL"].ToString() ?? string.Empty,
+               SECQUEST1 = EncryptDecrypt.Decrypt(reader["SECQUEST1"].ToString() ?? string.Empty, fPasswordPhrase),
+               SECQUEST2 = EncryptDecrypt.Decrypt(reader["SECQUEST2"].ToString() ?? string.Empty, fPasswordPhrase),
+               SECQUEST3 = EncryptDecrypt.Decrypt(reader["SECQUEST3"].ToString() ?? string.Empty, fPasswordPhrase),
+               SECQUEST4 = EncryptDecrypt.Decrypt(reader["SECQUEST4"].ToString() ?? string.Empty, fPasswordPhrase),
+               PASSHINT = reader["PASSHINT"].ToString() ?? string.Empty,
+               SITEDESC = reader["SITEDESC"].ToString() ?? string.Empty,
+               IsActive = Convert.ToInt32(reader["ISACTIVE"])
+            };
+         }
+         catch
+         {
+            return new tVaultRec();
+         }
+      }
+
+      public static void Encrypt(ref tVaultRec t, string inPasswordPhrase)
+      {
+         t.USERNAME = EncryptDecrypt.Encrypt(t.USERNAME, inPasswordPhrase);
+         t.PASSWORD = EncryptDecrypt.Encrypt(t.PASSWORD, inPasswordPhrase);
+         t.SECQUEST1 = EncryptDecrypt.Encrypt(t.SECQUEST1, inPasswordPhrase);
+         t.SECQUEST2 = EncryptDecrypt.Encrypt(t.SECQUEST2, inPasswordPhrase);
+         t.SECQUEST3 = EncryptDecrypt.Encrypt(t.SECQUEST3, inPasswordPhrase);
+         t.SECQUEST4 = EncryptDecrypt.Encrypt("", inPasswordPhrase);
+      }
+
+      public static void ExportDatabase(string inFileName, string inPasswordPhrase)
+      {
+         using var conn = new SQLiteConnection(MasterData.ConnectionString());
+         conn.Open();
+         string sqlStr = @$"SELECT * FROM {MasterData.GetTableName_Vault}";
+         var cmd = new SQLiteCommand(sqlStr, conn);
+         var adapter = new SQLiteDataAdapter(cmd);
+         var dt = new DataTable();
+         adapter.Fill(dt);
+
+         var decryptedVaultEntries = new List<tVaultRec>();
+
+         foreach (DataRow row in dt.Rows)
+         {
+            var decryptedRec = DecryptDataRow(row, inPasswordPhrase);
+            decryptedVaultEntries.Add(decryptedRec);
+         }
+         var options = new JsonSerializerOptions { WriteIndented = true };
+         string jsonString = JsonSerializer.Serialize(decryptedVaultEntries, options);
+                  
+         try
+         {
+            File.WriteAllText(inFileName, jsonString);
+         }
+         catch (Exception ex)
+         {
+         }
       }
 
       public static void ImportDatabase()

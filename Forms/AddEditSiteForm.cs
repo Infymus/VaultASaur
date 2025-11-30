@@ -6,16 +6,17 @@ using VaultASaur3.Globals;
 using VaultASaur3.Objects;
 using VaultASaur3.ToolsBox;
 using static VaultASaur3.Extensions.tDialogBox;
+using TaskDialogButton = Ookii.Dialogs.WinForms.TaskDialogButton;
 using TaskDialogIcon = Ookii.Dialogs.WinForms.TaskDialogIcon;
 
 namespace VaultASaur3.Forms
 {
-   public partial class AddSiteForm : Form
+   public partial class AddEditSiteForm : Form
    {
       private FormResult _PassResult;
       private tToolStrip toolBar;
 
-      public AddSiteForm(tVaultRec t)
+      public AddEditSiteForm(tVaultRec t)
       {
          InitializeComponent();
 
@@ -62,6 +63,10 @@ namespace VaultASaur3.Forms
                }
                break;
             case Actions.CMD_CANCEL:
+               TaskDialogButton cancelBtn;
+               cancelBtn = Dialog_Box("Warning", "All changes will be discarded.", "Discard Changes?", new[] { DialogButton.Yes, DialogButton.No }, TaskDialogIcon.Warning);
+               if (cancelBtn.Text == DialogButton.No.ToString())
+                  return;
                _PassResult = FormResult.Cancel;
                Close();
                break;
@@ -204,10 +209,6 @@ namespace VaultASaur3.Forms
       {
          get { if (db_active.Checked == true) return 1; else return 0; }
       }
-
-
-
-
 
    }
 }

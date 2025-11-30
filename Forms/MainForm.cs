@@ -187,8 +187,7 @@ namespace VaultASaur3.Forms
                new[] { DialogButton.OK }, TaskDialogIcon.Shield);
          }
       }
-
-      
+                                                                                                       
       private void CheckForPassword()
       {
          string passCheckGuid = dbPreference.GetString(tPrefConstants.GuidPassword);
@@ -273,7 +272,8 @@ namespace VaultASaur3.Forms
 
             // We have an internal GUID that if it matches, we know they have the right password. Even if
             // they hack this, it would display the vault form - but it would be a massive jumble of garbage.
-            // The password/Passphrase is never saved anywhere. They would have to brute force against the GUID.
+            // The password/Passphrase is never saved anywhere.
+            // They would have to brute force against the GUID and this is the only weakness.
             if (DecKeyStr == Constants.VaultPasswordGuid)
             {
                MainFormControl.PasswordPhrase = fPasswordPhrase;

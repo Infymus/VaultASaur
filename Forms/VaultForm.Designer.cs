@@ -72,7 +72,9 @@
          // 
          // statBarLabel
          // 
-         statBarLabel.Size = new Size(138, 19);
+         statBarLabel.Dock = DockStyle.Fill;
+         statBarLabel.Font = new Font("Verdana", 9F);
+         statBarLabel.Size = new Size(386, 19);
          // 
          // userpassPanel
          // 
@@ -98,6 +100,7 @@
          pwButton.TextAlign = ContentAlignment.BottomCenter;
          pwButton.TextImageRelation = TextImageRelation.ImageAboveText;
          pwButton.UseVisualStyleBackColor = false;
+         pwButton.Click += pwButton_Click;
          // 
          // unButton
          // 
@@ -113,6 +116,7 @@
          unButton.TextAlign = ContentAlignment.BottomCenter;
          unButton.TextImageRelation = TextImageRelation.ImageAboveText;
          unButton.UseVisualStyleBackColor = false;
+         unButton.Click += unButton_Click;
          // 
          // frm_VaultForm
          // 

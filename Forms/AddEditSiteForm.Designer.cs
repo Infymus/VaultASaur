@@ -1,6 +1,6 @@
 ﻿namespace VaultASaur3.Forms
 {
-   partial class AddSiteForm
+   partial class AddEditSiteForm
    {
       /// <summary>
       /// Required designer variable.
@@ -28,7 +28,7 @@
       /// </summary>
       private void InitializeComponent()
       {
-         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddSiteForm));
+         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddEditSiteForm));
          baseToolBar = new Panel();
          db_SiteName = new TextBox();
          passLabel = new Label();

@@ -10,8 +10,8 @@ namespace VaultASaur3.Extensions;
 /// It allows the creation of a DB grid and docking.
 /// Contains all the controls for navigation.
 /// </summary>
-public class tDataGridView
 {
+public class tDataGridView
    private DataGridView _grid;
    private ContextMenuStrip _menu;
    private ImageForm imgForm;
@@ -21,24 +21,13 @@ public class tDataGridView
    private bool _isProgrammaticMove = false;
    private char _lastSearchKey = '\0';
    private int _lastSearchIndex = -1;
-   private string SearchColumnName = "FNAME";
+   private string SearchColumnName;
+   Font _regularFont = new Font(gridCellFontName, gridFontSize, FontStyle.Regular);
+   Font _italicFont = new Font(gridCellFontName, gridFontSize, FontStyle.Italic);
+   private const string gridCellFontName = "Verdana";
+   private const float gridFontSize = 9;
 
-
-   public bool Enabled
-   {
-      get => _grid.Enabled;
-      set => _grid.Enabled = value;
-   }
-
-   public void Refresh()
-   {
-      var d = _grid.DataSource;
-      _grid.DataSource = null;
-      _grid.DataSource = d;
-      _grid.Refresh();
-   }
-
-   public void Init(Panel targetPanel)
+   public void Init(Panel targetPanel, string inSearchColumnName)
    {
       _grid = new DataGridView();
       imgForm = new ImageForm();
@@ -62,7 +51,7 @@ public class tDataGridView
       {
          BackColor = Color.White,
          ForeColor = Color.Black,
-         Font = new Font("Arial", 12, FontStyle.Regular)
+         Font = _regularFont
       };
 
       _grid.ForeColor = Color.Black;
@@ -89,13 +78,24 @@ public class tDataGridView
       _grid.KeyDown += Grid_KeyDown;
       _grid.SelectionChanged += delegateGridSelectionChange;
       _grid.CurrentCellChanged += (s, e) => OnRowChanged(EventArgs.Empty);
-
-
+      _grid.RowPrePaint += Grid_RowPrePaint;
 
       targetPanel.Controls.Add(_grid);
    }
 
+   public bool Enabled
+   {
+      get => _grid.Enabled;
+      set => _grid.Enabled = value;
+   }
 
+   public void Refresh()
+   {
+      var d = _grid.DataSource;
+      _grid.DataSource = null;
+      _grid.DataSource = d;
+      _grid.Refresh();
+   }
 
    private void delegateGridSelectionChange(object sender, EventArgs e)
    {
@@ -448,6 +448,40 @@ public class tDataGridView
          finally
          {
             _isProgrammaticMove = false;
+         }
+      }
+   }
+
+   private void Grid_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
+   {
+      DataGridViewRow row = _grid.Rows[e.RowIndex];
+      if (row.DataBoundItem is DataRowView rowView)
+      {
+         DataRow dataRow = rowView.Row;
+         if (dataRow.Table.Columns.Contains("ISACTIVE"))
+         {
+            object isActiveValue = dataRow["ISACTIVE"];
+            int isActive = 0;
+            if (isActiveValue != DBNull.Value)
+            {
+               if (isActiveValue is bool b)
+               {
+                  isActive = b ? 1 : 0;
+               }
+               else
+               {
+                  int.TryParse(isActiveValue.ToString(), out isActive);
+               }
+            }
+            Font baseFont = row.DefaultCellStyle.Font ?? _grid.DefaultCellStyle.Font;
+            if (isActive == 0)
+            {
+               row.DefaultCellStyle.Font = _italicFont;
+            }
+            else
+            {
+               row.DefaultCellStyle.Font = _regularFont;
+            }
          }
       }
    }

@@ -20,7 +20,6 @@ namespace VaultASaur3.Globals
       public const string AppDatabaseDir = "database";
       public const string ProgramName = "VaultASaur";
       public const string ProgramMutex = "VaultASaurMutex";
-      public const string ProgramCopyright = "(c)2026 Infymus";
       public const string ProgramCaption = "Simple to use encrypted password vault system.";
       public static string AppConfigHeader = "VaultASaur";
       public static string appConfigFile = "appsettings.json";

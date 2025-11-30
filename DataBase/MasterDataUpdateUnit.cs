@@ -71,24 +71,6 @@ namespace VaultASaur3.DataBase
          // UPDATE 101
          if (MasterData.CompareVersion(101))
          {
-            //tVaultRec tAddFilt = new tVaultRec();
-            //tAddFilt.FName = "Hells Kitchen";
-            //tAddFilt.FID = tFed.AsLong;
-            //tAddFilt.FExpression = "+Hells Kitchen\r\n+1080";
-            //tAddFilt.FStartSeason = 0;
-            //tAddFilt.FStartEpisode = 0;
-            //tAddFilt.FEndSeason = 0;
-            //tAddFilt.FEndEpisode = 0;
-            //tAddFilt.FStartYear = 0;
-            //tAddFilt.FEndYear = 0;
-            //tAddFilt.FUseHistory = 1;
-            //tAddFilt.FDlType = 0;
-            //tAddFilt.IsActive = 1;
-            //tAddFilt.LocalDir = "";
-            //tAddFilt.DlOption = 1;
-            //tAddFilt.SaveDir = "";
-            //dbVault.Add(tAddFilt);
-
             // Preferences
             dbPreference.SetInt(tPrefConstants.AutoClose, 300);
             dbPreference.SetString(tPrefConstants.Hint, "");

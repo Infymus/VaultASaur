@@ -1,17 +1,7 @@
-﻿using VaultASaur3.DataBase;
+﻿using System.Data.SQLite;
 using VaultASaur3.Enums;
 using VaultASaur3.ErrorHandling;
 using VaultASaur3.Extensions;
-using VaultASaur3.Globals;
-using VaultASaur3.Objects;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SQLite;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
 
 
 namespace VaultASaur3.DataBase
@@ -31,9 +21,9 @@ namespace VaultASaur3.DataBase
         private static string SQLiteDBName = "vaultasaur.db";
 
         // Tables
-        private static string tableMain = "main";
-        private static string tablePreference = "pref";
-        private static string tableVault = "vault";
+        private static string tableMain = "MAIN";
+        private static string tablePreference = "PREF";
+        private static string tableVault = "VAULT";
 
         public static string ConnectionString()
         {

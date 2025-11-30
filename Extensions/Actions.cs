@@ -145,7 +145,9 @@
       public const int CMD_SHOW_INACTIVE_SITES = 113;
       public const int CMD_ACTIVATE = 114;
       public const int CMD_DEACTIVATE = 115;
-
+      public const int CMD_COPY_URL = 116;
+      public const int CMD_COPY_PASSWORD = 117;
+      public const int CMD_COPY_USERNAME = 118;
       // Images
       public const int IMG_ADD = 0;
       public const int IMG_ADD_BUTTON = 110;
@@ -257,6 +259,7 @@
       public const int IMG_WIPE = 107;
       public const int IMG_WORLD = 108;
       public const int IMG_YES2 = 109;
+      public const int IMG_CANCEL2 = 111;
 
       public static actionObject AddNewAction(int inActionType)
       {
@@ -659,13 +662,55 @@
                a.imageIndex = IMG_TRANSMIT_FILE;
                a.name = "actURL";
                break;
-               case CMD_EXPORT:
+            case CMD_EXPORT:
                a.Caption = "Export Database";
                a.imageIndex = IMG_SAVE2;
                a.name = "actURL";
                break;
+            case CMD_COPY_URL:
+               a.Caption = "URL";
+               a.imageIndex = IMG_BACKORDER;
+               a.name = "actURL";
+               break;
+            case CMD_COPY_PASSWORD:
+               a.Caption = "PW";
+               a.imageIndex = IMG_BACKORDER;
+               a.name = "actURL";
+               break;
+            case CMD_COPY_USERNAME:
+               a.Caption = "UN";
+               a.imageIndex = IMG_BACKORDER;
+               a.name = "actURL";
+               break;
+            case CMD_SHOW_ALL_SITES:
+               a.Caption = "Show All Sites";
+               a.imageIndex = IMG_CUSTOMER;
+               a.name = "actShowAllSites";
+               break;
+            case CMD_SHOW_ACTIVE_SITES:
+               a.Caption = "Show Only Active Sites";
+               a.imageIndex = IMG_CHECKMARKMARK;
+               a.name = "actShowAllSites";
+               break;
+            case CMD_SHOW_INACTIVE_SITES:
+               a.Caption = "Show Only Inactive Sites";
+               a.imageIndex = IMG_CANCEL2;
+               a.name = "actShowInactiveSites";
+               break;
+            case CMD_ACTIVATE:
+               a.Caption = "Activate Site";
+               a.imageIndex = IMG_CHECKMARKMARK;
+               a.name = "actActivateSite";
+               break;
+            case CMD_DEACTIVATE:
+               a.Caption = "Deactivate Site";
+               a.imageIndex = IMG_CANCEL2;
+               a.name = "actDeactivateSite";
+               break;
 
-               
+
+
+
          }
          return a;
       }
