@@ -316,12 +316,12 @@
                break;
             case CMD_SAVE:
                a.Caption = "Save";
-               a.imageIndex = IMG_SAVE;
+               a.imageIndex = IMG_GREEN_CHECK;
                a.name = "actSave";
                break;
             case CMD_CANCEL:
                a.Caption = "Cancel";
-               a.imageIndex = IMG_CANCEL3;
+               a.imageIndex = IMG_CANCEL;
                a.name = "actCancel";
                break;
             case CMD_DELETE:
@@ -356,7 +356,7 @@
                break;
             case CMD_OK:
                a.Caption = "Ok";
-               a.imageIndex = IMG_OK2;
+               a.imageIndex = IMG_CHECKMARKMARK;
                a.name = "actOk";
                break;
             case CMD_EDIT:
@@ -666,27 +666,27 @@
                break;
             case CMD_EXPORT:
                a.Caption = "Export Database";
-               a.imageIndex = IMG_SAVE2;
+               a.imageIndex = IMG_DOWN_ARROW_BLUE;
                a.name = "actExportDB";
                break;
             case CMD_IMPORT:
                a.Caption = "Import Database";
-               a.imageIndex = IMG_FILE_LOAD2;
+               a.imageIndex = IMG_ADD;
                a.name = "actImportDB";
                break;
             case CMD_COPY_URL:
                a.Caption = "URL";
-               a.imageIndex = IMG_BACKORDER;
-               a.name = "actURL";
+               a.imageIndex = IMG_FILTERIMAGE;
+               a.name = "ActCopyUrl";
                break;
             case CMD_COPY_PASSWORD:
                a.Caption = "PW";
-               a.imageIndex = IMG_BACKORDER;
-               a.name = "actURL";
+               a.imageIndex = IMG_FILTERIMAGE;
+               a.name = "actCopyPW";
                break;
             case CMD_COPY_USERNAME:
                a.Caption = "UN";
-               a.imageIndex = IMG_BACKORDER;
+               a.imageIndex = IMG_FILTERIMAGE;
                a.name = "actURL";
                break;
             case CMD_SHOW_ALL_SITES:

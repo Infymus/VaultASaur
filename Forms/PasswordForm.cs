@@ -29,6 +29,8 @@ namespace VaultASaur3.Forms
          toolBar.RightToLeft = RightToLeft.Yes;
          toolBar.CreateButton(Actions.CMD_CANCEL, "Cancel", buttonCmd => HandleAction(buttonCmd));
          toolBar.CreateButton(Actions.CMD_OK, "Ok", buttonCmd => HandleAction(buttonCmd));
+
+         capsLockWarningLabel.Visible = false;
       }
 
       private void HandleAction(int buttonCmd)
@@ -48,6 +50,16 @@ namespace VaultASaur3.Forms
 
       private void pwTextBox_KeyPress(object sender, KeyPressEventArgs e)
       {
+         if (Control.IsKeyLocked(Keys.CapsLock))
+         {
+            capsLockWarningLabel.Visible = true;
+            capsLockWarningLabel.Text = "Warning: Caps Lock is on!";
+         }
+         else
+         {
+            capsLockWarningLabel.Visible = false;
+         }
+
          if (e.KeyChar == (char)Keys.Return)
          {
             if (pwTextBox.Text.Length > 0)

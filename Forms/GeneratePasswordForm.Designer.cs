@@ -41,7 +41,6 @@
          passVaultLabel = new Label();
          baseToolBar = new Panel();
          vaultImage = new PictureBox();
-         label1 = new Label();
          passGroupBox.SuspendLayout();
          ((System.ComponentModel.ISupportInitialize)TrackBar).BeginInit();
          ((System.ComponentModel.ISupportInitialize)vaultImage).BeginInit();
@@ -49,11 +48,12 @@
          // 
          // statusLabel
          // 
-         statusLabel.Font = new Font("Verdana", 8F);
-         statusLabel.Location = new Point(42, 86);
+         statusLabel.Font = new Font("Verdana", 14F, FontStyle.Bold);
+         statusLabel.Location = new Point(12, 54);
          statusLabel.Name = "statusLabel";
-         statusLabel.Size = new Size(417, 94);
+         statusLabel.Size = new Size(429, 222);
          statusLabel.TabIndex = 14;
+         statusLabel.Text = resources.GetString("statusLabel.Text");
          // 
          // passGroupBox
          // 
@@ -64,9 +64,9 @@
          passGroupBox.Controls.Add(ShowPasswordCheck);
          passGroupBox.Controls.Add(db_Password1);
          passGroupBox.Controls.Add(passLabel);
-         passGroupBox.Location = new Point(12, 183);
+         passGroupBox.Location = new Point(3, 279);
          passGroupBox.Name = "passGroupBox";
-         passGroupBox.Size = new Size(447, 178);
+         passGroupBox.Size = new Size(455, 178);
          passGroupBox.TabIndex = 13;
          passGroupBox.TabStop = false;
          // 
@@ -95,7 +95,7 @@
          TrackBar.Location = new Point(93, 125);
          TrackBar.Maximum = 30;
          TrackBar.Name = "TrackBar";
-         TrackBar.Size = new Size(317, 45);
+         TrackBar.Size = new Size(317, 58);
          TrackBar.TabIndex = 13;
          TrackBar.TickStyle = TickStyle.Both;
          TrackBar.Value = 15;
@@ -104,10 +104,11 @@
          // punctCheckBox
          // 
          punctCheckBox.AutoSize = true;
-         punctCheckBox.Location = new Point(148, 100);
+         punctCheckBox.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+         punctCheckBox.Location = new Point(7, 97);
          punctCheckBox.Margin = new Padding(4, 3, 4, 3);
          punctCheckBox.Name = "punctCheckBox";
-         punctCheckBox.Size = new Size(228, 19);
+         punctCheckBox.Size = new Size(235, 19);
          punctCheckBox.TabIndex = 12;
          punctCheckBox.Text = "Include Punctuation (!, \", $, and so on)";
          punctCheckBox.UseVisualStyleBackColor = true;
@@ -115,10 +116,11 @@
          // ShowPasswordCheck
          // 
          ShowPasswordCheck.AutoSize = true;
-         ShowPasswordCheck.Location = new Point(7, 64);
+         ShowPasswordCheck.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+         ShowPasswordCheck.Location = new Point(7, 72);
          ShowPasswordCheck.Margin = new Padding(4, 3, 4, 3);
          ShowPasswordCheck.Name = "ShowPasswordCheck";
-         ShowPasswordCheck.Size = new Size(113, 19);
+         ShowPasswordCheck.Size = new Size(117, 19);
          ShowPasswordCheck.TabIndex = 11;
          ShowPasswordCheck.Text = "Show Passwords";
          ShowPasswordCheck.UseVisualStyleBackColor = true;
@@ -126,12 +128,13 @@
          // 
          // db_Password1
          // 
-         db_Password1.BackColor = Color.FromArgb(255, 128, 128);
-         db_Password1.Font = new Font("Verdana", 9F);
+         db_Password1.BackColor = Color.Red;
+         db_Password1.Font = new Font("Verdana", 12F);
+         db_Password1.ForeColor = Color.White;
          db_Password1.Location = new Point(6, 36);
          db_Password1.Name = "db_Password1";
          db_Password1.PasswordChar = '*';
-         db_Password1.Size = new Size(432, 22);
+         db_Password1.Size = new Size(432, 27);
          db_Password1.TabIndex = 1;
          // 
          // passLabel
@@ -158,7 +161,7 @@
          // baseToolBar
          // 
          baseToolBar.Dock = DockStyle.Bottom;
-         baseToolBar.Location = new Point(0, 372);
+         baseToolBar.Location = new Point(0, 463);
          baseToolBar.Name = "baseToolBar";
          baseToolBar.Size = new Size(470, 48);
          baseToolBar.TabIndex = 10;
@@ -173,24 +176,13 @@
          vaultImage.TabIndex = 11;
          vaultImage.TabStop = false;
          // 
-         // label1
-         // 
-         label1.AutoSize = true;
-         label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-         label1.Location = new Point(19, 66);
-         label1.Name = "label1";
-         label1.Size = new Size(114, 15);
-         label1.TabIndex = 15;
-         label1.Text = "A Strong Password:";
-         // 
          // GeneratePasswordForm
          // 
          AutoScaleDimensions = new SizeF(7F, 15F);
          AutoScaleMode = AutoScaleMode.Font;
          BackColor = Color.White;
-         ClientSize = new Size(470, 420);
+         ClientSize = new Size(470, 511);
          ControlBox = false;
-         Controls.Add(label1);
          Controls.Add(statusLabel);
          Controls.Add(passGroupBox);
          Controls.Add(passVaultLabel);
@@ -221,7 +213,6 @@
       private CheckBox ShowPasswordCheck;
       private Label lengthLabel;
       private TrackBar TrackBar;
-      private Label label1;
       private Label GenLengthLabel;
    }
 }

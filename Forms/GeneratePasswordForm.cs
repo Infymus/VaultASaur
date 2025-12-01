@@ -31,14 +31,9 @@ namespace VaultASaur3.Forms
          toolBar.CreateButton(Actions.CMD_GENERATE, "Generate", buttonCmd => HandleAction(buttonCmd));
 
 
-         statusLabel.Text = @"* Has at least 15 characters
-            * Has uppercase letters
-            * Has lowercase letters
-            * Has numbers
-            * Has symbols
-            * Is not like your previous passwords, your name or your login
-            * Is not a keyboard pattern, such as qwerty, asdfghjkl, or 12345
-            * Passphrases are best";
+         statusLabel.Text = $"A strong password has at least 15 characters, uppercase letters, lowercase letters, numbers, symbols, is not like your previous "+
+            "passwords, your name or your login, Is not a keyboard pattern, such as qwerty, asdfghjkl, or 12345 and"+
+            "Passphrases are best";
 
          ShowPasswordCheck.Checked = false;
       }
@@ -82,8 +77,7 @@ namespace VaultASaur3.Forms
       {
          get { return db_Password1.Text; }
       }
-
-      public FormResult PassResult
+                                  public FormResult PassResult
       {
          get { return _PassResult; }
       }

@@ -80,7 +80,7 @@
          // 
          // baseDockPanel
          // 
-         baseDockPanel.BackColor = Color.FromArgb(240, 255, 223);
+         baseDockPanel.BackColor = Color.White;
          baseDockPanel.Controls.Add(db_Password1);
          baseDockPanel.Controls.Add(label2);
          baseDockPanel.Controls.Add(db_PasswordHint);
@@ -119,6 +119,7 @@
          db_PasswordHint.Location = new Point(9, 344);
          db_PasswordHint.Margin = new Padding(4, 3, 4, 3);
          db_PasswordHint.Name = "db_PasswordHint";
+         db_PasswordHint.ReadOnly = true;
          db_PasswordHint.Size = new Size(278, 22);
          db_PasswordHint.TabIndex = 44;
          // 
@@ -142,6 +143,7 @@
          db_Question3.Location = new Point(387, 302);
          db_Question3.Margin = new Padding(4, 3, 4, 3);
          db_Question3.Name = "db_Question3";
+         db_Question3.ReadOnly = true;
          db_Question3.Size = new Size(180, 22);
          db_Question3.TabIndex = 42;
          // 
@@ -165,6 +167,7 @@
          db_Question2.Location = new Point(199, 302);
          db_Question2.Margin = new Padding(4, 3, 4, 3);
          db_Question2.Name = "db_Question2";
+         db_Question2.ReadOnly = true;
          db_Question2.Size = new Size(180, 22);
          db_Question2.TabIndex = 40;
          // 
@@ -188,6 +191,7 @@
          db_Question1.Location = new Point(9, 302);
          db_Question1.Margin = new Padding(4, 3, 4, 3);
          db_Question1.Name = "db_Question1";
+         db_Question1.ReadOnly = true;
          db_Question1.Size = new Size(180, 22);
          db_Question1.TabIndex = 38;
          // 
@@ -211,6 +215,7 @@
          db_URL.Location = new Point(9, 260);
          db_URL.Margin = new Padding(4, 3, 4, 3);
          db_URL.Name = "db_URL";
+         db_URL.ReadOnly = true;
          db_URL.Size = new Size(278, 22);
          db_URL.TabIndex = 36;
          // 
@@ -234,6 +239,7 @@
          db_Email.Location = new Point(9, 218);
          db_Email.Margin = new Padding(4, 3, 4, 3);
          db_Email.Name = "db_Email";
+         db_Email.ReadOnly = true;
          db_Email.Size = new Size(278, 22);
          db_Email.TabIndex = 34;
          // 
@@ -270,6 +276,7 @@
          db_Desc.Location = new Point(9, 176);
          db_Desc.Margin = new Padding(4, 3, 4, 3);
          db_Desc.Name = "db_Desc";
+         db_Desc.ReadOnly = true;
          db_Desc.Size = new Size(278, 22);
          db_Desc.TabIndex = 31;
          // 
@@ -293,6 +300,7 @@
          db_Username.Location = new Point(9, 87);
          db_Username.Margin = new Padding(4, 3, 4, 3);
          db_Username.Name = "db_Username";
+         db_Username.ReadOnly = true;
          db_Username.Size = new Size(278, 22);
          db_Username.TabIndex = 29;
          // 
@@ -316,6 +324,7 @@
          db_SiteName.Location = new Point(9, 33);
          db_SiteName.Margin = new Padding(4, 3, 4, 3);
          db_SiteName.Name = "db_SiteName";
+         db_SiteName.ReadOnly = true;
          db_SiteName.Size = new Size(567, 22);
          db_SiteName.TabIndex = 27;
          // 
@@ -339,6 +348,7 @@
          db_Password1.Location = new Point(9, 129);
          db_Password1.Margin = new Padding(4, 3, 4, 3);
          db_Password1.Name = "db_Password1";
+         db_Password1.ReadOnly = true;
          db_Password1.Size = new Size(276, 22);
          db_Password1.TabIndex = 46;
          // 

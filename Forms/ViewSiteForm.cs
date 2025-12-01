@@ -29,9 +29,10 @@ namespace VaultASaur3.Forms
 
          // Add the ToolBar Buttons
          toolBar = new tToolStrip(baseToolBar);
-         toolBar.CreateButton(Actions.CMD_COPY_URL, "Change Site and View Activity", buttonCmd => HandleAction(buttonCmd));
-         toolBar.CreateButton(Actions.CMD_COPY_PASSWORD, "View Site Details", buttonCmd => HandleAction(buttonCmd));
          toolBar.CreateButton(Actions.CMD_COPY_USERNAME, "Open Browser and Visit Site", buttonCmd => HandleAction(buttonCmd));
+         toolBar.CreateButton(Actions.CMD_COPY_PASSWORD, "View Site Details", buttonCmd => HandleAction(buttonCmd));
+         toolBar.CreateButtonSep();
+         toolBar.CreateButton(Actions.CMD_COPY_URL, "Change Site and View Activity", buttonCmd => HandleAction(buttonCmd));
          toolBar.CreateButtonSep();
          toolBar.CreateButton(Actions.CMD_CLOSE, "Close", buttonCmd => HandleAction(buttonCmd));
 

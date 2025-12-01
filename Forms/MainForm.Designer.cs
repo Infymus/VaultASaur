@@ -101,6 +101,7 @@
          // 
          // buttonVault
          // 
+         buttonVault.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
          buttonVault.Image = (Image)resources.GetObject("buttonVault.Image");
          buttonVault.ImageAlign = ContentAlignment.TopCenter;
          buttonVault.ImageTransparentColor = Color.Magenta;
@@ -113,6 +114,7 @@
          // 
          // buttonLock
          // 
+         buttonLock.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
          buttonLock.Image = (Image)resources.GetObject("buttonLock.Image");
          buttonLock.ImageAlign = ContentAlignment.TopCenter;
          buttonLock.ImageTransparentColor = Color.Magenta;
@@ -130,11 +132,12 @@
          // 
          // buttonChangePassword
          // 
+         buttonChangePassword.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
          buttonChangePassword.Image = (Image)resources.GetObject("buttonChangePassword.Image");
          buttonChangePassword.ImageAlign = ContentAlignment.TopCenter;
          buttonChangePassword.ImageTransparentColor = Color.Magenta;
          buttonChangePassword.Name = "buttonChangePassword";
-         buttonChangePassword.Size = new Size(61, 69);
+         buttonChangePassword.Size = new Size(63, 69);
          buttonChangePassword.Text = "Password";
          buttonChangePassword.TextAlign = ContentAlignment.BottomCenter;
          buttonChangePassword.TextImageRelation = TextImageRelation.ImageAboveText;
@@ -147,6 +150,7 @@
          // 
          // buttonClose
          // 
+         buttonClose.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
          buttonClose.Image = (Image)resources.GetObject("buttonClose.Image");
          buttonClose.ImageAlign = ContentAlignment.TopCenter;
          buttonClose.ImageTransparentColor = Color.Magenta;
@@ -165,6 +169,8 @@
          // 
          // statusStrip1
          // 
+         statusStrip1.BackColor = Color.IndianRed;
+         statusStrip1.Font = new Font("Tahoma", 9F, FontStyle.Bold);
          statusStrip1.Items.AddRange(new ToolStripItem[] { LockLabel, countDownLabel });
          statusStrip1.Location = new Point(0, 250);
          statusStrip1.Name = "statusStrip1";
@@ -174,8 +180,9 @@
          // 
          // LockLabel
          // 
+         LockLabel.ForeColor = Color.Yellow;
          LockLabel.Name = "LockLabel";
-         LockLabel.Size = new Size(60, 17);
+         LockLabel.Size = new Size(67, 17);
          LockLabel.Text = "LockLabel";
          // 
          // countDownLabel

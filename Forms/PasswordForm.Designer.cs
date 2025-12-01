@@ -38,6 +38,7 @@
          pwTextBox = new TextBox();
          passLabel = new Label();
          vaultCredsLabel = new Label();
+         capsLockWarningLabel = new Label();
          ((System.ComponentModel.ISupportInitialize)vaultPictureBox).BeginInit();
          passGroupBox.SuspendLayout();
          SuspendLayout();
@@ -55,7 +56,7 @@
          // baseToolBar
          // 
          baseToolBar.Dock = DockStyle.Bottom;
-         baseToolBar.Location = new Point(0, 231);
+         baseToolBar.Location = new Point(0, 286);
          baseToolBar.Name = "baseToolBar";
          baseToolBar.Size = new Size(318, 48);
          baseToolBar.TabIndex = 1;
@@ -73,20 +74,21 @@
          // 
          // passGroupBox
          // 
+         passGroupBox.Controls.Add(capsLockWarningLabel);
          passGroupBox.Controls.Add(hintDisplayLabel);
          passGroupBox.Controls.Add(hintLabel);
          passGroupBox.Controls.Add(pwTextBox);
          passGroupBox.Controls.Add(passLabel);
-         passGroupBox.Location = new Point(3, 101);
+         passGroupBox.Location = new Point(0, 115);
          passGroupBox.Name = "passGroupBox";
-         passGroupBox.Size = new Size(312, 125);
+         passGroupBox.Size = new Size(318, 165);
          passGroupBox.TabIndex = 3;
          passGroupBox.TabStop = false;
          // 
          // hintDisplayLabel
          // 
          hintDisplayLabel.Font = new Font("Verdana", 8F);
-         hintDisplayLabel.Location = new Point(8, 83);
+         hintDisplayLabel.Location = new Point(6, 116);
          hintDisplayLabel.Name = "hintDisplayLabel";
          hintDisplayLabel.Size = new Size(273, 35);
          hintDisplayLabel.TabIndex = 3;
@@ -96,7 +98,7 @@
          // 
          hintLabel.AutoSize = true;
          hintLabel.Font = new Font("Verdana", 8F, FontStyle.Bold);
-         hintLabel.Location = new Point(8, 63);
+         hintLabel.Location = new Point(6, 96);
          hintLabel.Name = "hintLabel";
          hintLabel.Size = new Size(37, 13);
          hintLabel.TabIndex = 2;
@@ -127,19 +129,30 @@
          // 
          // vaultCredsLabel
          // 
-         vaultCredsLabel.Font = new Font("Verdana", 8F, FontStyle.Bold);
+         vaultCredsLabel.Font = new Font("Tahoma", 10F, FontStyle.Bold);
          vaultCredsLabel.Location = new Point(3, 67);
          vaultCredsLabel.Name = "vaultCredsLabel";
-         vaultCredsLabel.Size = new Size(311, 31);
+         vaultCredsLabel.Size = new Size(311, 45);
          vaultCredsLabel.TabIndex = 4;
          vaultCredsLabel.Text = "Please enter your Vault Password in order to access your Vault Sites.";
+         // 
+         // capsLockWarningLabel
+         // 
+         capsLockWarningLabel.AutoSize = true;
+         capsLockWarningLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+         capsLockWarningLabel.ForeColor = Color.Red;
+         capsLockWarningLabel.Location = new Point(14, 63);
+         capsLockWarningLabel.Name = "capsLockWarningLabel";
+         capsLockWarningLabel.Size = new Size(40, 15);
+         capsLockWarningLabel.TabIndex = 4;
+         capsLockWarningLabel.Text = "label1";
          // 
          // PasswordForm
          // 
          AutoScaleDimensions = new SizeF(7F, 15F);
          AutoScaleMode = AutoScaleMode.Font;
          BackColor = Color.White;
-         ClientSize = new Size(318, 279);
+         ClientSize = new Size(318, 334);
          ControlBox = false;
          Controls.Add(vaultCredsLabel);
          Controls.Add(passGroupBox);
@@ -167,5 +180,6 @@
       private TextBox pwTextBox;
       private Label passLabel;
       private Label vaultCredsLabel;
+      private Label capsLockWarningLabel;
    }
 }

@@ -1,15 +1,18 @@
-﻿using System;
+﻿/*
+ * Author: Infymus
+ * Description: VaultASaur
+ * Copyright (c) 2025, Infymus. All rights reserved.
+ * Website: https://github.com/Infymus
+*/
+
 using System.Runtime.InteropServices;
 using VaultASaur3.DataBase;
 using VaultASaur3.Encryption;
 using VaultASaur3.Enums;
-using VaultASaur3.Extensions;
 using VaultASaur3.FormControl;
-using VaultASaur3.Forms;
 using VaultASaur3.Globals;
 using VaultASaur3.ToolsBox;
 using static VaultASaur3.Extensions.tDialogBox;
-using static VaultASaur3.Forms.MainForm.IdleTimeChecker;
 using TaskDialogIcon = Ookii.Dialogs.WinForms.TaskDialogIcon;
 
 namespace VaultASaur3.Forms

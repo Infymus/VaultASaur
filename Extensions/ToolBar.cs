@@ -1,4 +1,5 @@
-﻿using VaultASaur3.Images;
+﻿using VaultASaur3.Forms;
+using VaultASaur3.Images;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace VaultASaur3.Extensions
@@ -29,7 +30,8 @@ namespace VaultASaur3.Extensions
          ShowItemToolTips = true;
          Font = new Font("Verdana", 8);
          ImageScalingSize = new Size(32, 32);
-         RenderMode = ToolStripRenderMode.ManagerRenderMode;
+         RenderMode = ToolStripRenderMode.Professional; 
+         Renderer = new CustomToolStripRenderer();     
          ImageList = imgForm.ToolBarIMG_30X30;
          LayoutStyle = ToolStripLayoutStyle.HorizontalStackWithOverflow;
          targetForm.Controls.Add(this);
@@ -51,7 +53,8 @@ namespace VaultASaur3.Extensions
             TextDirection = ToolStripTextDirection.Horizontal,
             TextImageRelation = TextImageRelation.ImageAboveText,
             BackgroundImageLayout = ImageLayout.Tile,
-            BackColor = Color.White
+            BackColor = Color.White,
+            Font = new Font(this.Font, FontStyle.Bold)
          };
 
          tsButton.Click += (sender, e) =>
