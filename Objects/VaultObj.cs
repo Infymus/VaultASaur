@@ -1,4 +1,11 @@
-﻿namespace VaultASaur3.Objects
+﻿/*
+ * Author: Infymus
+ * Description: VaultASaur
+ * Copyright (c) 2025, Infymus. All rights reserved.
+ * Website: https://github.com/Infymus/vaultasaur
+*/
+
+namespace VaultASaur3.Objects
 {
    public class tVaultRec
    {

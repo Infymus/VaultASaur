@@ -1,11 +1,22 @@
-﻿using System.Data.SQLite;
+﻿/*
+ * Author: Infymus
+ * Description: VaultASaur
+ * Copyright (c) 2025, Infymus. All rights reserved.
+ * Website: https://github.com/Infymus/vaultasaur
+*/
+
+using System.Data.SQLite;
 using VaultASaur3.Enums;
 using VaultASaur3.ErrorHandling;
 using VaultASaur3.Extensions;
 
-
 namespace VaultASaur3.DataBase
 {
+
+   /// <summary>
+   /// This is a collection of database calls for sqLite, also holding the name of the database
+   /// plus the tables. 
+   /// </summary>
     public static class MasterData
     {
         // Enums

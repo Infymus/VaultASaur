@@ -1,8 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿/*
+ * Author: Infymus
+ * Description: VaultASaur
+ * Copyright (c) 2025, Infymus. All rights reserved.
+ * Website: https://github.com/Infymus/vaultasaur
+*/
+
 using System.Text;
-using System.Threading.Tasks;
 
 namespace VaultASaur3.Globals
 {

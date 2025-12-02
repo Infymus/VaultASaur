@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/*
+ * Author: Infymus
+ * Description: VaultASaur
+ * Copyright (c) 2025, Infymus. All rights reserved.
+ * Website: https://github.com/Infymus/vaultasaur
+*/
+
 using VaultASaur3.DataBase;
 using VaultASaur3.Enums;
 using VaultASaur3.Extensions;
-using VaultASaur3.Images;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
-using Ookii.Dialogs.WinForms;
-using static VaultASaur3.Extensions.tDialogBox;
-using TaskDialogIcon = Ookii.Dialogs.WinForms.TaskDialogIcon;
 
 namespace VaultASaur3.Forms
 {
@@ -57,38 +51,7 @@ namespace VaultASaur3.Forms
                     break;
             }
         }
-      //                public enum tPrefConstants
-                //{
-                //    // General Preferences
-                //    RegionCode,
-                //    dbGridColorGridLines,
-                //    CheckForUpdates,
-                //    EditorLoadSaveButtons,
-                //    // Topics
-                //    topicSortView,
-                //    topicIsActive,
-                //    DBTopicGridWidth,
-                //    //
-                //    TorrentApp,
-                //    TorrentParam,
-                //    PromptDownload,
-                //    TorrentFilterAdd,
-                //    FeedDBNavPanelVisible,
-                //    KeepDay,
-                //    TorrentSaveDirectory,
-                //    TorrentSaveType,
-                //    AskToQuit,
-                //    LogFile,
-                //    AllowDuplicateFeedTitles,
-                //    FilterMatchDownloadOrQueue,
-                //    StartMinimized,
-                //    DeepLogging,
-                //    StopOnRSSGetFailure,
-                //    ReProcessRSSFeeds,
-                //    RSSOptionTorrentOrMagnet,
-                //    DownloadFeedQueueDelay,
-                //    StripTorrentEnclosures
-                //}
+      
         private void GetPreferences()
         {
             pKeepDays.Text = dbPreference.GetInt(tPrefConstants.AutoClose).ToString();

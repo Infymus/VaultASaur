@@ -1,5 +1,18 @@
-﻿namespace VaultASaur3
+﻿/*
+ * Author: Infymus
+ * Description: VaultASaur
+ * Copyright (c) 2025, Infymus. All rights reserved.
+ * Website: https://github.com/Infymus/vaultasaur
+*/
+
+namespace VaultASaur3
 {
+   /// <summary>
+   /// This is an Action Object and associated Actions. It allows the creation of action based events for 
+   /// buttons and menu items that get created dynamically. When a button or menu item is created, it's given
+   /// a caption, image and name that associates the action. You can then handle all of the actions in one place.
+   /// This is loosly based on Delphi's tAction object.
+   /// </summary>
    public class actionObject
    {
       public int actionType;
@@ -12,22 +25,11 @@
    {
       // Delegate Commands
       public const int tCheckForUpdatesEvent = 1;
-      public const int tEvent_AddToQueue = 2;
-      public const int tEvent_DownloadHistoryEvent = 3;
-      public const int tEvent_DownloadQueueEvent = 4;
-      public const int tEvent_DownloadFeedEvent = 5;
-      public const int tEvent_EditFeedSite = 6;
-      public const int tEvent_FilterMatch_DownloadFeedEvent = 7;
-      public const int tEvent_NewFilterEvent = 8;
-      public const int tEvent_PercentEvent = 9;
-      public const int tEvent_PrefChange = 10;
-      public const int tEvent_SiteTimerFeedEvent = 11;
-      public const int tEvent_WelcomeEvent = 12;
-      public const int tGlobal_Refresh_Event = 13;
-      public const int tPrefChange = 14;
-      public const int tQueue_DownloadFeedEvent = 15;
-      public const int tEvent_LoggingEvent = 16;
-
+      public const int tEvent_SomeEventUndefined = 2;
+      public const int tEvent_PercentEvent = 3;
+      public const int tEvent_PrefChange = 4;
+      public const int tEvent_GlobalGrefresh = 5;
+      public const int tEvent_LoggingEvent = 6;
 
       // Commands
       public const int CMD_ACTIVATE = 1;

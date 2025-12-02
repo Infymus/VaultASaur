@@ -1,4 +1,10 @@
-﻿using VaultASaur3.DataBase;
+﻿/*
+ * Author: Infymus
+ * Description: VaultASaur
+ * Copyright (c) 2025, Infymus. All rights reserved.
+ * Website: https://github.com/Infymus/vaultasaur
+*/
+
 using VaultASaur3.Enums;
 using VaultASaur3.Extensions;
 using VaultASaur3.Globals;

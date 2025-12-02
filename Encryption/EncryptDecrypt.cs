@@ -1,4 +1,9 @@
-﻿﻿using Org.BouncyCastle.Crypto;
+﻿/*
+ * Author: BouncyCastle.
+ * Website: https://github.com/Infymus/vaultasaur
+*/
+
+﻿using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Engines;
 using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Crypto.Paddings;

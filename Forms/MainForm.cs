@@ -2,7 +2,7 @@
  * Author: Infymus
  * Description: VaultASaur
  * Copyright (c) 2025, Infymus. All rights reserved.
- * Website: https://github.com/Infymus
+ * Website: https://github.com/Infymus/vaultasaur
 */
 
 using System.Runtime.InteropServices;

@@ -1,25 +1,28 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿/*
+ * Author: Infymus
+ * Description: VaultASaur
+ * Copyright (c) 2025, Infymus. All rights reserved.
+ * Website: https://github.com/Infymus/vaultasaur
+*/
+
+
+using Microsoft.Extensions.Configuration;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using VaultASaur3.Globals;
 
 namespace VaultASaur3.Config
 {
+   /// <summary>
+   /// This is a wrapper class so that you can easily read and write to a configuration file based on a setting name.
+   /// </summary>
     public static class AppConfig
     {
-        // Private Config Settings
-
         private static string AppConfigReadConfig()
         {
             return File.ReadAllText($@"{Constants.appConfigDir}\{Constants.appConfigFile}");
         }
 
-        // Read Methods
-
-        /*
-         Function INIReadBoolean( INIKey, INIItem : String; DefValue : Boolean) : Boolean;
-         Function INIReadFloat( INIKey, INIItem : String; DefValue : Double) : Double;
-        */
         public static string ReadString(string inSetting, string inDefault)
         {
             var config = new ConfigurationBuilder()
@@ -45,14 +48,6 @@ namespace VaultASaur3.Config
             }
             return inDefault;
         }
-
-        // Write Methods
-
-        /*Procedure INIWriteString( INIKey, INIItem : String; INIValue : String);
-Procedure INIWriteInteger( INIKey, INIItem : String; INIValue : Integer);
-Procedure INIWriteBoolean( INIKey, INIItem : String; INIValue : Boolean);
-Procedure INIWriteFloat( INIKey, INIItem : String; INIValue : Double);
-        */
 
         public static void WriteValue(string inSetting, string inValue)
         {

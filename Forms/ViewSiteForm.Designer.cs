@@ -68,6 +68,7 @@
          // workPanel
          // 
          workPanel.Controls.Add(ShowPasswordCheck);
+         workPanel.Controls.Add(db_active);
          workPanel.Size = new Size(583, 26);
          // 
          // baseBackPanel
@@ -95,7 +96,6 @@
          baseDockPanel.Controls.Add(label7);
          baseDockPanel.Controls.Add(db_Email);
          baseDockPanel.Controls.Add(label6);
-         baseDockPanel.Controls.Add(db_active);
          baseDockPanel.Controls.Add(db_Desc);
          baseDockPanel.Controls.Add(label5);
          baseDockPanel.Controls.Add(db_Username);
@@ -257,14 +257,16 @@
          // db_active
          // 
          db_active.AutoSize = true;
+         db_active.BackColor = Color.LemonChiffon;
          db_active.FlatStyle = FlatStyle.Flat;
-         db_active.Location = new Point(86, 14);
+         db_active.Font = new Font("Verdana", 8F, FontStyle.Bold);
+         db_active.Location = new Point(147, 4);
          db_active.Margin = new Padding(4, 3, 4, 3);
          db_active.Name = "db_active";
-         db_active.Size = new Size(84, 17);
+         db_active.Size = new Size(93, 17);
          db_active.TabIndex = 32;
          db_active.Text = "Site Active";
-         db_active.UseVisualStyleBackColor = true;
+         db_active.UseVisualStyleBackColor = false;
          db_active.Click += db_active_Click;
          // 
          // db_Desc
@@ -366,13 +368,15 @@
          // ShowPasswordCheck
          // 
          ShowPasswordCheck.AutoSize = true;
+         ShowPasswordCheck.BackColor = Color.FromArgb(255, 255, 192);
+         ShowPasswordCheck.Font = new Font("Verdana", 8F, FontStyle.Bold);
          ShowPasswordCheck.Location = new Point(6, 5);
          ShowPasswordCheck.Margin = new Padding(4, 3, 4, 3);
          ShowPasswordCheck.Name = "ShowPasswordCheck";
-         ShowPasswordCheck.Size = new Size(121, 17);
+         ShowPasswordCheck.Size = new Size(133, 17);
          ShowPasswordCheck.TabIndex = 48;
          ShowPasswordCheck.Text = "Show Passwords";
-         ShowPasswordCheck.UseVisualStyleBackColor = true;
+         ShowPasswordCheck.UseVisualStyleBackColor = false;
          ShowPasswordCheck.CheckedChanged += ShowPasswordCheck_CheckedChanged;
          // 
          // ViewSiteForm

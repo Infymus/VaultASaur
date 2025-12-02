@@ -1,4 +1,11 @@
-﻿namespace VaultASaur3.ErrorHandling
+﻿/*
+ * Author: Infymus
+ * Description: VaultASaur
+ * Copyright (c) 2025, Infymus. All rights reserved.
+ * Website: https://github.com/Infymus/vaultasaur
+*/
+
+namespace VaultASaur3.ErrorHandling
 {
     public class tErrorResult
     {

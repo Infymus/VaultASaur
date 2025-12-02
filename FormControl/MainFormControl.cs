@@ -1,10 +1,23 @@
-﻿using VaultASaur3.Globals;
+﻿/*
+ * Author: Infymus
+ * Description: VaultASaur
+ * Copyright (c) 2025, Infymus. All rights reserved.
+ * Website: https://github.com/Infymus/vaultasaur
+*/
+
+
+using VaultASaur3.Globals;
 using VaultASaur3.Enums;
 using VaultASaur3.Forms;
 using VaultASaur3.ToolsBox;
 
 namespace VaultASaur3.FormControl
 {
+  
+   /// <summary>
+   /// This MainFormControl class allows you to create, dock and control forms
+   /// Also allows handling events from those forms in one place.
+   /// </summary>
    public static class MainFormControl
    {
       // Add instance fields to keep track of form instances
@@ -81,7 +94,7 @@ namespace VaultASaur3.FormControl
       {
          switch (eventCMD)
          {
-            case Actions.tEvent_AddToQueue:
+            case Actions.tEvent_SomeEventUndefined:
                if (vaultFormInstance != null)
                   vaultFormInstance.RefreshDB();
                break;

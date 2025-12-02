@@ -1,13 +1,13 @@
-﻿using VaultASaur3.DataBase;
-using VaultASaur3.Enums;
-using VaultASaur3.ErrorHandling;
+﻿/*
+ * Author: Infymus
+ * Description: VaultASaur
+ * Copyright (c) 2025, Infymus. All rights reserved.
+ * Website: https://github.com/Infymus/vaultasaur
+*/
+
 using VaultASaur3.Extensions;
 using VaultASaur3.Globals;
-using VaultASaur3.Objects;
 using VaultASaur3.ToolsBox;
-using static VaultASaur3.Extensions.tDialogBox;
-using TaskDialogButton = Ookii.Dialogs.WinForms.TaskDialogButton;
-using TaskDialogIcon = Ookii.Dialogs.WinForms.TaskDialogIcon;
 
 namespace VaultASaur3.Forms
 {

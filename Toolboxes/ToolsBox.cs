@@ -1,7 +1,12 @@
-﻿using System;
+﻿/*
+ * Author: Infymus
+ * Description: VaultASaur
+ * Copyright (c) 2025, Infymus. All rights reserved.
+ * Website: https://github.com/Infymus/vaultasaur
+*/
+
 using System.Text;
 using VaultASaur3.Config;
-using System.Globalization;
 using System.Reflection;
 
 namespace VaultASaur3.ToolsBox

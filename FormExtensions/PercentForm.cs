@@ -1,21 +1,9 @@
-﻿using VaultASaur3.Enums;
-using VaultASaur3.Forms;
-using VaultASaur3.Globals;
-using VaultASaur3.ToolsBox;
-using System;
-using System;
-using System.Collections.Generic;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿/*
+ * Author: Infymus
+ * Description: VaultASaur
+ * Copyright (c) 2025, Infymus. All rights reserved.
+ * Website: https://github.com/Infymus/vaultasaur
+*/
 
 namespace VaultASaur3.Extensions
 {

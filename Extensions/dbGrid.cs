@@ -1,7 +1,12 @@
-﻿using VaultASaur3.Images;
+﻿/*
+ * Author: Infymus
+ * Description: VaultASaur
+ * Copyright (c) 2025, Infymus. All rights reserved.
+ * Website: https://github.com/Infymus/vaultasaur
+*/
+
+using VaultASaur3.Images;
 using System.Data;
-using System.Drawing.Drawing2D;
-using System.Xml.Linq;
 
 namespace VaultASaur3.Extensions;
 
@@ -19,6 +24,7 @@ public class tDataGridView
    public BindingSource BindingSource = new BindingSource();
    public event EventHandler DataSourceChanged;
    public event EventHandler RowChanged;
+   public event EventHandler GridDoubleClicked;
    private bool _isProgrammaticMove = false;
    private char _lastSearchKey = '\0';
    private int _lastSearchIndex = -1;
@@ -80,7 +86,9 @@ public class tDataGridView
       _grid.SelectionChanged += delegateGridSelectionChange;
       _grid.CurrentCellChanged += (s, e) => OnRowChanged(EventArgs.Empty);
       _grid.RowPrePaint += Grid_RowPrePaint;
+      _grid.DoubleClick += Grid_DoubleClick;
 
+      // Now add it to the passed in Control
       targetPanel.Controls.Add(_grid);
    }
 
@@ -272,6 +280,7 @@ public class tDataGridView
       RowChanged?.Invoke(this, e);
    }
 
+
    /// <summary>
    /// Detect the data source changed
    /// </summary>
@@ -333,6 +342,7 @@ public class tDataGridView
       }
       _isProgrammaticMove = false;
    }
+
 
 
    /// <summary>
@@ -453,6 +463,16 @@ public class tDataGridView
       }
    }
 
+   private void Grid_DoubleClick(object sender, EventArgs e)
+   {
+      OnGridDoubleClicked(e);
+   }
+
+   protected virtual void OnGridDoubleClicked(EventArgs e)
+   {
+      GridDoubleClicked?.Invoke(this, e);
+   }
+
    private void Grid_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
    {
       DataGridViewRow row = _grid.Rows[e.RowIndex];
@@ -488,7 +508,7 @@ public class tDataGridView
          }
       }
    }
-   
+
    public void MovePreviousRow()
    {
       BindingSource.MovePrevious();

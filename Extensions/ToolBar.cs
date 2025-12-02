@@ -1,6 +1,11 @@
-﻿using VaultASaur3.Forms;
+﻿/*
+ * Author: Infymus
+ * Description: VaultASaur
+ * Copyright (c) 2025, Infymus. All rights reserved.
+ * Website: https://github.com/Infymus/vaultasaur
+*/
+
 using VaultASaur3.Images;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace VaultASaur3.Extensions
 {

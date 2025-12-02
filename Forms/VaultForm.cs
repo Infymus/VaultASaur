@@ -1,4 +1,12 @@
-﻿using System.Data;
+﻿/*
+ * Author: Infymus
+ * Description: VaultASaur
+ * Copyright (c) 2025, Infymus. All rights reserved.
+ * Website: https://github.com/Infymus/vaultasaur
+*/
+
+using System;
+using System.Data;
 using System.Diagnostics;
 using VaultASaur3.DataBase;
 using VaultASaur3.Encryption;
@@ -76,6 +84,7 @@ namespace VaultASaur3.Forms
          toolBar.AddMenuItem(Actions.CMD_ACTIVITY, Actions.CMD_SHOW_ACTIVE_SITES, "Show Only Active Sites", cmd => HandleAction(cmd));
          toolBar.AddMenuItem(Actions.CMD_ACTIVITY, Actions.CMD_SHOW_INACTIVE_SITES, "Show Only Inactive Sites", cmd => HandleAction(cmd));
          toolBar.AddPopupMenuSep(Actions.CMD_ACTIVITY);
+         toolBar.AddMenuItem(Actions.CMD_ACTIVITY, Actions.CMD_VIEW, "View Site", cmd => HandleAction(cmd));
          toolBar.AddMenuItem(Actions.CMD_ACTIVITY, Actions.CMD_EDIT, "Activate Site", cmd => HandleAction(cmd));
          toolBar.AddPopupMenuSep(Actions.CMD_ACTIVITY);
          toolBar.AddMenuItem(Actions.CMD_ACTIVITY, Actions.CMD_ACTIVATE, "Activate Site", cmd => HandleAction(cmd));
@@ -101,6 +110,7 @@ namespace VaultASaur3.Forms
          DataListGrid.AddMenuItem(Actions.CMD_SHOW_ACTIVE_SITES, HandleAction);
          DataListGrid.AddMenuItem(Actions.CMD_SHOW_INACTIVE_SITES, HandleAction);
          DataListGrid.CreateButtonSep();
+         DataListGrid.AddMenuItem(Actions.CMD_VIEW, HandleAction);
          DataListGrid.AddMenuItem(Actions.CMD_EDIT, HandleAction);
          DataListGrid.CreateButtonSep();
          DataListGrid.AddMenuItem(Actions.CMD_ACTIVATE, HandleAction);
@@ -108,9 +118,10 @@ namespace VaultASaur3.Forms
          DataListGrid.CreateButtonSep();
          DataListGrid.AddMenuItem(Actions.CMD_CANCEL, HandleAction);
 
-         // Database Grid
+         // Database Grid Events
          DataListGrid.DataSourceChanged += (s, e) => UpdateDBState();
          DataListGrid.RowChanged += (s, e) => UpdateDBState();
+         DataListGrid.GridDoubleClicked += (s, e) => GridDoubleClick();
 
          // Finished
          UpdateDBState();
@@ -295,6 +306,13 @@ namespace VaultASaur3.Forms
          RefreshDB();
       }
 
+      /// <summary>
+      /// Handle double clicking on the grid bring up VIEW
+      /// </summary>
+      public void GridDoubleClick()
+      {
+         ViewSite();
+      }
 
       public void ResizeEvent(object sender, EventArgs e)
       {
@@ -393,6 +411,17 @@ namespace VaultASaur3.Forms
 
       public void ViewSite()
       {
+
+         var selectedRows = DataListGrid.GetSelectedDataRows();
+         if (selectedRows != null && selectedRows.Count > 1)
+         {
+            TaskDialogButton warning;
+            warning = Dialog_Box("Warning", $"{selectedRows.Count} Rows Selected", "Can't view all these sites at once.",
+                new[] { DialogButton.OK, DialogButton.Cancel }, TaskDialogIcon.Information);
+            return;
+         }
+
+
          tVaultRec t = dbVault.GetDTRow(DataListGrid, fPasswordPhrase);
          ViewSiteForm siteViewForm = new ViewSiteForm();
          siteViewForm.UserName = t.USERNAME;
@@ -440,6 +469,9 @@ namespace VaultASaur3.Forms
          Clipboard.SetText(t.PASSWORD);
       }
 
+      /// <summary>
+      /// Export all Sites into a JSON file
+      /// </summary>
       public void ExportSites()
       {
          TaskDialogButton warning;
@@ -468,6 +500,9 @@ namespace VaultASaur3.Forms
          }
       }
 
+      /// <summary>
+      /// Import a JSON Sites File (non encrypted)
+      /// </summary>
       public void ImportSites()
       {
          TaskDialogButton warning;

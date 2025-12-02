@@ -1,10 +1,21 @@
-﻿using VaultASaur3.Enums;
+﻿/*
+ * Author: Infymus
+ * Description: VaultASaur
+ * Copyright (c) 2025, Infymus. All rights reserved.
+ * Website: https://github.com/Infymus/vaultasaur
+*/
+
+using VaultASaur3.Enums;
 using VaultASaur3.ErrorHandling;
-using VaultASaur3.Objects;
-using VaultASaur3.ToolsBox;
 
 namespace VaultASaur3.DataBase
 {
+
+   /// <summary>
+   /// This class works with the MasterData object. It opens the GetTableName_Main and finds out what the version
+   /// number in INTEGER format. If no database exists, it creates it fully. Then, based on the Main.DBID value, it will
+   /// upgrade the database from any version forward. Makes it so database updates are super easy.
+   /// </summary>
    public static class MasterDataUpdateUnit
    {
       private static int File_Struct_Count = 1;

@@ -1,4 +1,11 @@
-﻿using Ookii.Dialogs.WinForms;
+﻿/*
+ * Author: Infymus
+ * Description: VaultASaur
+ * Copyright (c) 2025, Infymus. All rights reserved.
+ * Website: https://github.com/Infymus/vaultasaur
+*/
+
+using Ookii.Dialogs.WinForms;
 using System.ComponentModel;
 using TaskDialogButton = Ookii.Dialogs.WinForms.TaskDialogButton;
 using TaskDialogIcon = Ookii.Dialogs.WinForms.TaskDialogIcon;

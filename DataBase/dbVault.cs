@@ -1,4 +1,11 @@
-﻿using System.Data;
+﻿/*
+ * Author: Infymus
+ * Description: VaultASaur
+ * Copyright (c) 2025, Infymus. All rights reserved.
+ * Website: https://github.com/Infymus/vaultasaur
+*/
+
+using System.Data;
 using System.Data.SQLite;
 using System.Text.Json;
 using VaultASaur3.Encryption;
