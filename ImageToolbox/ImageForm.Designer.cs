@@ -31,6 +31,7 @@
          components = new System.ComponentModel.Container();
          System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ImageForm));
          IMG_30x30 = new ImageList(components);
+         IMG_50x50 = new ImageList(components);
          SuspendLayout();
          // 
          // IMG_30x30
@@ -151,6 +152,17 @@
          IMG_30x30.Images.SetKeyName(110, "new_button.jpg");
          IMG_30x30.Images.SetKeyName(111, "exit2.jpg");
          // 
+         // IMG_50x50
+         // 
+         IMG_50x50.ColorDepth = ColorDepth.Depth32Bit;
+         IMG_50x50.ImageStream = (ImageListStreamer)resources.GetObject("IMG_50x50.ImageStream");
+         IMG_50x50.TransparentColor = Color.Transparent;
+         IMG_50x50.Images.SetKeyName(0, "closeform.jpg");
+         IMG_50x50.Images.SetKeyName(1, "customer.jpg");
+         IMG_50x50.Images.SetKeyName(2, "locked.jpg");
+         IMG_50x50.Images.SetKeyName(3, "unlock2.jpg");
+         IMG_50x50.Images.SetKeyName(4, "closeform.jpg");
+         // 
          // ImageForm
          // 
          AutoScaleDimensions = new SizeF(7F, 15F);
@@ -164,5 +176,6 @@
       #endregion
 
       public ImageList IMG_30x30;
-    }
+      public ImageList IMG_50x50;
+   }
 }

@@ -14,15 +14,22 @@ namespace VaultASaur3.Extensions
    /// Allows creation of a toolstrip that can be docked anywhere on a form with buttons and actions
    /// created dynamically.
    /// </summary>
+
+   public enum toolStripSize { smallMenu, largeMenu };
+
    public class tToolStrip : ToolStrip
    {
       private Dictionary<ToolStripButton, ContextMenuStrip> buttonMenus = new();
       private ImageForm imgForm;
       public event Action<int>? ButtonClicked;
       public event Action<int>? MenuItemClicked;
+      private const int WM_MOUSEACTIVATE = 0x0021;
+      private const int MA_ACTIVATE = 1;
+      private toolStripSize tSize { get; }
 
-      public tToolStrip(Panel targetForm)
+      public tToolStrip(Panel targetForm, toolStripSize imgStripSize)
       {
+         tSize = imgStripSize;
          imgForm = new ImageForm();
          if (targetForm == null)
             throw new ArgumentNullException(nameof(targetForm), "The target form cannot be null.");
@@ -34,10 +41,19 @@ namespace VaultASaur3.Extensions
          ForeColor = Color.Black;
          ShowItemToolTips = true;
          Font = new Font("Verdana", 8);
-         ImageScalingSize = new Size(32, 32);
-         RenderMode = ToolStripRenderMode.Professional; 
-         Renderer = new CustomToolStripRenderer();     
-         ImageList = imgForm.ToolBarIMG_30X30;
+         switch (imgStripSize)
+         {
+            case toolStripSize.smallMenu:
+               ImageScalingSize = new Size(32, 32);
+               ImageList = imgForm.ToolBarIMG_30X30;
+               break;
+            case toolStripSize.largeMenu:
+               ImageScalingSize = new Size(54, 69);
+               ImageList = imgForm.ToolBarIMG_50X50; ;
+               break;
+         }
+         RenderMode = ToolStripRenderMode.Professional;
+         Renderer = new CustomToolStripRenderer();
          LayoutStyle = ToolStripLayoutStyle.HorizontalStackWithOverflow;
          targetForm.Controls.Add(this);
       }
@@ -76,6 +92,15 @@ namespace VaultASaur3.Extensions
          };
 
          Items.Add(tsButton);
+      }
+
+      protected override void WndProc(ref Message m)
+      {
+         base.WndProc(ref m);
+         if (m.Msg == WM_MOUSEACTIVATE)
+         {
+            m.Result = (IntPtr)MA_ACTIVATE;
+         }
       }
 
       public void CreateButtonSep()
@@ -119,7 +144,12 @@ namespace VaultASaur3.Extensions
          {
             menu = new ContextMenuStrip()
             {
-               ImageList = imgForm.ToolBarIMG_30X30
+               ImageList = tSize switch
+               {
+                  toolStripSize.smallMenu => imgForm.ToolBarIMG_30X30,
+                  toolStripSize.largeMenu => imgForm.ToolBarIMG_50X50,
+                  _ => imgForm.ToolBarIMG_30X30
+               }
             };
             buttonMenus[button] = menu;
          }
@@ -128,7 +158,12 @@ namespace VaultASaur3.Extensions
          ToolStripMenuItem item = new ToolStripMenuItem(menuAction.Caption)
          {
             Tag = inCommandCMD,
-            Image = imgForm.ToolBarIMG_30X30.Images[menuAction.imageIndex],
+            Image = (tSize switch
+            {
+               toolStripSize.smallMenu => imgForm.ToolBarIMG_30X30,
+               toolStripSize.largeMenu => imgForm.ToolBarIMG_50X50,
+               _ => imgForm.ToolBarIMG_30X30
+            }).Images[menuAction.imageIndex],
             ImageScaling = ToolStripItemImageScaling.SizeToFit,
             DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
          };

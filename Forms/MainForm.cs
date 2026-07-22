@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using VaultASaur3.DataBase;
 using VaultASaur3.Encryption;
 using VaultASaur3.Enums;
+using VaultASaur3.Extensions;
 using VaultASaur3.FormControl;
 using VaultASaur3.Globals;
 using VaultASaur3.ToolsBox;
@@ -23,24 +24,58 @@ namespace VaultASaur3.Forms
       private bool fPasswordCreated = false;
       private int fVaultSecondsLimit = 300;
       private int fVaultSecondsToLive = 300;
+      private tToolStrip toolBar;
 
       public MainForm()
       {
          InitializeComponent();
          this.Text = $"{Constants.ProgramName} {ToolBox.GetBuildInfoAsString()}";
          ToolBox.WindowSizePosition(this, Constants.ProgramName, Constants.AppWidth, Constants.AppHeight);
-         buttonVault.Enabled = true;
-         buttonLock.Enabled = false;
+
+         toolBar = new tToolStrip(menuPanel, toolStripSize.largeMenu);
+         toolBar.CreateButton(Actions.CMD_VAULT, "Vault", buttonCmd => HandleAction(buttonCmd));
+         toolBar.CreateButton(Actions.CMD_LOCK, "Lock", buttonCmd => HandleAction(buttonCmd));
+         toolBar.CreateButton(Actions.CMD_PASSWORD, "Password", buttonCmd => HandleAction(buttonCmd));
+         toolBar.CreateButton(Actions.CMD_CLOSE_MAIN, "Close", buttonCmd => HandleAction(buttonCmd));
+
+         toolBar.EnableButton(Actions.CMD_VAULT, true);
+         toolBar.EnableButton(Actions.CMD_LOCK, false);
+
+         WelcomeForm w = new WelcomeForm();
+         w.ShowDialog();
          OpenVault();
       }
 
       // ##########################################################################################
 
-      private void closeButton_Click(object sender, EventArgs e)
+      /// <summary>
+      /// Handle the ToolBar action commands.
+      /// </summary>
+      /// <param name="buttonCmd"></param>
+      private void HandleAction(int buttonCmd)
       {
-         Application.Exit();
+         switch (buttonCmd)
+         {
+            case Actions.CMD_VAULT:
+               OpenVault();
+               break;
+            case Actions.CMD_CLOSE_MAIN:
+               Application.Exit();
+               break;
+            case Actions.CMD_PASSWORD:
+               ChangePassword();
+               break;
+            case Actions.CMD_LOCK:
+               LockVault();
+               break;
+         }
       }
-
+                  
+      /// <summary>
+      /// Save the default Window State.
+      /// </summary>
+      /// <param name="sender"></param>
+      /// <param name="e"></param>
       private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
       {
          // Save the window state as a string ("Normal", "Maximized", "Minimized")
@@ -62,6 +97,11 @@ namespace VaultASaur3.Forms
          Properties.Settings.Default.Save();
       }
 
+      /// <summary>
+      /// Load the saved Window State.
+      /// </summary>
+      /// <param name="sender"></param>
+      /// <param name="e"></param>
       private void MainForm_Load(object sender, EventArgs e)
       {
          // Restore the window state (normal, maximized, minimized)
@@ -69,18 +109,12 @@ namespace VaultASaur3.Forms
 
          if (!string.IsNullOrEmpty(windowState))
          {
-            switch (windowState)
+            this.WindowState = windowState switch
             {
-               case "Maximized":
-                  this.WindowState = FormWindowState.Maximized;
-                  break;
-               case "Minimized":
-                  this.WindowState = FormWindowState.Minimized;
-                  break;
-               default:
-                  this.WindowState = FormWindowState.Normal;
-                  break;
-            }
+               "Maximized" => FormWindowState.Maximized,
+               "Minimized" => FormWindowState.Minimized,
+               _ => FormWindowState.Normal,
+            };
          }
 
          // Restore the form size and location if available
@@ -97,23 +131,11 @@ namespace VaultASaur3.Forms
          MainFormControl.CreateItem(FormControls.FormPreferences, this.mainDockPanel);
       }
 
-      private void buttonLockClick(object sender, EventArgs e)
-      {
-         LockVault();
-      }
-
-      private void buttonVault_Click(object sender, EventArgs e)
-      {
-         OpenVault();
-      }
-
-      private void buttonChangePasswordClick(object sender, EventArgs e)
-      {
-         ChangePassword();
-      }
-
       /// <summary>
       /// Changes the Vault Password.
+      /// Even if they hack the application so they can just run this, they have to know the previous
+      /// password. If they don't, it'll just load up the old DB un/pw with the bad password, totally
+      /// break the original encryption and load it up with the new broken encryption.
       /// </summary>
       public void ChangePassword()
       {
@@ -193,6 +215,9 @@ namespace VaultASaur3.Forms
          }
       }
 
+      /// <summary>
+      /// Check for a password. If there isn't one, create one.
+      /// </summary>
       private void CheckForPassword()
       {
          string passCheckGuid = dbPreference.GetString(tPrefConstants.GuidPassword);
@@ -230,13 +255,16 @@ namespace VaultASaur3.Forms
          }
       }
 
+      /// <summary>
+      /// Lock the Vault.
+      /// </summary>
       public void LockVault()
       {
          fPasswordPhrase = "";
          fPasswordCreated = false;
          MainFormControl.CloseVault();
-         buttonVault.Enabled = true;
-         buttonLock.Enabled = false;
+         toolBar.EnableButton(Actions.CMD_VAULT, true);
+         toolBar.EnableButton(Actions.CMD_LOCK, false);
       }
 
       /// <summary>
@@ -286,8 +314,8 @@ namespace VaultASaur3.Forms
                MainFormControl.PasswordPhrase = fPasswordPhrase;
 
                MainFormControl.CreateItem(FormControls.FormVault, this.mainDockPanel);
-               buttonVault.Enabled = false;
-               buttonLock.Enabled = true;
+               toolBar.EnableButton(Actions.CMD_VAULT, false);
+               toolBar.EnableButton(Actions.CMD_LOCK, true);
             }
             else
             {
@@ -304,6 +332,10 @@ namespace VaultASaur3.Forms
          }
       }
 
+      /// <summary>
+      /// Saves the password, encrypt our guid with their password.
+      /// </summary>
+      /// <param name="fPassHint"></param>
       private void SavePassword(string fPassHint)
       {
          if (fPasswordPhrase != "")

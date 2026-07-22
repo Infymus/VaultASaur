@@ -13,7 +13,7 @@ using VaultASaur3.ToolsBox;
 
 namespace VaultASaur3.FormControl
 {
-  
+
    /// <summary>
    /// This MainFormControl class allows you to create, dock and control forms
    /// Also allows handling events from those forms in one place.

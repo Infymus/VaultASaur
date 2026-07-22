@@ -20,8 +20,10 @@ namespace VaultASaur3.DataBase
    {
       private static int File_Struct_Count = 1;
       private static int Start_DB_Version = 100;
-      private static int Next_DB_Version = 101;
       private static string sqlStr = "";
+
+      // When updating a database, set the next version to 1 digit higher.
+      private static int Next_DB_Version = 102;
 
       //
       public static tErrorResult UpdateTables()
@@ -79,7 +81,7 @@ namespace VaultASaur3.DataBase
 
          // %%%%%%%%%%%%%%% UPDATES FROM HERE ON ONLY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% //
 
-         // UPDATE 101
+         // UPDATE 101:
          if (MasterData.CompareVersion(101))
          {
             // Preferences
@@ -87,8 +89,20 @@ namespace VaultASaur3.DataBase
             dbPreference.SetString(tPrefConstants.Hint, "");
          }
 
+         // UPDATE 102:
+         if (MasterData.CompareVersion(102))
+         {
+            // Add a warning system for updating the vault password
+            dbPreference.SetInt(tPrefConstants.WarnChangeMainPW, 0);
+            sqlStr = $@"ALTER TABLE {MasterData.GetTableName_Main} ADD COLUMN WarnChangeMainPW INTEGER DEFAULT 0;";
+            t = MasterData.ExecuteSQL(sqlStr, null);
+            if (t.errorResult)
+               return t;
+         }
+
          // %%%%%%%%%%%%%%% NO MORE UPDATES AFTER THIS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% //
 
+         // Now update the DB with the current version
          MasterData.SetDBVersion(Next_DB_Version);
 
          return new tErrorResult();

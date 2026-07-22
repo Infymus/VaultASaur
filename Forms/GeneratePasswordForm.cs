@@ -23,7 +23,7 @@ namespace VaultASaur3.Forms
 
          this.Text = $"{Constants.ProgramName} {ToolBox.GetBuildInfoAsString()}";
 
-         toolBar = new tToolStrip(baseToolBar);
+         toolBar = new tToolStrip(baseToolBar, toolStripSize.smallMenu);
          toolBar.RightToLeft = RightToLeft.Yes;
          toolBar.CreateButton(Actions.CMD_CANCEL, "Cancel", buttonCmd => HandleAction(buttonCmd));
          toolBar.CreateButton(Actions.CMD_OK, "Ok", buttonCmd => HandleAction(buttonCmd));

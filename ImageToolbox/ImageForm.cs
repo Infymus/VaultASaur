@@ -6,9 +6,7 @@
 */
 
 namespace VaultASaur3.Images
-{
-
-       
+{                                    
    /// <summary>
    /// This form holds an Image collection. It's used by the Action unit to add an image to a button or a menu item.
    /// </summary>
@@ -23,11 +21,18 @@ namespace VaultASaur3.Images
          // Set the Keys
          IMG_30x30.Images.SetKeyName(0, "Open");
          IMG_30x30.Images.SetKeyName(1, "close");
+         IMG_50x50.Images.SetKeyName(0, "Close");
+         IMG_50x50.Images.SetKeyName(1, "close");
       }
 
       public ImageList ToolBarIMG_30X30
       {
          get { return IMG_30x30; }
+      }
+
+      public ImageList ToolBarIMG_50X50
+      {
+         get { return IMG_50x50; }
       }
    }
 }

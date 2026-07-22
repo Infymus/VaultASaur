@@ -22,7 +22,7 @@ namespace VaultASaur3.Forms
 
             // All Else
             this.bottomDockPanel.Visible = false;
-            tToolStrip toolBar = new tToolStrip(baseToolBar);
+            tToolStrip toolBar = new tToolStrip(baseToolBar, toolStripSize.smallMenu);
 
             // Menu 
             toolBar.CreateButton(Actions.CMD_SAVE, "", buttonCmd => HandleAction(buttonCmd));

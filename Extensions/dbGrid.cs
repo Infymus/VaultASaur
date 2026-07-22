@@ -343,8 +343,6 @@ public class tDataGridView
       _isProgrammaticMove = false;
    }
 
-
-
    /// <summary>
    /// This is to do more than the basic built in grid does, like CTRL-A, etc.
    /// </summary>
@@ -473,6 +471,12 @@ public class tDataGridView
       GridDoubleClicked?.Invoke(this, e);
    }
 
+   /// <summary>
+   /// This allows showing a grid is disabled if a field in the table called "ISACTIVE" is set to 0 or 1.
+   /// This can be modified to use use any column.
+   /// </summary>
+   /// <param name="sender"></param>
+   /// <param name="e"></param>
    private void Grid_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
    {
       DataGridViewRow row = _grid.Rows[e.RowIndex];

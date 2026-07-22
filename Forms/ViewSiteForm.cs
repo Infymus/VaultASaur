@@ -28,7 +28,7 @@ namespace VaultASaur3.Forms
          bottomDockPanel.Visible = false;
 
          // Add the ToolBar Buttons
-         toolBar = new tToolStrip(baseToolBar);
+         toolBar = new tToolStrip(baseToolBar, toolStripSize.smallMenu);
          toolBar.CreateButton(Actions.CMD_COPY_USERNAME, "Open Browser and Visit Site", buttonCmd => HandleAction(buttonCmd));
          toolBar.CreateButton(Actions.CMD_COPY_PASSWORD, "View Site Details", buttonCmd => HandleAction(buttonCmd));
          toolBar.CreateButtonSep();

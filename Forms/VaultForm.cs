@@ -45,7 +45,7 @@ namespace VaultASaur3.Forms
          workPanel.Visible = false;
 
          // Add a DB Navigator
-         tToolStrip dbNav = new tToolStrip(baseDockPanel);
+         tToolStrip dbNav = new tToolStrip(baseDockPanel, toolStripSize.smallMenu);
          dbNav.Dock = DockStyle.Left;
          dbNav.LayoutStyle = ToolStripLayoutStyle.VerticalStackWithOverflow;
          dbNav.CreateButton(Actions.CMD_FIRST, "", buttonCmd => HandleAction(buttonCmd));
@@ -65,7 +65,7 @@ namespace VaultASaur3.Forms
          torrentListPanel.Dock = DockStyle.Fill;
 
          // Add the ToolBar Buttons
-         toolBar = new tToolStrip(baseToolBar);
+         toolBar = new tToolStrip(baseToolBar, toolStripSize.smallMenu);
          toolBar.CreateButton(Actions.CMD_NEW, "Create a new Site", buttonCmd => HandleAction(buttonCmd));
          toolBar.CreateButton(Actions.CMD_EDIT, "Edit selected Site", buttonCmd => HandleAction(buttonCmd));
          toolBar.CreateButtonSep();

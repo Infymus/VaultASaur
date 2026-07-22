@@ -147,10 +147,13 @@ namespace VaultASaur3
       public const int CMD_URL = 113;
       public const int CMD_VIEW = 114;
       public const int CMD_VIEWUPDATES = 115;
-      public const int CMD_WELCOME_FB = 116;
       public const int CMD_WRITE = 117;
       public const int CMD_WWW = 118;
       public const int CMD_YES = 119;
+      public const int CMD_VAULT = 120;
+      public const int CMD_LOCK = 121;
+      public const int CMD_PASSWORD = 122;
+      public const int CMD_CLOSE_MAIN = 123;
 
       // Images
       public const int IMG_ADD = 0;
@@ -264,13 +267,42 @@ namespace VaultASaur3
       public const int IMG_WORLD = 108;
       public const int IMG_YES2 = 109;
       public const int IMG_CANCEL2 = 111;
+      public const int IMG_VAULT = 3;
+      public const int IMG_LOCK = 2;
+      public const int IMG_PASSWORD = 1;
+      public const int IMG_CLOSE = 4;
 
+      /// <summary>
+      /// This creates a new action by action type. It creates a proper caption, assigns an image.
+      /// </summary>
+      /// <param name="inActionType"></param>
+      /// <returns></returns>
       public static actionObject AddNewAction(int inActionType)
       {
          actionObject a = new actionObject();
          a.actionType = inActionType;
          switch (inActionType)
          {
+            case CMD_VAULT:
+               a.Caption = "Vault";
+               a.imageIndex = IMG_VAULT;
+               a.name = "actVault";
+               break;
+            case CMD_LOCK:
+               a.Caption = "Lock";
+               a.imageIndex = IMG_LOCK;
+               a.name = "actLock";
+               break;
+            case CMD_PASSWORD:
+               a.Caption = "Password";
+               a.imageIndex = IMG_PASSWORD;
+               a.name = "actPassword";
+               break;
+            case CMD_CLOSE_MAIN:
+               a.Caption = "Close";
+               a.imageIndex = IMG_CLOSE;
+               a.name = "actCloseMain";
+               break;
             case CMD_HELP:
                a.Caption = "Help";
                a.imageIndex = IMG_HELP5;

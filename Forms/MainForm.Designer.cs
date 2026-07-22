@@ -35,20 +35,13 @@
          preferencesToolStripMenuItem = new ToolStripMenuItem();
          exitToolStripMenuItem = new ToolStripMenuItem();
          helpToolStripMenuItem = new ToolStripMenuItem();
-         toolStrip = new ToolStrip();
-         buttonVault = new ToolStripButton();
-         buttonLock = new ToolStripButton();
-         toolStripSeparator1 = new ToolStripSeparator();
-         buttonChangePassword = new ToolStripButton();
-         toolStripSeparator2 = new ToolStripSeparator();
-         buttonClose = new ToolStripButton();
          Timer = new System.Windows.Forms.Timer(components);
          statusStrip1 = new StatusStrip();
          LockLabel = new ToolStripStatusLabel();
          countDownLabel = new ToolStripStatusLabel();
+         menuPanel = new Panel();
          mainDockPanel = new Panel();
          menuStrip.SuspendLayout();
-         toolStrip.SuspendLayout();
          statusStrip1.SuspendLayout();
          SuspendLayout();
          // 
@@ -87,80 +80,6 @@
          helpToolStripMenuItem.Size = new Size(44, 20);
          helpToolStripMenuItem.Text = "Help";
          // 
-         // toolStrip
-         // 
-         toolStrip.BackColor = Color.White;
-         toolStrip.ImageScalingSize = new Size(50, 50);
-         toolStrip.Items.AddRange(new ToolStripItem[] { buttonVault, buttonLock, toolStripSeparator1, buttonChangePassword, toolStripSeparator2, buttonClose });
-         toolStrip.Location = new Point(0, 24);
-         toolStrip.Name = "toolStrip";
-         toolStrip.RenderMode = ToolStripRenderMode.Professional;
-         toolStrip.Size = new Size(330, 72);
-         toolStrip.TabIndex = 4;
-         toolStrip.Text = "toolStrip1";
-         // 
-         // buttonVault
-         // 
-         buttonVault.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-         buttonVault.Image = (Image)resources.GetObject("buttonVault.Image");
-         buttonVault.ImageAlign = ContentAlignment.TopCenter;
-         buttonVault.ImageTransparentColor = Color.Magenta;
-         buttonVault.Name = "buttonVault";
-         buttonVault.Size = new Size(54, 69);
-         buttonVault.Text = "Vault";
-         buttonVault.TextAlign = ContentAlignment.BottomCenter;
-         buttonVault.TextImageRelation = TextImageRelation.ImageAboveText;
-         buttonVault.Click += buttonVault_Click;
-         // 
-         // buttonLock
-         // 
-         buttonLock.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-         buttonLock.Image = (Image)resources.GetObject("buttonLock.Image");
-         buttonLock.ImageAlign = ContentAlignment.TopCenter;
-         buttonLock.ImageTransparentColor = Color.Magenta;
-         buttonLock.Name = "buttonLock";
-         buttonLock.Size = new Size(54, 69);
-         buttonLock.Text = "Lock";
-         buttonLock.TextAlign = ContentAlignment.BottomCenter;
-         buttonLock.TextImageRelation = TextImageRelation.ImageAboveText;
-         buttonLock.Click += buttonLockClick;
-         // 
-         // toolStripSeparator1
-         // 
-         toolStripSeparator1.Name = "toolStripSeparator1";
-         toolStripSeparator1.Size = new Size(6, 72);
-         // 
-         // buttonChangePassword
-         // 
-         buttonChangePassword.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-         buttonChangePassword.Image = (Image)resources.GetObject("buttonChangePassword.Image");
-         buttonChangePassword.ImageAlign = ContentAlignment.TopCenter;
-         buttonChangePassword.ImageTransparentColor = Color.Magenta;
-         buttonChangePassword.Name = "buttonChangePassword";
-         buttonChangePassword.Size = new Size(63, 69);
-         buttonChangePassword.Text = "Password";
-         buttonChangePassword.TextAlign = ContentAlignment.BottomCenter;
-         buttonChangePassword.TextImageRelation = TextImageRelation.ImageAboveText;
-         buttonChangePassword.Click += buttonChangePasswordClick;
-         // 
-         // toolStripSeparator2
-         // 
-         toolStripSeparator2.Name = "toolStripSeparator2";
-         toolStripSeparator2.Size = new Size(6, 72);
-         // 
-         // buttonClose
-         // 
-         buttonClose.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-         buttonClose.Image = (Image)resources.GetObject("buttonClose.Image");
-         buttonClose.ImageAlign = ContentAlignment.TopCenter;
-         buttonClose.ImageTransparentColor = Color.Magenta;
-         buttonClose.Name = "buttonClose";
-         buttonClose.Size = new Size(54, 69);
-         buttonClose.Text = "Close";
-         buttonClose.TextAlign = ContentAlignment.BottomCenter;
-         buttonClose.TextImageRelation = TextImageRelation.ImageAboveText;
-         buttonClose.Click += closeButton_Click;
-         // 
          // Timer
          // 
          Timer.Enabled = true;
@@ -190,13 +109,21 @@
          countDownLabel.Name = "countDownLabel";
          countDownLabel.Size = new Size(0, 17);
          // 
+         // menuPanel
+         // 
+         menuPanel.Dock = DockStyle.Top;
+         menuPanel.Location = new Point(0, 24);
+         menuPanel.Name = "menuPanel";
+         menuPanel.Size = new Size(330, 72);
+         menuPanel.TabIndex = 8;
+         // 
          // mainDockPanel
          // 
          mainDockPanel.Dock = DockStyle.Fill;
          mainDockPanel.Location = new Point(0, 96);
          mainDockPanel.Name = "mainDockPanel";
          mainDockPanel.Size = new Size(330, 154);
-         mainDockPanel.TabIndex = 7;
+         mainDockPanel.TabIndex = 9;
          // 
          // MainForm
          // 
@@ -204,8 +131,8 @@
          AutoScaleMode = AutoScaleMode.Font;
          ClientSize = new Size(330, 272);
          Controls.Add(mainDockPanel);
+         Controls.Add(menuPanel);
          Controls.Add(statusStrip1);
-         Controls.Add(toolStrip);
          Controls.Add(menuStrip);
          Icon = (Icon)resources.GetObject("$this.Icon");
          Name = "MainForm";
@@ -214,8 +141,6 @@
          Load += MainForm_Load;
          menuStrip.ResumeLayout(false);
          menuStrip.PerformLayout();
-         toolStrip.ResumeLayout(false);
-         toolStrip.PerformLayout();
          statusStrip1.ResumeLayout(false);
          statusStrip1.PerformLayout();
          ResumeLayout(false);
@@ -224,13 +149,6 @@
 
       #endregion
       private MenuStrip menuStrip;
-    private ToolStrip toolStrip;
-    private ToolStripButton buttonVault;
-    private ToolStripButton buttonLock;
-    private ToolStripSeparator toolStripSeparator1;
-    private ToolStripButton buttonChangePassword;
-    private ToolStripSeparator toolStripSeparator2;
-    private ToolStripButton buttonClose;
     private ToolStripMenuItem fileToolStripMenuItem;
     private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem preferencesToolStripMenuItem;
@@ -239,6 +157,7 @@
       private StatusStrip statusStrip1;
       private ToolStripStatusLabel LockLabel;
       private ToolStripStatusLabel countDownLabel;
+      private Panel menuPanel;
       private Panel mainDockPanel;
    }
 }

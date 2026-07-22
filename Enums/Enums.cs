@@ -40,7 +40,8 @@ namespace VaultASaur3.Enums
       EditorLoadSaveButtons,
       AutoClose,
       Hint,
-      GuidPassword
+      GuidPassword,
+      WarnChangeMainPW
    }
 
    public enum ActiveStates

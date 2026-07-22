@@ -31,7 +31,7 @@ namespace VaultASaur3.Forms
             "must contain an uppercase letter (A-Z), a numeric character (0-9) and be a length of 8 or greater. " +
             "Password Phrases are recommended.";
 
-         toolBar = new tToolStrip(baseToolBar);
+         toolBar = new tToolStrip(baseToolBar, toolStripSize.smallMenu);
          toolBar.RightToLeft = RightToLeft.Yes;
          toolBar.CreateButton(Actions.CMD_CANCEL, "Cancel", buttonCmd => HandleAction(buttonCmd));
          toolBar.CreateButton(Actions.CMD_OK, "Ok", buttonCmd => HandleAction(buttonCmd));

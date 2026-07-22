@@ -119,13 +119,12 @@ namespace VaultASaur3.DataBase
       public static tVaultRec Get(string inID)
       {
          tVaultRec t = new tVaultRec();
-         tErrorResult e;
          string sqlStr = $@"SELECT * FROM {MasterData.GetTableName_Vault} WHERE ID = @ID";
          var parameters = new Dictionary<string, object>
                 {
                     { "@ID", inID }
                 };
-         using (SQLiteDataReader reader = MasterData.ExecuteQuery(sqlStr, parameters, out e))
+         using (SQLiteDataReader reader = MasterData.ExecuteQuery(sqlStr, parameters, out tErrorResult e))
          {
             if (!e.errorResult)
             {
@@ -204,9 +203,8 @@ namespace VaultASaur3.DataBase
 
       public static tErrorResult SetAllActiveFlag(ActiveStates inState)
       {
-         tErrorResult t;
          string sqlStr = $@"UPDATE {MasterData.GetTableName_Vault} SET ISACTIVE = " + ToolBox.ConvertEnumToInt(inState);
-         SQLiteDataReader reader = MasterData.ExecuteQuery(sqlStr, null, out t);
+         SQLiteDataReader reader = MasterData.ExecuteQuery(sqlStr, null, out tErrorResult t);
          return t;
       }
 
@@ -245,9 +243,8 @@ namespace VaultASaur3.DataBase
 
       public static tErrorResult UpdatePassword(string fOldPassword, string fNewPassword)
       {
-         tErrorResult e = new tErrorResult();
          tVaultRec t = new tVaultRec();
-
+         tErrorResult e;
          string sqlStr = $@"SELECT * FROM {MasterData.GetTableName_Vault}";
 
          using (SQLiteDataReader reader = MasterData.ExecuteQuery(sqlStr, null, out e))
