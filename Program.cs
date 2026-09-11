@@ -5,6 +5,7 @@
  * Website: https://github.com/Infymus/vaultasaur
 */
 
+using System.Diagnostics;
 using VaultASaur3.DataBase;
 using VaultASaur3.Forms;
 using VaultASaur3.Globals;
@@ -41,13 +42,14 @@ namespace VaultASaur3
             // Run the Forms
             Application.Run(new MainForm());
 
-            // Clear the ClipBoard
+            // Clear the Clipboard
             try
             {
                Clipboard.Clear();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
+               // Ignore clipboard access issues during shutdown.
             }
 
          }

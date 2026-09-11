@@ -9,13 +9,13 @@ namespace VaultASaur3.ErrorHandling
 {
     public class tErrorResult
     {
-        public bool errorResult = false;
-        public string errorMessage = "";
-        public int AsInteger;
-        public string AsString;
-        public bool AsBoolean;
-        public long AsLong;
-        public double AsDouble;
-        public DateTime AsDateTime;
+        public bool errorResult { get; set; } = false;
+        public string errorMessage { get; set; } = string.Empty;
+        public int AsInteger { get; set; }
+        public string AsString { get; set; } = string.Empty;
+        public bool AsBoolean { get; set; }
+        public long AsLong { get; set; }
+        public double AsDouble { get; set; }
+        public DateTime AsDateTime { get; set; }
     }
 }

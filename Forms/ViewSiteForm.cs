@@ -14,7 +14,7 @@ namespace VaultASaur3.Forms
    public partial class ViewSiteForm : BaseForm
    {
       private tToolStrip toolBar;
-      private string fPasswordPhrase;
+      private string fPasswordPhrase = string.Empty;
 
       public ViewSiteForm()
       {
@@ -119,6 +119,16 @@ namespace VaultASaur3.Forms
       public string Password
       {
          set { db_Password1.Text = value; }
+      }
+
+      public string Description
+      {
+         set { db_Desc.Text = value; }
+      }
+
+      public string Email
+      {
+         set { db_Email.Text = value; }
       }
 
       public bool isActive

@@ -18,17 +18,17 @@ namespace VaultASaur3.Extensions;
 
 public class tDataGridView
 {
-   private DataGridView _grid;
-   private ContextMenuStrip _menu;
-   private ImageForm imgForm;
+   private DataGridView _grid = null!;
+   private ContextMenuStrip _menu = null!;
+   private ImageForm imgForm = null!;
    public BindingSource BindingSource = new BindingSource();
-   public event EventHandler DataSourceChanged;
-   public event EventHandler RowChanged;
-   public event EventHandler GridDoubleClicked;
+   public event EventHandler? DataSourceChanged;
+   public event EventHandler? RowChanged;
+   public event EventHandler? GridDoubleClicked;
    private bool _isProgrammaticMove = false;
    private char _lastSearchKey = '\0';
    private int _lastSearchIndex = -1;
-   private string SearchColumnName;
+   private string SearchColumnName = string.Empty;
    Font _regularFont = new Font(gridCellFontName, gridFontSize, FontStyle.Regular);
    Font _italicFont = new Font(gridCellFontName, gridFontSize, FontStyle.Italic);
    private const string gridCellFontName = "Verdana";
@@ -45,9 +45,9 @@ public class tDataGridView
 
       _grid.ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
       {
-         BackColor = SystemColors.GradientInactiveCaption,
+         BackColor = Color.FromArgb(184,224,245),
          ForeColor = Color.Black,
-         SelectionBackColor = SystemColors.GradientInactiveCaption,
+         SelectionBackColor = Color.FromArgb(226, 237, 250),
          SelectionForeColor = Color.Black,
          Font = new Font("Arial", 12, FontStyle.Bold),
          WrapMode = DataGridViewTriState.False,
@@ -106,7 +106,7 @@ public class tDataGridView
       _grid.Refresh();
    }
 
-   private void delegateGridSelectionChange(object sender, EventArgs e)
+   private void delegateGridSelectionChange(object? sender, EventArgs e)
    {
       if (_isProgrammaticMove)
       {
@@ -118,7 +118,7 @@ public class tDataGridView
       }
    }
 
-   public DataTable DataSource
+   public DataTable? DataSource
    {
       get => _grid.DataSource as DataTable;
       set
@@ -166,7 +166,7 @@ public class tDataGridView
          System.Diagnostics.Debug.WriteLine($"Column with name '{columnDisplayName}' not found in the grid.");
       }
    }
-   public DataRow GetDataRow()
+   public DataRow? GetDataRow()
    {
       if (_grid.CurrentRow != null && _grid.CurrentRow.DataBoundItem is DataRowView rowView)
       {
@@ -348,7 +348,7 @@ public class tDataGridView
    /// </summary>
    /// <param name="sender"></param>
    /// <param name="e"></param>
-   private void Grid_KeyDown(object sender, KeyEventArgs e)
+   private void Grid_KeyDown(object? sender, KeyEventArgs e)
    {
       // Select All      
       if (e.Control && e.KeyCode == Keys.A)
@@ -407,7 +407,7 @@ public class tDataGridView
       _lastSearchIndex = -1;
    }
 
-   private void Grid_MouseDown(object sender, MouseEventArgs e)
+   private void Grid_MouseDown(object? sender, MouseEventArgs e)
    {
       if (e.Button == MouseButtons.Right)
       {
@@ -461,7 +461,7 @@ public class tDataGridView
       }
    }
 
-   private void Grid_DoubleClick(object sender, EventArgs e)
+   private void Grid_DoubleClick(object? sender, EventArgs e)
    {
       OnGridDoubleClicked(e);
    }
@@ -477,7 +477,7 @@ public class tDataGridView
    /// </summary>
    /// <param name="sender"></param>
    /// <param name="e"></param>
-   private void Grid_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
+   private void Grid_RowPrePaint(object? sender, DataGridViewRowPrePaintEventArgs e)
    {
       DataGridViewRow row = _grid.Rows[e.RowIndex];
       if (row.DataBoundItem is DataRowView rowView)

@@ -41,7 +41,7 @@ namespace VaultASaur3.Extensions
 
     public static class tPercentForm
     {
-        private static PercentForm frm_PercentForm;
+        private static PercentForm? frm_PercentForm;
 
         public static void Create(string inHeader, int startPos, int endPos)
         {
@@ -61,22 +61,22 @@ namespace VaultASaur3.Extensions
 
         public static void Close()
         {
-            frm_PercentForm.Close();
+            frm_PercentForm?.Close();
         }
 
         public static void UpdateHeader(string inHeader)
         {
-            frm_PercentForm.UpdateHeader(inHeader);
+            frm_PercentForm?.UpdateHeader(inHeader);
         }
 
         public static void IncreaseTotal(int inInc)
         {
-            frm_PercentForm.IncreaseTotal(inInc);
+            frm_PercentForm?.IncreaseTotal(inInc);
         }
 
         public static void UpdateProgress()
         {
-            frm_PercentForm.UpdateProgress();
+            frm_PercentForm?.UpdateProgress();
         }
 
     }

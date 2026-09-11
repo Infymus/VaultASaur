@@ -18,7 +18,6 @@ namespace VaultASaur3.DataBase
    /// </summary>
    public static class MasterDataUpdateUnit
    {
-      private static int File_Struct_Count = 1;
       private static int Start_DB_Version = 100;
       private static string sqlStr = "";
 

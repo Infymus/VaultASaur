@@ -21,9 +21,9 @@ namespace VaultASaur3.FormControl
    public static class MainFormControl
    {
       // Add instance fields to keep track of form instances
-      private static frm_VaultForm vaultFormInstance;
-      private static frm_PreferenceForm PreferenceFormInstance;
-      private static string fPasswordPhrase;
+      private static frm_VaultForm? vaultFormInstance;
+      private static frm_PreferenceForm? PreferenceFormInstance;
+      private static string fPasswordPhrase = string.Empty;
 
       /// <summary>
       ///  Creates the menu and docks it where designed
@@ -32,7 +32,7 @@ namespace VaultASaur3.FormControl
       /// <param name="inDockForm"></param>
       public static void CreateItem(FormControls inFormType, Panel inDockForm)
       {
-         BaseForm ControlFormObject = null;
+         BaseForm? ControlFormObject = null;
 
          // If it is NOT created, then create it
 
@@ -106,11 +106,11 @@ namespace VaultASaur3.FormControl
       /// </summary>
       /// <param name="sender"></param>
       /// <param name="e"></param>
-      private static void VaultForm_Resize(object sender, EventArgs e)
+      private static void VaultForm_Resize(object? sender, EventArgs e)
       {
          if (vaultFormInstance != null)
          {
-            vaultFormInstance.ResizeEvent(sender, e);
+            vaultFormInstance.ResizeEvent(sender ?? vaultFormInstance, e);
          }
       }
 
@@ -125,7 +125,7 @@ namespace VaultASaur3.FormControl
       public static string PasswordPhrase
       {
          get { return fPasswordPhrase; }
-         set { fPasswordPhrase = value; }
+         set { fPasswordPhrase = value ?? string.Empty; }
       }
 
    }

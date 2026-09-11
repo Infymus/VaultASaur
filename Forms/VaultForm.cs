@@ -24,13 +24,10 @@ namespace VaultASaur3.Forms
 {
    public partial class frm_VaultForm : BaseForm
    {
-      private MasterData.dbState dbState = MasterData.dbState.dsInitialize;
       public tDataGridView DataListGrid = new tDataGridView();
       public delegate void UpdateStuff(int updateCMD);
       private tToolStrip toolBar;
-      private string fPasswordPhrase;
-      private int fVaultSecondsLimit = 300;
-      private int fVaultSecondsToLive = 300;
+      private string fPasswordPhrase = string.Empty;
       private ActiveStates dbActive = ActiveStates.StateActive;
 
       public frm_VaultForm()
@@ -45,7 +42,7 @@ namespace VaultASaur3.Forms
          workPanel.Visible = false;
 
          // Add a DB Navigator
-         tToolStrip dbNav = new tToolStrip(baseDockPanel, toolStripSize.smallMenu);
+         tToolStrip dbNav = new tToolStrip(dbDockPanel, toolStripSize.smallMenu);
          dbNav.Dock = DockStyle.Left;
          dbNav.LayoutStyle = ToolStripLayoutStyle.VerticalStackWithOverflow;
          dbNav.CreateButton(Actions.CMD_FIRST, "", buttonCmd => HandleAction(buttonCmd));
@@ -61,7 +58,7 @@ namespace VaultASaur3.Forms
          dbNav.BringToFront();
          torrentListPanel.BringToFront();
          baseDockPanel.Controls.SetChildIndex(torrentListPanel, 0);
-         baseDockPanel.Controls.SetChildIndex(dbNav, 1);
+         dbDockPanel.Controls.SetChildIndex(dbNav, 1);
          torrentListPanel.Dock = DockStyle.Fill;
 
          // Add the ToolBar Buttons
@@ -101,7 +98,7 @@ namespace VaultASaur3.Forms
          DataListGrid.Init(torrentListPanel, "FNAME");
          DataListGrid.DataSource = dbVault.GridLoadData(dbActive);
          DataListGrid.BindingSource.DataSource = DataListGrid.DataSource;
-         DataListGrid.AddColumn("SITENAME", "SITE NAME", 300, Color.Red);
+         DataListGrid.AddColumn("SITE NAME", "Site Name", 300, Color.Red);
          DataListGrid.SearchField = "SITENAME";
 
          // Add a Pop Menu to the Database Grid
@@ -238,12 +235,6 @@ namespace VaultASaur3.Forms
             }
          }
 
-         // Is it empty?
-         if (DataListGrid.Count == 0)
-         {
-            dbState = MasterData.dbState.dsInitialize;
-         }
-
          // Enable and disable buttons depending on state of the DB
          toolBar.EnableButton(Actions.CMD_VIEW, DataListGrid.Count > 0);
          toolBar.EnableButton(Actions.CMD_EDIT, DataListGrid.Count > 0);
@@ -285,7 +276,12 @@ namespace VaultASaur3.Forms
                return;
             foreach (DataRow row in selectedRows)
             {
-               MasterData.Delete(dbTypes.Vault, row["ID"].ToString());
+               var idObj = row["ID"];
+               string idStr = idObj == null || idObj == DBNull.Value ? string.Empty : idObj.ToString()!;
+               if (!string.IsNullOrEmpty(idStr))
+               {
+                  MasterData.Delete(dbTypes.Vault, idStr);
+               }
             }
             RefreshDB();
          }
@@ -427,6 +423,8 @@ namespace VaultASaur3.Forms
          siteViewForm.UserName = t.USERNAME;
          siteViewForm.Sitename = t.SITENAME;
          siteViewForm.Password = t.PASSWORD;
+         siteViewForm.Description = t.SITEDESC;
+         siteViewForm.Email = t.EMAIL;
          siteViewForm.isActive = t.IsActive == 1 ? true : false;
          siteViewForm.SiteURL = t.SITEURL;
          siteViewForm.SecQuest1 = t.SECQUEST1;
