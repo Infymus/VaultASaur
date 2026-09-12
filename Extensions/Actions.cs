@@ -279,7 +279,7 @@ namespace VaultASaur3
       /// <returns></returns>
       public static actionObject AddNewAction(int inActionType)
       {
-         actionObject a = new actionObject();
+         actionObject a = new();
          a.actionType = inActionType;
          switch (inActionType)
          {
@@ -747,6 +747,151 @@ namespace VaultASaur3
                a.Caption = "Deactivate Site";
                a.imageIndex = IMG_CANCEL2;
                a.name = "actDeactivateSite";
+               break;
+            case CMD_FEEDS:
+               a.Caption = "Feeds";
+               a.imageIndex = IMG_INFO;
+               a.name = "actFeeds";
+               break;
+            case CMD_FILTERS:
+               a.Caption = "Filters";
+               a.imageIndex = IMG_INFO;
+               a.name = "actFilters";
+               break;
+            case CMD_HISTORY:
+               a.Caption = "History";
+               a.imageIndex = IMG_INFO;
+               a.name = "actHistory";
+               break;
+            case CMD_HOME:
+               a.Caption = "Home";
+               a.imageIndex = IMG_INFO;
+               a.name = "actHome";
+               break;
+            case CMD_LOGGING:
+               a.Caption = "Logging";
+               a.imageIndex = IMG_INFO;
+               a.name = "actLogging";
+               break;
+            case CMD_MAIN_BLOCKS:
+               a.Caption = "Main Blocks";
+               a.imageIndex = IMG_INFO;
+               a.name = "actMainBlocks";
+               break;
+            case CMD_MAIN_BLOG:
+               a.Caption = "Main Blog";
+               a.imageIndex = IMG_INFO;
+               a.name = "actMainBlog";
+               break;
+            case CMD_MAIN_BROWSE:
+               a.Caption = "Main Browse";
+               a.imageIndex = IMG_INFO;
+               a.name = "actMainBrowse";
+               break;
+            case CMD_MAIN_CHECKUPDATES:
+               a.Caption = "Main Check Updates";
+               a.imageIndex = IMG_INFO;
+               a.name = "actMainCheckUpdates";
+               break;
+            case CMD_MAIN_CODES:
+               a.Caption = "Main Codes";
+               a.imageIndex = IMG_INFO;
+               a.name = "actMainCodes";
+               break;
+            case CMD_MAIN_CONTACTUS:
+               a.Caption = "Main Contact Us";
+               a.imageIndex = IMG_INFO;
+               a.name = "actMainContactUs";
+               break;
+            case CMD_MAIN_DATABASE:
+               a.Caption = "Main Database";
+               a.imageIndex = IMG_INFO;
+               a.name = "actMainDatabase";
+               break;
+            case CMD_MAIN_FILES:
+               a.Caption = "Main Files";
+               a.imageIndex = IMG_INFO;
+               a.name = "actMainFiles";
+               break;
+            case CMD_MAIN_FORUMS:
+               a.Caption = "Main Forums";
+               a.imageIndex = IMG_INFO;
+               a.name = "actMainForums";
+               break;
+            case CMD_MAIN_FTP:
+               a.Caption = "Main FTP";
+               a.imageIndex = IMG_INFO;
+               a.name = "actMainFtp";
+               break;
+            case CMD_MAIN_HELP:
+               a.Caption = "Main Help";
+               a.imageIndex = IMG_INFO;
+               a.name = "actMainHelp";
+               break;
+            case CMD_MAIN_HOME:
+               a.Caption = "Main Home";
+               a.imageIndex = IMG_INFO;
+               a.name = "actMainHome";
+               break;
+            case CMD_MAIN_LAYOUT:
+               a.Caption = "Main Layout";
+               a.imageIndex = IMG_INFO;
+               a.name = "actMainLayout";
+               break;
+            case CMD_MAIN_NEWS:
+               a.Caption = "Main News";
+               a.imageIndex = IMG_INFO;
+               a.name = "actMainNews";
+               break;
+            case CMD_MAIN_PAGES:
+               a.Caption = "Main Pages";
+               a.imageIndex = IMG_INFO;
+               a.name = "actMainPages";
+               break;
+            case CMD_MAIN_PUBLISH:
+               a.Caption = "Main Publish";
+               a.imageIndex = IMG_INFO;
+               a.name = "actMainPublish";
+               break;
+            case CMD_MAIN_REGISTER:
+               a.Caption = "Main Register";
+               a.imageIndex = IMG_INFO;
+               a.name = "actMainRegister";
+               break;
+            case CMD_PREF:
+               a.Caption = "Pref";
+               a.imageIndex = IMG_INFO;
+               a.name = "actPref";
+               break;
+            case CMD_QUEUE:
+               a.Caption = "Queue";
+               a.imageIndex = IMG_INFO;
+               a.name = "actQueue";
+               break;
+            case CMD_RENAMER:
+               a.Caption = "Renamer";
+               a.imageIndex = IMG_INFO;
+               a.name = "actRenamer";
+               break;
+            case CMD_SETTINGS:
+               a.Caption = "Settings";
+               a.imageIndex = IMG_INFO;
+               a.name = "actSettings";
+               break;
+            case CMD_SITES:
+               a.Caption = "Sites";
+               a.imageIndex = IMG_INFO;
+               a.name = "actSites";
+               break;
+            case CMD_STATUS:
+               a.Caption = "Status";
+               a.imageIndex = IMG_INFO;
+               a.name = "actStatus";
+               break;
+            case CMD_VIEWUPDATES:
+               a.Caption = "View Updates";
+               a.imageIndex = IMG_INFO;
+               a.name = "actViewUpdates";
                break;
          }
          return a;

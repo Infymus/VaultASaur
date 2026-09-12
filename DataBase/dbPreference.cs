@@ -63,17 +63,20 @@ namespace VaultASaur3.DataBase
                 {
                     { "@PNAME", ToolBox.GetEnumName(inPrefName) }
                 };
-         using (SQLiteDataReader? reader = MasterData.ExecuteQuery(sqlStr, parameters, out e))
+         using (SQLiteDataReader reader = MasterData.ExecuteQuery(sqlStr, parameters, out e))
          {
-            if (!e.errorResult && reader != null && reader.Read())
+            if (!e.errorResult)
             {
-               t.ID = reader["ID"]?.ToString() ?? string.Empty;
-               t.ASSTR = reader["ASSTR"]?.ToString() ?? string.Empty;
-               t.ASBOOL = Convert.ToInt32(reader["ASBOOL"] ?? 0);
-               t.ASGUID = reader["ASGUID"]?.ToString() ?? string.Empty;
-               t.ASMEMO = reader["ASMEMO"]?.ToString() ?? string.Empty;
-               t.ASINT = Convert.ToInt32(reader["ASINT"] ?? 0);
-               t.ASCURR = Convert.ToDouble(reader["ASCURR"] ?? 0d);
+               if (reader.Read())
+               {
+                  t.ID = reader["ID"].ToString();
+                  t.ASSTR = reader["ASSTR"].ToString();
+                  t.ASBOOL = Convert.ToInt32(reader["ASBOOL"]);
+                  t.ASGUID = reader["ASGUID"].ToString();
+                  t.ASMEMO = reader["ASMEMO"].ToString();
+                  t.ASINT = Convert.ToInt32(reader["ASINT"]);
+                  t.ASCURR = Convert.ToDouble(reader["ASCURR"]);
+               }
             }
          }
          return t;

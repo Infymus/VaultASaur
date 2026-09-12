@@ -73,10 +73,10 @@ namespace VaultASaur3.DataBase
             {
                inRow.AcceptChanges();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                t.errorResult = true;
-               t.errorMessage = "Error accepting DataRow changes.";
+               t.errorMessage = ex.Message;
             }
          }
          return t;
@@ -107,10 +107,10 @@ namespace VaultASaur3.DataBase
             {
                inRow.AcceptChanges();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                t.errorResult = true;
-               t.errorMessage = "Error accepting DataRow changes.";
+               t.errorMessage = ex.Message;
             }
          }
          return t;
@@ -124,26 +124,26 @@ namespace VaultASaur3.DataBase
                 {
                     { "@ID", inID }
                 };
-         using (SQLiteDataReader? reader = MasterData.ExecuteQuery(sqlStr, parameters, out tErrorResult e))
+         using (SQLiteDataReader reader = MasterData.ExecuteQuery(sqlStr, parameters, out tErrorResult e))
          {
-            if (!e.errorResult && reader != null && reader.Read())
+            if (!e.errorResult)
             {
-               object? val = reader["ID"];
-               t.ID = (val != null && val != DBNull.Value) ? Convert.ToInt64(val) : 0;
-
-               object? obj;
-               obj = reader["SITENAME"]; t.SITENAME = (obj == null || obj == DBNull.Value) ? string.Empty : obj.ToString()!;
-               obj = reader["USERNAME"]; t.USERNAME = (obj == null || obj == DBNull.Value) ? string.Empty : obj.ToString()!;
-               obj = reader["PASSWORD"]; t.PASSWORD = (obj == null || obj == DBNull.Value) ? string.Empty : obj.ToString()!;
-               obj = reader["EMAIL"]; t.EMAIL = (obj == null || obj == DBNull.Value) ? string.Empty : obj.ToString()!;
-               obj = reader["SITEURL"]; t.SITEURL = (obj == null || obj == DBNull.Value) ? string.Empty : obj.ToString()!;
-               obj = reader["SECQUEST1"]; t.SECQUEST1 = (obj == null || obj == DBNull.Value) ? string.Empty : obj.ToString()!;
-               obj = reader["SECQUEST2"]; t.SECQUEST2 = (obj == null || obj == DBNull.Value) ? string.Empty : obj.ToString()!;
-               obj = reader["SECQUEST3"]; t.SECQUEST3 = (obj == null || obj == DBNull.Value) ? string.Empty : obj.ToString()!;
-               obj = reader["SECQUEST4"]; t.SECQUEST4 = (obj == null || obj == DBNull.Value) ? string.Empty : obj.ToString()!;
-               obj = reader["PASSHINT"]; t.PASSHINT = (obj == null || obj == DBNull.Value) ? string.Empty : obj.ToString()!;
-               obj = reader["SITEDESC"]; t.SITEDESC = (obj == null || obj == DBNull.Value) ? string.Empty : obj.ToString()!;
-               val = reader["ISACTIVE"]; t.IsActive = (val != null && val != DBNull.Value) ? Convert.ToInt32(val) : 0;
+               if (reader.Read())
+               {
+                  t.ID = Convert.ToInt64(reader["ID"]);
+                  t.SITENAME = reader["SITENAME"].ToString() ?? string.Empty;
+                  t.USERNAME = reader["USERNAME"].ToString() ?? string.Empty;
+                  t.PASSWORD = reader["PASSWORD"].ToString() ?? string.Empty;
+                  t.EMAIL = reader["EMAIL"].ToString() ?? string.Empty;
+                  t.SITEURL = reader["SITEURL"].ToString() ?? string.Empty;
+                  t.SECQUEST1 = reader["SECQUEST1"].ToString() ?? string.Empty;
+                  t.SECQUEST2 = reader["SECQUEST2"].ToString() ?? string.Empty;
+                  t.SECQUEST3 = reader["SECQUEST3"].ToString() ?? string.Empty;
+                  t.SECQUEST4 = reader["SECQUEST4"].ToString() ?? string.Empty;
+                  t.PASSHINT = reader["PASSHINT"].ToString() ?? string.Empty;
+                  t.SITEDESC = reader["SITEDESC"].ToString() ?? string.Empty;
+                  t.IsActive = Convert.ToInt32(reader["ISACTIVE"]);
+               }
             }
          }
          return t;
@@ -204,8 +204,8 @@ namespace VaultASaur3.DataBase
       public static tErrorResult SetAllActiveFlag(ActiveStates inState)
       {
          string sqlStr = $@"UPDATE {MasterData.GetTableName_Vault} SET ISACTIVE = " + ToolBox.ConvertEnumToInt(inState);
-         // This is an update operation; use ExecuteSQL to perform it and return the result.
-         return MasterData.ExecuteSQL(sqlStr, null);
+         SQLiteDataReader reader = MasterData.ExecuteQuery(sqlStr, null, out tErrorResult t);
+         return t;
       }
 
       public static DataTable GridLoadData(ActiveStates inActiveState)
@@ -247,28 +247,25 @@ namespace VaultASaur3.DataBase
          tErrorResult e;
          string sqlStr = $@"SELECT * FROM {MasterData.GetTableName_Vault}";
 
-         using (SQLiteDataReader? reader = MasterData.ExecuteQuery(sqlStr, null, out e))
+         using (SQLiteDataReader reader = MasterData.ExecuteQuery(sqlStr, null, out e))
          {
-            if (!e.errorResult && reader != null)
+            if (!e.errorResult)
             {
-               while (reader.Read())
+               if (reader.Read())
                {
-                  object? val = reader["ID"];
-                  t.ID = (val != null && val != DBNull.Value) ? Convert.ToInt64(val) : 0;
-
-                  object? obj;
-                  obj = reader["SITENAME"]; t.SITENAME = (obj == null || obj == DBNull.Value) ? string.Empty : obj.ToString()!;
-                  obj = reader["USERNAME"]; t.USERNAME = (obj == null || obj == DBNull.Value) ? string.Empty : obj.ToString()!;
-                  obj = reader["PASSWORD"]; t.PASSWORD = (obj == null || obj == DBNull.Value) ? string.Empty : obj.ToString()!;
-                  obj = reader["EMAIL"]; t.EMAIL = (obj == null || obj == DBNull.Value) ? string.Empty : obj.ToString()!;
-                  obj = reader["SITEURL"]; t.SITEURL = (obj == null || obj == DBNull.Value) ? string.Empty : obj.ToString()!;
-                  obj = reader["SECQUEST1"]; t.SECQUEST1 = (obj == null || obj == DBNull.Value) ? string.Empty : obj.ToString()!;
-                  obj = reader["SECQUEST2"]; t.SECQUEST2 = (obj == null || obj == DBNull.Value) ? string.Empty : obj.ToString()!;
-                  obj = reader["SECQUEST3"]; t.SECQUEST3 = (obj == null || obj == DBNull.Value) ? string.Empty : obj.ToString()!;
-                  obj = reader["SECQUEST4"]; t.SECQUEST4 = (obj == null || obj == DBNull.Value) ? string.Empty : obj.ToString()!;
-                  obj = reader["PASSHINT"]; t.PASSHINT = (obj == null || obj == DBNull.Value) ? string.Empty : obj.ToString()!;
-                  obj = reader["SITEDESC"]; t.SITEDESC = (obj == null || obj == DBNull.Value) ? string.Empty : obj.ToString()!;
-                  val = reader["ISACTIVE"]; t.IsActive = (val != null && val != DBNull.Value) ? Convert.ToInt32(val) : 0;
+                  t.ID = Convert.ToInt64(reader["ID"]);
+                  t.SITENAME = reader["SITENAME"].ToString() ?? string.Empty;
+                  t.USERNAME = reader["USERNAME"].ToString() ?? string.Empty;
+                  t.PASSWORD = reader["PASSWORD"].ToString() ?? string.Empty;
+                  t.EMAIL = reader["EMAIL"].ToString() ?? string.Empty;
+                  t.SITEURL = reader["SITEURL"].ToString() ?? string.Empty;
+                  t.SECQUEST1 = reader["SECQUEST1"].ToString() ?? string.Empty;
+                  t.SECQUEST2 = reader["SECQUEST2"].ToString() ?? string.Empty;
+                  t.SECQUEST3 = reader["SECQUEST3"].ToString() ?? string.Empty;
+                  t.SECQUEST4 = reader["SECQUEST4"].ToString() ?? string.Empty;
+                  t.PASSHINT = reader["PASSHINT"].ToString() ?? string.Empty;
+                  t.SITEDESC = reader["SITEDESC"].ToString() ?? string.Empty;
+                  t.IsActive = Convert.ToInt32(reader["ISACTIVE"]);
 
                   // Convert from Old Password
                   string fUsername = EncryptDecrypt.Decrypt(t.USERNAME, fOldPassword);
@@ -313,7 +310,7 @@ namespace VaultASaur3.DataBase
                IsActive = Convert.ToInt32(reader["ISACTIVE"])
             };
          }
-         catch (Exception)
+         catch (Exception ex)
          {
             return new tVaultRec();
          }
@@ -377,7 +374,7 @@ namespace VaultASaur3.DataBase
                found = true;
             }
          }
-         catch (Exception)
+         catch (Exception ex)
          {
          }
          return found;
@@ -407,9 +404,8 @@ namespace VaultASaur3.DataBase
          {
             File.WriteAllText(inFileName, jsonString);
          }
-         catch (Exception)
+         catch (Exception ex)
          {
-            // Surface the failure to the caller through the surrounding UI flow.
          }
       }
 

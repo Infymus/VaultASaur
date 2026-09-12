@@ -15,6 +15,11 @@ namespace VaultASaur3.Extensions
 
     public static class tDialogBox
     {
+
+        private static ProgressDialog progressDialog;
+        private static BackgroundWorker worker;
+        private static string currentDescription;
+
         public enum DialogButton
         {
             Yes,
@@ -60,7 +65,7 @@ namespace VaultASaur3.Extensions
             return dialog.ShowDialog();
         }
 
-        public static string? File_Dialog_OpenFile(string title = "Select a file", string initialDirectory = "", string filter = "All Files (*.*)|*.*")
+        public static string File_Dialog_OpenFile(string title = "Select a file", string initialDirectory = "", string filter = "All Files (*.*)|*.*")
         {
             var dialog = new VistaOpenFileDialog
             {
@@ -78,7 +83,7 @@ namespace VaultASaur3.Extensions
                 return dialog.FileName;
             }
 
-            return null;
+            return null; // User cancelled
         }
 
     }

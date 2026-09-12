@@ -18,406 +18,406 @@ using TaskDialogIcon = Ookii.Dialogs.WinForms.TaskDialogIcon;
 
 namespace VaultASaur3.Forms
 {
-    public partial class MainForm : Form
-    {
-        private string fPasswordPhrase = string.Empty;
-        private bool fPasswordCreated = false;
-        private int fVaultSecondsLimit = 300;
-        private int fVaultSecondsToLive = 300;
-        private tToolStrip toolBar;
+   public partial class MainForm : Form
+   {
+      private string fPasswordPhrase = string.Empty;
+      private bool fPasswordCreated = false;
+      private int fVaultSecondsLimit = 300;
+      private int fVaultSecondsToLive = 300;
+      private tToolStrip toolBar;
 
-        public MainForm()
-        {
-            InitializeComponent();
-            this.Text = $"{Constants.ProgramName} {ToolBox.GetBuildInfoAsString()}";
-            ToolBox.WindowSizePosition(this, Constants.ProgramName, Constants.AppWidth, Constants.AppHeight);
+      public MainForm()
+      {
+         InitializeComponent();
+         this.Text = $"{Constants.ProgramName} {ToolBox.GetBuildInfoAsString()}";
+         ToolBox.WindowSizePosition(this, Constants.ProgramName, Constants.AppWidth, Constants.AppHeight);
 
-            toolBar = new tToolStrip(menuPanel, toolStripSize.largeMenu);
-            toolBar.CreateButton(Actions.CMD_VAULT, "Vault", buttonCmd => HandleAction(buttonCmd));
-            toolBar.CreateButton(Actions.CMD_LOCK, "Lock", buttonCmd => HandleAction(buttonCmd));
-            toolBar.CreateButton(Actions.CMD_PASSWORD, "Password", buttonCmd => HandleAction(buttonCmd));
-            toolBar.CreateButton(Actions.CMD_CLOSE_MAIN, "Close", buttonCmd => HandleAction(buttonCmd));
+         toolBar = new tToolStrip(menuPanel, toolStripSize.largeMenu);
+         toolBar.CreateButton(Actions.CMD_VAULT, "Vault", buttonCmd => HandleAction(buttonCmd));
+         toolBar.CreateButton(Actions.CMD_LOCK, "Lock", buttonCmd => HandleAction(buttonCmd));
+         toolBar.CreateButton(Actions.CMD_PASSWORD, "Password", buttonCmd => HandleAction(buttonCmd));
+         toolBar.CreateButton(Actions.CMD_CLOSE_MAIN, "Close", buttonCmd => HandleAction(buttonCmd));
 
-            toolBar.EnableButton(Actions.CMD_VAULT, true);
-            toolBar.EnableButton(Actions.CMD_LOCK, false);
+         toolBar.EnableButton(Actions.CMD_VAULT, true);
+         toolBar.EnableButton(Actions.CMD_LOCK, false);
 
-            WelcomeForm w = new WelcomeForm();
-            w.ShowDialog();
-            OpenVault();
-        }
+         WelcomeForm w = new WelcomeForm();
+         w.ShowDialog();
+         OpenVault();
+      }
 
-        // ##########################################################################################
+      // ##########################################################################################
 
-        /// <summary>
-        /// Handle the ToolBar action commands.
-        /// </summary>
-        /// <param name="buttonCmd"></param>
-        private void HandleAction(int buttonCmd)
-        {
-            switch (buttonCmd)
+      /// <summary>
+      /// Handle the ToolBar action commands.
+      /// </summary>
+      /// <param name="buttonCmd"></param>
+      private void HandleAction(int buttonCmd)
+      {
+         switch (buttonCmd)
+         {
+            case Actions.CMD_VAULT:
+               OpenVault();
+               break;
+            case Actions.CMD_CLOSE_MAIN:
+               Application.Exit();
+               break;
+            case Actions.CMD_PASSWORD:
+               ChangePassword();
+               break;
+            case Actions.CMD_LOCK:
+               LockVault();
+               break;
+         }
+      }
+                  
+      /// <summary>
+      /// Save the default Window State.
+      /// </summary>
+      /// <param name="sender"></param>
+      /// <param name="e"></param>
+      private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+      {
+         // Save the window state as a string ("Normal", "Maximized", "Minimized")
+         Properties.Settings.Default.FormState = this.WindowState.ToString();
+
+         // Save the size and location only when the window is in normal state
+         if (this.WindowState == FormWindowState.Normal)
+         {
+            Properties.Settings.Default.FormLocation = this.Location;
+            Properties.Settings.Default.FormSize = this.Size;
+         }
+         else if (this.WindowState == FormWindowState.Maximized)
+         {
+            Properties.Settings.Default.FormLocation = this.RestoreBounds.Location;
+            Properties.Settings.Default.FormSize = this.RestoreBounds.Size;
+         }
+
+         // Save the settings
+         Properties.Settings.Default.Save();
+      }
+
+      /// <summary>
+      /// Load the saved Window State.
+      /// </summary>
+      /// <param name="sender"></param>
+      /// <param name="e"></param>
+      private void MainForm_Load(object sender, EventArgs e)
+      {
+         // Restore the window state (normal, maximized, minimized)
+         string windowState = Properties.Settings.Default.FormState;
+
+         if (!string.IsNullOrEmpty(windowState))
+         {
+            this.WindowState = windowState switch
             {
-                case Actions.CMD_VAULT:
-                    OpenVault();
-                    break;
-                case Actions.CMD_CLOSE_MAIN:
-                    Application.Exit();
-                    break;
-                case Actions.CMD_PASSWORD:
-                    ChangePassword();
-                    break;
-                case Actions.CMD_LOCK:
-                    LockVault();
-                    break;
-            }
-        }
+               "Maximized" => FormWindowState.Maximized,
+               "Minimized" => FormWindowState.Minimized,
+               _ => FormWindowState.Normal,
+            };
+         }
 
-        /// <summary>
-        /// Save the default Window State.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            // Save the window state as a string ("Normal", "Maximized", "Minimized")
-            Properties.Settings.Default.FormState = this.WindowState.ToString();
+         // Restore the form size and location if available
+         if (Properties.Settings.Default.FormLocation != null &&
+             Properties.Settings.Default.FormSize != null)
+         {
+            this.Location = Properties.Settings.Default.FormLocation;
+            this.Size = Properties.Settings.Default.FormSize;
+         }
+      }
 
-            // Save the size and location only when the window is in normal state
-            if (this.WindowState == FormWindowState.Normal)
+      private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
+      {
+         MainFormControl.CreateItem(FormControls.FormPreferences, this.mainDockPanel);
+      }
+
+      /// <summary>
+      /// Changes the Vault Password.
+      /// Even if they hack the application so they can just run this, they have to know the previous
+      /// password. If they don't, it'll just load up the old DB un/pw with the bad password, totally
+      /// break the original encryption and load it up with the new broken encryption.
+      /// </summary>
+      public void ChangePassword()
+      {
+         string fOldPassword = string.Empty;
+         string fPassHint = string.Empty;
+
+         CheckForPassword();
+
+         if (fPasswordPhrase == "")
+         {
+            Dialog_Box("Warning", "Vault Access Denied", "A password has never been created. Open the vault to create one.",
+                  new[] { DialogButton.OK }, TaskDialogIcon.Shield);
+            return;
+         }
+
+         // Grab their old password
+         PasswordForm passForm = new PasswordForm();
+         passForm.ShowDialog();
+         if (passForm.PassResult == FormResult.Ok)
+         {
+            fOldPassword = passForm.Password;
+         }
+         passForm.Close();
+
+         if (fOldPassword == "")
+            return;
+
+         string DecKeyStr = string.Empty;
+         string dbPwGuid = dbPreference.GetString(tPrefConstants.GuidPassword);
+
+         try
+         {
+            DecKeyStr = EncryptDecrypt.Decrypt(dbPwGuid, fOldPassword);
+         }
+         catch
+         {
+            // Do Nothing. If the encryption is wrong we mask it.
+         }
+
+         // Check to see if they match
+         if (DecKeyStr == Constants.VaultPasswordGuid)
+         {
+            // we can now change the password
+            VaultPasswordCreateForm passChangeForm = new VaultPasswordCreateForm();
+            passChangeForm.ShowDialog();
+            passChangeForm.Close();
+            if (passChangeForm.PassResult == FormResult.Ok)
             {
-                Properties.Settings.Default.FormLocation = this.Location;
-                Properties.Settings.Default.FormSize = this.Size;
+               fPasswordPhrase = passChangeForm.Password;
+               fPassHint = passChangeForm.Hint;
             }
-            else if (this.WindowState == FormWindowState.Maximized)
+            else
             {
-                Properties.Settings.Default.FormLocation = this.RestoreBounds.Location;
-                Properties.Settings.Default.FormSize = this.RestoreBounds.Size;
+               return;
             }
 
-            // Save the settings
-            Properties.Settings.Default.Save();
-        }
-
-        /// <summary>
-        /// Load the saved Window State.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            // Restore the window state (normal, maximized, minimized)
-            string windowState = Properties.Settings.Default.FormState;
-
-            if (!string.IsNullOrEmpty(windowState))
+            // Save out the new password
+            if (fPasswordPhrase != "")
             {
-                this.WindowState = windowState switch
-                {
-                    "Maximized" => FormWindowState.Maximized,
-                    "Minimized" => FormWindowState.Minimized,
-                    _ => FormWindowState.Normal,
-                };
+               SavePassword(fPassHint);
+               fPasswordCreated = true;
+               dbVault.UpdatePassword(fOldPassword, fPasswordPhrase);
+               Dialog_Box("Password Changed", "Password Changed", "VaultASaur Vault Password Created! Don''t Forget It!",
+                  new[] { DialogButton.OK }, TaskDialogIcon.Shield);
             }
-
-            // Restore the form size and location if available
-            if (!Properties.Settings.Default.FormLocation.IsEmpty &&
-                !Properties.Settings.Default.FormSize.IsEmpty)
+            else
             {
-                this.Location = Properties.Settings.Default.FormLocation;
-                this.Size = Properties.Settings.Default.FormSize;
+               Dialog_Box("Warning", "Vault Access Denied", "Password must be set before vault can be accessed. Access to the vault is denied.",
+                  new[] { DialogButton.OK }, TaskDialogIcon.Shield);
             }
-        }
 
-        private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MainFormControl.CreateItem(FormControls.FormPreferences, this.mainDockPanel);
-        }
+         }
+         else
+         {
+            Dialog_Box("Warning", "Vault Access Denied", "The password you entered is incorrect. Cannot change Passwords.",
+               new[] { DialogButton.OK }, TaskDialogIcon.Shield);
+         }
+      }
 
-        /// <summary>
-        /// Changes the Vault Password.
-        /// Even if they hack the application so they can just run this, they have to know the previous
-        /// password. If they don't, it'll just load up the old DB un/pw with the bad password, totally
-        /// break the original encryption and load it up with the new broken encryption.
-        /// </summary>
-        public void ChangePassword()
-        {
-            string fOldPassword = string.Empty;
-            string fPassHint = string.Empty;
+      /// <summary>
+      /// Check for a password. If there isn't one, create one.
+      /// </summary>
+      private void CheckForPassword()
+      {
+         string passCheckGuid = dbPreference.GetString(tPrefConstants.GuidPassword);
+         string fPassHint = string.Empty;
 
-            CheckForPassword();
-
-            if (fPasswordPhrase == "")
+         // If the preference for our Guid check is empty, they haen't created a password yet
+         if (passCheckGuid == "")
+         {
+            // Create a new Password
+            VaultPasswordCreateForm passForm = new VaultPasswordCreateForm();
+            passForm.ShowDialog();
+            if (passForm.PassResult == FormResult.Ok)
             {
-                Dialog_Box("Warning", "Vault Access Denied", "A password has never been created. Open the vault to create one.",
-                      new[] { DialogButton.OK }, TaskDialogIcon.Shield);
-                return;
+               fPasswordPhrase = passForm.Password;
+               fPassHint = passForm.Hint;
             }
+            passForm.Close();
 
-            // Grab their old password
+            if (fPasswordPhrase != "")
+            {
+               SavePassword(fPassHint);
+               fPasswordCreated = true;
+               Dialog_Box("Password Changed", "Password Changed", "VaultASaur Vault Password Created! Don''t Forget It!",
+                  new[] { DialogButton.OK }, TaskDialogIcon.Shield);
+            }
+            else
+            {
+               Dialog_Box("Warning", "Vault Access Denied", "Password must be set before vault can be accessed. Access to the vault is denied.",
+                  new[] { DialogButton.OK }, TaskDialogIcon.Shield);
+            }
+         }
+         else
+         {
+            fPasswordCreated = true;
+         }
+      }
+
+      /// <summary>
+      /// Lock the Vault.
+      /// </summary>
+      public void LockVault()
+      {
+         fPasswordPhrase = "";
+         fPasswordCreated = false;
+         MainFormControl.CloseVault();
+         toolBar.EnableButton(Actions.CMD_VAULT, true);
+         toolBar.EnableButton(Actions.CMD_LOCK, false);
+      }
+
+      /// <summary>
+      /// Opens the Vault.
+      /// </summary>
+      public void OpenVault()
+      {
+         // Make sure they've actually created a passphrase first
+         CheckForPassword();
+
+         // Now ask them for their passphrase
+         if (fPasswordCreated == true)
+         {
             PasswordForm passForm = new PasswordForm();
             passForm.ShowDialog();
             if (passForm.PassResult == FormResult.Ok)
             {
-                fOldPassword = passForm.Password;
+               fPasswordPhrase = passForm.Password;
             }
             passForm.Close();
+         }
+         else
+         {
+            return;
+         }
 
-            if (fOldPassword == "")
-                return;
-
-            string DecKeyStr = string.Empty;
+         if (fPasswordPhrase != "")
+         {
+            // Open the vault if their phassphrase unencrpyts our internal guid correctly
             string dbPwGuid = dbPreference.GetString(tPrefConstants.GuidPassword);
-
+            string DecKeyStr = string.Empty;
             try
             {
-                DecKeyStr = EncryptDecrypt.Decrypt(dbPwGuid, fOldPassword);
+               DecKeyStr = EncryptDecrypt.Decrypt(dbPwGuid, fPasswordPhrase);
             }
             catch
             {
-                // Do Nothing. If the encryption is wrong we mask it.
+               // Do Nothing. If the encryption is wrong we mask it.
             }
 
-            // Check to see if they match
+            // We have an internal GUID that if it matches, we know they have the right password. Even if
+            // they hack this, it would display the vault form - but it would be a massive jumble of garbage.
+            // The password/Passphrase is never saved anywhere.
+            // They would have to brute force against the GUID and this is the only weakness.
             if (DecKeyStr == Constants.VaultPasswordGuid)
             {
-                // we can now change the password
-                VaultPasswordCreateForm passChangeForm = new VaultPasswordCreateForm();
-                passChangeForm.ShowDialog();
-                passChangeForm.Close();
-                if (passChangeForm.PassResult == FormResult.Ok)
-                {
-                    fPasswordPhrase = passChangeForm.Password;
-                    fPassHint = passChangeForm.Hint;
-                }
-                else
-                {
-                    return;
-                }
+               MainFormControl.PasswordPhrase = fPasswordPhrase;
 
-                // Save out the new password
-                if (fPasswordPhrase != "")
-                {
-                    SavePassword(fPassHint);
-                    fPasswordCreated = true;
-                    dbVault.UpdatePassword(fOldPassword, fPasswordPhrase);
-                    Dialog_Box("Password Changed", "Password Changed", "VaultASaur Vault Password Created! Don''t Forget It!",
-                       new[] { DialogButton.OK }, TaskDialogIcon.Shield);
-                }
-                else
-                {
-                    Dialog_Box("Warning", "Vault Access Denied", "Password must be set before vault can be accessed. Access to the vault is denied.",
-                       new[] { DialogButton.OK }, TaskDialogIcon.Shield);
-                }
-
+               MainFormControl.CreateItem(FormControls.FormVault, this.mainDockPanel);
+               toolBar.EnableButton(Actions.CMD_VAULT, false);
+               toolBar.EnableButton(Actions.CMD_LOCK, true);
             }
             else
             {
-                Dialog_Box("Warning", "Vault Access Denied", "The password you entered is incorrect. Cannot change Passwords.",
-                   new[] { DialogButton.OK }, TaskDialogIcon.Shield);
+               Dialog_Box("Warning", "Vault Access Denied", "The password you entered is incorrect. Access to the vault is denied.",
+                  new[] { DialogButton.OK }, TaskDialogIcon.Shield);
+               fPasswordPhrase = "";
             }
-        }
-
-        /// <summary>
-        /// Check for a password. If there isn't one, create one.
-        /// </summary>
-        private void CheckForPassword()
-        {
-            string passCheckGuid = dbPreference.GetString(tPrefConstants.GuidPassword);
-            string fPassHint = string.Empty;
-
-            // If the preference for our Guid check is empty, they haen't created a password yet
-            if (passCheckGuid == "")
-            {
-                // Create a new Password
-                VaultPasswordCreateForm passForm = new VaultPasswordCreateForm();
-                passForm.ShowDialog();
-                if (passForm.PassResult == FormResult.Ok)
-                {
-                    fPasswordPhrase = passForm.Password;
-                    fPassHint = passForm.Hint;
-                }
-                passForm.Close();
-
-                if (fPasswordPhrase != "")
-                {
-                    SavePassword(fPassHint);
-                    fPasswordCreated = true;
-                    Dialog_Box("Password Changed", "Password Changed", "VaultASaur Vault Password Created! Don''t Forget It!",
-                       new[] { DialogButton.OK }, TaskDialogIcon.Shield);
-                }
-                else
-                {
-                    Dialog_Box("Warning", "Vault Access Denied", "Password must be set before vault can be accessed. Access to the vault is denied.",
-                       new[] { DialogButton.OK }, TaskDialogIcon.Shield);
-                }
-            }
-            else
-            {
-                fPasswordCreated = true;
-            }
-        }
-
-        /// <summary>
-        /// Lock the Vault.
-        /// </summary>
-        public void LockVault()
-        {
+         }
+         else
+         {
+            Dialog_Box("Warning", "Vault Access Denied", "The password you entered is incorrect. Access to the vault is denied.",
+                  new[] { DialogButton.OK }, TaskDialogIcon.Shield);
             fPasswordPhrase = "";
-            fPasswordCreated = false;
-            MainFormControl.CloseVault();
-            toolBar.EnableButton(Actions.CMD_VAULT, true);
-            toolBar.EnableButton(Actions.CMD_LOCK, false);
-        }
+         }
+      }
 
-        /// <summary>
-        /// Opens the Vault.
-        /// </summary>
-        public void OpenVault()
-        {
-            // Make sure they've actually created a passphrase first
-            CheckForPassword();
+      /// <summary>
+      /// Saves the password, encrypt our guid with their password.
+      /// </summary>
+      /// <param name="fPassHint"></param>
+      private void SavePassword(string fPassHint)
+      {
+         if (fPasswordPhrase != "")
+         {
+            // Encrypt our guid with their passphrase and save it
+            string DecKeyStr = EncryptDecrypt.Encrypt(Constants.VaultPasswordGuid, fPasswordPhrase);
+            dbPreference.SetString(tPrefConstants.GuidPassword, DecKeyStr);
+            // Encrypt their password hint with our password and save it
+            DecKeyStr = EncryptDecrypt.Encrypt(fPassHint, Constants.bktkobj711A);
+            dbPreference.SetString(tPrefConstants.Hint, DecKeyStr);
+         }
+      }
 
-            // Now ask them for their passphrase
-            if (fPasswordCreated == true)
+      /// <summary>
+      /// This timer when it counts down to 0 will automatically lock the vault. 
+      /// </summary>
+      private void Timer_Tick(object sender, EventArgs e)
+      {
+         if (fPasswordPhrase == "")
+         {
+            LockLabel.Text = "Vault: LOCKED";
+            countDownLabel.Text = "";
+            fVaultSecondsToLive = fVaultSecondsLimit;
+         }
+         else
+         {
+            LockLabel.Text = "Vault: UNLOCKED";
+            // This will get the system idle time.
+            // If the system has been idle for more than 1 second, then we count down to 0.
+
+            int fVaultSecondsIdle = IdleTimeChecker.GetIdleTimeSeconds();
+            if (fVaultSecondsIdle > 1)
             {
-                PasswordForm passForm = new PasswordForm();
-                passForm.ShowDialog();
-                if (passForm.PassResult == FormResult.Ok)
-                {
-                    fPasswordPhrase = passForm.Password;
-                }
-                passForm.Close();
+               fVaultSecondsToLive--;
             }
             else
             {
-                return;
+               fVaultSecondsToLive = fVaultSecondsLimit;
             }
-
-            if (fPasswordPhrase != "")
+            // Update the Label
+            countDownLabel.Text = $"Closing in {fVaultSecondsToLive} Seconds";
+            if (fVaultSecondsToLive <= 0)
             {
-                // Open the vault if their phassphrase unencrpyts our internal guid correctly
-                string dbPwGuid = dbPreference.GetString(tPrefConstants.GuidPassword);
-                string DecKeyStr = string.Empty;
-                try
-                {
-                    DecKeyStr = EncryptDecrypt.Decrypt(dbPwGuid, fPasswordPhrase);
-                }
-                catch
-                {
-                    // Do Nothing. If the encryption is wrong we mask it.
-                }
+               LockVault();
+            }
+         }
+      }
 
-                // We have an internal GUID that if it matches, we know they have the right password. Even if
-                // they hack this, it would display the vault form - but it would be a massive jumble of garbage.
-                // The password/Passphrase is never saved anywhere.
-                // They would have to brute force against the GUID and this is the only weakness.
-                if (DecKeyStr == Constants.VaultPasswordGuid)
-                {
-                    MainFormControl.PasswordPhrase = fPasswordPhrase;
+      /// <summary>
+      /// This class checks the idle time of the operating system. We use this so we can close the
+      /// vault if they idle for 300 seconds.
+      /// </summary>
+      public static class IdleTimeChecker
+      {
+         [StructLayout(LayoutKind.Sequential)]
+         public struct LASTINPUTINFO
+         {
+            public uint cbSize;
+            public uint dwTime;
+         }
 
-                    MainFormControl.CreateItem(FormControls.FormVault, this.mainDockPanel);
-                    toolBar.EnableButton(Actions.CMD_VAULT, false);
-                    toolBar.EnableButton(Actions.CMD_LOCK, true);
-                }
-                else
-                {
-                    Dialog_Box("Warning", "Vault Access Denied", "The password you entered is incorrect. Access to the vault is denied.",
-                       new[] { DialogButton.OK }, TaskDialogIcon.Shield);
-                    fPasswordPhrase = "";
-                }
+         [DllImport("user32.dll")]
+         public static extern bool GetLastInputInfo(ref LASTINPUTINFO plii);
+
+         public static int GetIdleTimeSeconds()
+         {
+            LASTINPUTINFO lastInPut = new LASTINPUTINFO();
+            lastInPut.cbSize = (uint)Marshal.SizeOf(lastInPut);
+
+            if (GetLastInputInfo(ref lastInPut))
+            {
+               uint tickCount = (uint)Environment.TickCount;
+               uint idleTimeMilliseconds = tickCount - lastInPut.dwTime;
+               return (int)(idleTimeMilliseconds / 1000);
             }
             else
             {
-                Dialog_Box("Warning", "Vault Access Denied", "The password you entered is incorrect. Access to the vault is denied.",
-                      new[] { DialogButton.OK }, TaskDialogIcon.Shield);
-                fPasswordPhrase = "";
+               return 0;
             }
-        }
+         }
 
-        /// <summary>
-        /// Saves the password, encrypt our guid with their password.
-        /// </summary>
-        /// <param name="fPassHint"></param>
-        private void SavePassword(string fPassHint)
-        {
-            if (fPasswordPhrase != "")
-            {
-                // Encrypt our guid with their passphrase and save it
-                string DecKeyStr = EncryptDecrypt.Encrypt(Constants.VaultPasswordGuid, fPasswordPhrase);
-                dbPreference.SetString(tPrefConstants.GuidPassword, DecKeyStr);
-                // Encrypt their password hint with our password and save it
-                DecKeyStr = EncryptDecrypt.Encrypt(fPassHint, Constants.bktkobj711A);
-                dbPreference.SetString(tPrefConstants.Hint, DecKeyStr);
-            }
-        }
+      }
 
-        /// <summary>
-        /// This timer when it counts down to 0 will automatically lock the vault. 
-        /// </summary>
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            if (fPasswordPhrase == "")
-            {
-                LockLabel.Text = "Vault: LOCKED";
-                countDownLabel.Text = "";
-                fVaultSecondsToLive = fVaultSecondsLimit;
-            }
-            else
-            {
-                LockLabel.Text = "Vault: UNLOCKED";
-                // This will get the system idle time.
-                // If the system has been idle for more than 1 second, then we count down to 0.
-
-                int fVaultSecondsIdle = IdleTimeChecker.GetIdleTimeSeconds();
-                if (fVaultSecondsIdle > 1)
-                {
-                    fVaultSecondsToLive--;
-                }
-                else
-                {
-                    fVaultSecondsToLive = fVaultSecondsLimit;
-                }
-                // Update the Label
-                countDownLabel.Text = $"Closing in {fVaultSecondsToLive} Seconds";
-                if (fVaultSecondsToLive <= 0)
-                {
-                    LockVault();
-                }
-            }
-        }
-
-        /// <summary>
-        /// This class checks the idle time of the operating system. We use this so we can close the
-        /// vault if they idle for 300 seconds.
-        /// </summary>
-        public static class IdleTimeChecker
-        {
-            [StructLayout(LayoutKind.Sequential)]
-            public struct LASTINPUTINFO
-            {
-                public uint cbSize;
-                public uint dwTime;
-            }
-
-            [DllImport("user32.dll")]
-            public static extern bool GetLastInputInfo(ref LASTINPUTINFO plii);
-
-            public static int GetIdleTimeSeconds()
-            {
-                LASTINPUTINFO lastInPut = new LASTINPUTINFO();
-                lastInPut.cbSize = (uint)Marshal.SizeOf(lastInPut);
-
-                if (GetLastInputInfo(ref lastInPut))
-                {
-                    uint tickCount = (uint)Environment.TickCount;
-                    uint idleTimeMilliseconds = tickCount - lastInPut.dwTime;
-                    return (int)(idleTimeMilliseconds / 1000);
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-
-        }
-
-    }
+   }
 }

@@ -80,17 +80,9 @@ namespace VaultASaur3.DataBase
       {
          int dbVersion = 0; // Default value if not found
          string sqlStr = $"SELECT DBID FROM {GetTableName_Main} LIMIT 1"; // Retrieve the only record in the table
-         using (SQLiteDataReader? reader = ExecuteQuery(sqlStr, null, out tErrorResult e))
-         {
+         using (SQLiteDataReader reader = ExecuteQuery(sqlStr, null, out tErrorResult e))
             if (!e.errorResult && reader != null && reader.Read())
-            {
-               var val = reader["DBID"];
-               if (val != null && val != DBNull.Value)
-               {
-                  dbVersion = Convert.ToInt32(val);
-               }
-            }
-         }
+               dbVersion = Convert.ToInt32(reader["DBID"]);
          return dbVersion;
       }
 
@@ -126,21 +118,17 @@ namespace VaultASaur3.DataBase
                 {
                     { "@TableName", tableName }
                 };
-         using (SQLiteDataReader? reader = ExecuteQuery(sqlStr, parameters, out tErrorResult e))
+         using (SQLiteDataReader reader = ExecuteQuery(sqlStr, parameters, out tErrorResult e))
          {
             if (!e.errorResult && reader != null && reader.Read())
             {
-               var val = reader[0];
-               if (val != null && val != DBNull.Value)
-               {
-                  return Convert.ToInt32(val) > 0;
-               }
+               return Convert.ToInt32(reader[0]) > 0;
             }
          }
          return false;
       }
 
-      public static object ExecuteScalar(string sqlStr, Dictionary<string, object>? parameters)
+      public static object ExecuteScalar(string sqlStr, Dictionary<string, object> parameters)
       {
          string connectionString = MasterData.ConnectionString();
          using (var conn = new SQLiteConnection(connectionString))
@@ -160,7 +148,7 @@ namespace VaultASaur3.DataBase
          }
       }
 
-      public static SQLiteDataReader ExecuteQuery(string sqlStr, Dictionary<string, object>? parameters = null)
+      public static SQLiteDataReader ExecuteQuery(string sqlStr, Dictionary<string, object> parameters = null)
       {
          string connectionString = MasterData.ConnectionString();
          var conn = new SQLiteConnection(connectionString);
@@ -190,9 +178,9 @@ namespace VaultASaur3.DataBase
          }
       }
 
-      public static tErrorResult? ExecuteNonQuery(string sqlStr, Dictionary<string, object>? parameters, out tErrorResult errorResult)
+      public static tErrorResult ExecuteNonQuery(string sqlStr, Dictionary<string, object> parameters, out tErrorResult errorResult)
       {
-         errorResult = new tErrorResult();
+         errorResult = new tErrorResult(); // Initialize error result
          var conn = new SQLiteConnection(ConnectionString());
 
          try
@@ -200,6 +188,7 @@ namespace VaultASaur3.DataBase
             conn.Open();
             var cmd = new SQLiteCommand(sqlStr, conn);
 
+            // Add parameters if provided
             if (parameters != null)
             {
                foreach (var param in parameters)
@@ -208,21 +197,23 @@ namespace VaultASaur3.DataBase
                }
             }
 
+            // Execute and return the reader
             cmd.ExecuteNonQuery();
          }
          catch (Exception ex)
          {
+            // Handle error and return null
             errorResult.errorResult = true;
             errorResult.errorMessage = ex.Message;
-            conn.Close();
+            conn.Close(); // Ensure connection is closed if an error occurs
             return null;
          }
          return errorResult;
       }
 
-      public static SQLiteDataReader? ExecuteQuery(string sqlStr, Dictionary<string, object>? parameters, out tErrorResult errorResult)
+      public static SQLiteDataReader ExecuteQuery(string sqlStr, Dictionary<string, object> parameters, out tErrorResult errorResult)
       {
-         errorResult = new tErrorResult();
+         errorResult = new tErrorResult(); // Initialize error result
          string connectionString = ConnectionString();
          var conn = new SQLiteConnection(connectionString);
 
@@ -231,6 +222,7 @@ namespace VaultASaur3.DataBase
             conn.Open();
             var cmd = new SQLiteCommand(sqlStr, conn);
 
+            // Add parameters if provided
             if (parameters != null)
             {
                foreach (var param in parameters)
@@ -239,13 +231,15 @@ namespace VaultASaur3.DataBase
                }
             }
 
+            // Execute and return the reader
             return cmd.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
          }
          catch (Exception ex)
          {
+            // Handle error and return null
             errorResult.errorResult = true;
             errorResult.errorMessage = ex.Message;
-            conn.Close();
+            conn.Close(); // Ensure connection is closed if an error occurs
             return null;
          }
       }
@@ -256,7 +250,7 @@ namespace VaultASaur3.DataBase
       /// </summary>
       /// <param name="sqlStr"></param>
       /// <returns></returns>
-      public static tErrorResult ExecuteSQL(string sqlStr, Dictionary<string, object>? parameters)
+      public static tErrorResult ExecuteSQL(string sqlStr, Dictionary<string, object> parameters)
       {
          tErrorResult errorResult = new tErrorResult(); // Initialize error result
          string connectionString = MasterData.ConnectionString();
@@ -320,6 +314,7 @@ namespace VaultASaur3.DataBase
       public static tErrorResult Delete(dbTypes inDbType, string inID)
       {
          tErrorResult errorResult = new tErrorResult();
+         string dbName = "";
          string sqlStr = $@"DELETE FROM {getDBNameByDBType(inDbType)} WHERE ID = @ID";
 
          using var conn = new SQLiteConnection(MasterData.ConnectionString());
@@ -339,14 +334,13 @@ namespace VaultASaur3.DataBase
                return errorResult;
             }
          }
-        catch (Exception ex)
-        {
-           errorResult.errorResult = true;
-           errorResult.errorMessage = ex.Message;
-           conn.Close();
-           // preserved existing catch behavior
-           return errorResult;
-        }
+         catch (Exception ex)
+         {
+            errorResult.errorResult = true;
+            errorResult.errorMessage = ex.Message;
+            conn.Close();
+            return null;
+         }
 
          return errorResult;
       }
@@ -370,7 +364,7 @@ namespace VaultASaur3.DataBase
             errorResult.errorResult = true;
             errorResult.errorMessage = ex.Message;
             conn.Close();
-            return errorResult;
+            return null;
          }
 
          return errorResult;

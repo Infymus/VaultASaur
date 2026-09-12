@@ -20,143 +20,145 @@
       base.Dispose(disposing);
     }
 
-        #region Windows Form Designer generated code
+      #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            menuStrip = new MenuStrip();
-            fileToolStripMenuItem = new ToolStripMenuItem();
-            preferencesToolStripMenuItem = new ToolStripMenuItem();
-            Timer = new System.Windows.Forms.Timer(components);
-            statusStrip1 = new StatusStrip();
-            LockLabel = new ToolStripStatusLabel();
-            countDownLabel = new ToolStripStatusLabel();
-            menuPanel = new Panel();
-            mainDockPanel = new Panel();
-            baseSepPanel = new Panel();
-            menuStrip.SuspendLayout();
-            statusStrip1.SuspendLayout();
-            SuspendLayout();
-            // 
-            // menuStrip
-            // 
-            menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
-            menuStrip.Location = new Point(0, 0);
-            menuStrip.Name = "menuStrip";
-            menuStrip.Size = new Size(330, 24);
-            menuStrip.TabIndex = 3;
-            menuStrip.Text = "menuStrip1";
-            // 
-            // fileToolStripMenuItem
-            // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { preferencesToolStripMenuItem });
-            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            fileToolStripMenuItem.Size = new Size(37, 20);
-            fileToolStripMenuItem.Text = "File";
-            // 
-            // preferencesToolStripMenuItem
-            // 
-            preferencesToolStripMenuItem.Image = (Image)resources.GetObject("preferencesToolStripMenuItem.Image");
-            preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            preferencesToolStripMenuItem.Size = new Size(180, 22);
-            preferencesToolStripMenuItem.Text = "Preferences";
-            preferencesToolStripMenuItem.Click += preferencesToolStripMenuItem_Click;
-            // 
-            // Timer
-            // 
-            Timer.Enabled = true;
-            Timer.Interval = 1000;
-            Timer.Tick += Timer_Tick;
-            // 
-            // statusStrip1
-            // 
-            statusStrip1.BackColor = Color.IndianRed;
-            statusStrip1.Font = new Font("Tahoma", 9F, FontStyle.Bold);
-            statusStrip1.Items.AddRange(new ToolStripItem[] { LockLabel, countDownLabel });
-            statusStrip1.Location = new Point(0, 250);
-            statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(330, 22);
-            statusStrip1.SizingGrip = false;
-            statusStrip1.TabIndex = 6;
-            statusStrip1.Text = "statusStrip1";
-            // 
-            // LockLabel
-            // 
-            LockLabel.ForeColor = Color.Yellow;
-            LockLabel.Name = "LockLabel";
-            LockLabel.Size = new Size(67, 17);
-            LockLabel.Text = "LockLabel";
-            // 
-            // countDownLabel
-            // 
-            countDownLabel.ActiveLinkColor = Color.White;
-            countDownLabel.Name = "countDownLabel";
-            countDownLabel.Size = new Size(0, 17);
-            // 
-            // menuPanel
-            // 
-            menuPanel.Dock = DockStyle.Top;
-            menuPanel.Location = new Point(0, 24);
-            menuPanel.Name = "menuPanel";
-            menuPanel.Size = new Size(330, 69);
-            menuPanel.TabIndex = 8;
-            // 
-            // mainDockPanel
-            // 
-            mainDockPanel.Dock = DockStyle.Fill;
-            mainDockPanel.Location = new Point(0, 93);
-            mainDockPanel.Name = "mainDockPanel";
-            mainDockPanel.Size = new Size(330, 157);
-            mainDockPanel.TabIndex = 9;
-            // 
-            // baseSepPanel
-            // 
-            baseSepPanel.BackColor = Color.Black;
-            baseSepPanel.Dock = DockStyle.Top;
-            baseSepPanel.Location = new Point(0, 93);
-            baseSepPanel.Name = "baseSepPanel";
-            baseSepPanel.Size = new Size(330, 1);
-            baseSepPanel.TabIndex = 11;
-            // 
-            // MainForm
-            // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(330, 272);
-            Controls.Add(baseSepPanel);
-            Controls.Add(mainDockPanel);
-            Controls.Add(menuPanel);
-            Controls.Add(statusStrip1);
-            Controls.Add(menuStrip);
-            Icon = (Icon)resources.GetObject("$this.Icon");
-            Name = "MainForm";
-            Text = "MainForm";
-            FormClosing += MainForm_FormClosing;
-            Load += MainForm_Load;
-            menuStrip.ResumeLayout(false);
-            menuStrip.PerformLayout();
-            statusStrip1.ResumeLayout(false);
-            statusStrip1.PerformLayout();
-            ResumeLayout(false);
-            PerformLayout();
-        }
+      /// <summary>
+      /// Required method for Designer support - do not modify
+      /// the contents of this method with the code editor.
+      /// </summary>
+      private void InitializeComponent()
+      {
+         components = new System.ComponentModel.Container();
+         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+         menuStrip = new MenuStrip();
+         fileToolStripMenuItem = new ToolStripMenuItem();
+         preferencesToolStripMenuItem = new ToolStripMenuItem();
+         exitToolStripMenuItem = new ToolStripMenuItem();
+         helpToolStripMenuItem = new ToolStripMenuItem();
+         Timer = new System.Windows.Forms.Timer(components);
+         statusStrip1 = new StatusStrip();
+         LockLabel = new ToolStripStatusLabel();
+         countDownLabel = new ToolStripStatusLabel();
+         menuPanel = new Panel();
+         mainDockPanel = new Panel();
+         menuStrip.SuspendLayout();
+         statusStrip1.SuspendLayout();
+         SuspendLayout();
+         // 
+         // menuStrip
+         // 
+         menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, helpToolStripMenuItem });
+         menuStrip.Location = new Point(0, 0);
+         menuStrip.Name = "menuStrip";
+         menuStrip.Size = new Size(330, 24);
+         menuStrip.TabIndex = 3;
+         menuStrip.Text = "menuStrip1";
+         // 
+         // fileToolStripMenuItem
+         // 
+         fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { preferencesToolStripMenuItem, exitToolStripMenuItem });
+         fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+         fileToolStripMenuItem.Size = new Size(37, 20);
+         fileToolStripMenuItem.Text = "File";
+         // 
+         // preferencesToolStripMenuItem
+         // 
+         preferencesToolStripMenuItem.Image = (Image)resources.GetObject("preferencesToolStripMenuItem.Image");
+         preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
+         preferencesToolStripMenuItem.Size = new Size(135, 22);
+         preferencesToolStripMenuItem.Text = "Preferences";
+         preferencesToolStripMenuItem.Click += preferencesToolStripMenuItem_Click;
+         // 
+         // exitToolStripMenuItem
+         // 
+         exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+         exitToolStripMenuItem.Size = new Size(135, 22);
+         // 
+         // helpToolStripMenuItem
+         // 
+         helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+         helpToolStripMenuItem.Size = new Size(44, 20);
+         helpToolStripMenuItem.Text = "Help";
+         // 
+         // Timer
+         // 
+         Timer.Enabled = true;
+         Timer.Interval = 1000;
+         Timer.Tick += Timer_Tick;
+         // 
+         // statusStrip1
+         // 
+         statusStrip1.BackColor = Color.IndianRed;
+         statusStrip1.Font = new Font("Tahoma", 9F, FontStyle.Bold);
+         statusStrip1.Items.AddRange(new ToolStripItem[] { LockLabel, countDownLabel });
+         statusStrip1.Location = new Point(0, 250);
+         statusStrip1.Name = "statusStrip1";
+         statusStrip1.Size = new Size(330, 22);
+         statusStrip1.SizingGrip = false;
+         statusStrip1.TabIndex = 6;
+         statusStrip1.Text = "statusStrip1";
+         // 
+         // LockLabel
+         // 
+         LockLabel.ForeColor = Color.Yellow;
+         LockLabel.Name = "LockLabel";
+         LockLabel.Size = new Size(67, 17);
+         LockLabel.Text = "LockLabel";
+         // 
+         // countDownLabel
+         // 
+         countDownLabel.Name = "countDownLabel";
+         countDownLabel.Size = new Size(0, 17);
+         // 
+         // menuPanel
+         // 
+         menuPanel.Dock = DockStyle.Top;
+         menuPanel.Location = new Point(0, 24);
+         menuPanel.Name = "menuPanel";
+         menuPanel.Size = new Size(330, 72);
+         menuPanel.TabIndex = 8;
+         // 
+         // mainDockPanel
+         // 
+         mainDockPanel.Dock = DockStyle.Fill;
+         mainDockPanel.Location = new Point(0, 96);
+         mainDockPanel.Name = "mainDockPanel";
+         mainDockPanel.Size = new Size(330, 154);
+         mainDockPanel.TabIndex = 9;
+         // 
+         // MainForm
+         // 
+         AutoScaleDimensions = new SizeF(7F, 15F);
+         AutoScaleMode = AutoScaleMode.Font;
+         ClientSize = new Size(330, 272);
+         Controls.Add(mainDockPanel);
+         Controls.Add(menuPanel);
+         Controls.Add(statusStrip1);
+         Controls.Add(menuStrip);
+         Icon = (Icon)resources.GetObject("$this.Icon");
+         Name = "MainForm";
+         Text = "MainForm";
+         FormClosing += MainForm_FormClosing;
+         Load += MainForm_Load;
+         menuStrip.ResumeLayout(false);
+         menuStrip.PerformLayout();
+         statusStrip1.ResumeLayout(false);
+         statusStrip1.PerformLayout();
+         ResumeLayout(false);
+         PerformLayout();
+      }
 
-        #endregion
-        private MenuStrip menuStrip;
+      #endregion
+      private MenuStrip menuStrip;
     private ToolStripMenuItem fileToolStripMenuItem;
+    private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem preferencesToolStripMenuItem;
+        private ToolStripMenuItem exitToolStripMenuItem;
       private System.Windows.Forms.Timer Timer;
       private StatusStrip statusStrip1;
       private ToolStripStatusLabel LockLabel;
       private ToolStripStatusLabel countDownLabel;
       private Panel menuPanel;
       private Panel mainDockPanel;
-        public Panel baseSepPanel;
-    }
+   }
 }

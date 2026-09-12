@@ -286,7 +286,7 @@
          // 
          label5.AutoSize = true;
          label5.Font = new Font("Verdana", 9F, FontStyle.Bold);
-         label5.Location = new Point(9, 159);
+         label5.Location = new Point(6, 159);
          label5.Margin = new Padding(4, 0, 4, 0);
          label5.Name = "label5";
          label5.Size = new Size(117, 14);
@@ -310,7 +310,7 @@
          // 
          label1.AutoSize = true;
          label1.Font = new Font("Verdana", 9F, FontStyle.Bold);
-         label1.Location = new Point(9, 70);
+         label1.Location = new Point(4, 61);
          label1.Margin = new Padding(4, 0, 4, 0);
          label1.Name = "label1";
          label1.Size = new Size(85, 14);
@@ -334,7 +334,7 @@
          // 
          passLabel.AutoSize = true;
          passLabel.Font = new Font("Verdana", 9F, FontStyle.Bold);
-         passLabel.Location = new Point(9, 16);
+         passLabel.Location = new Point(4, 14);
          passLabel.Margin = new Padding(4, 0, 4, 0);
          passLabel.Name = "passLabel";
          passLabel.Size = new Size(80, 14);
@@ -358,7 +358,7 @@
          // 
          label2.AutoSize = true;
          label2.Font = new Font("Verdana", 9F, FontStyle.Bold);
-         label2.Location = new Point(9, 112);
+         label2.Location = new Point(4, 112);
          label2.Margin = new Padding(4, 0, 4, 0);
          label2.Name = "label2";
          label2.Size = new Size(154, 14);

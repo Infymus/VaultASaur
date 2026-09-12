@@ -107,8 +107,8 @@ namespace VaultASaur3.ToolsBox
          // Get the current assembly
          Assembly assembly = Assembly.GetExecutingAssembly();
 
-         // Get version information (Version can be null on some build setups)
-         Version version = assembly.GetName().Version ?? new Version(0, 0);
+         // Get version information
+         Version version = assembly.GetName().Version;
 
          // Extract major and minor version only
          string majorMinorVersion = $"{version.Major}.{version.Minor}";
