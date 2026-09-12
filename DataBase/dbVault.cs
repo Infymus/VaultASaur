@@ -278,7 +278,7 @@ namespace VaultASaur3.DataBase
                   t.USERNAME = EncryptDecrypt.Encrypt(fUsername, fNewPassword);
                   t.PASSWORD = EncryptDecrypt.Encrypt(fPassword, fNewPassword);
                   t.SECQUEST1 = EncryptDecrypt.Encrypt(fSecquest1, fNewPassword);
-                  t.SECQUEST2 = EncryptDecrypt.Encrypt(fSecquest1, fNewPassword);
+                  t.SECQUEST2 = EncryptDecrypt.Encrypt(fSecquest2, fNewPassword);
                   t.SECQUEST3 = EncryptDecrypt.Encrypt(fSecquest3, fNewPassword);
 
                   // Write it
