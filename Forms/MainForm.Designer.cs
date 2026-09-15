@@ -33,8 +33,6 @@
          menuStrip = new MenuStrip();
          fileToolStripMenuItem = new ToolStripMenuItem();
          preferencesToolStripMenuItem = new ToolStripMenuItem();
-         exitToolStripMenuItem = new ToolStripMenuItem();
-         helpToolStripMenuItem = new ToolStripMenuItem();
          Timer = new System.Windows.Forms.Timer(components);
          statusStrip1 = new StatusStrip();
          LockLabel = new ToolStripStatusLabel();
@@ -47,7 +45,7 @@
          // 
          // menuStrip
          // 
-         menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, helpToolStripMenuItem });
+         menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
          menuStrip.Location = new Point(0, 0);
          menuStrip.Name = "menuStrip";
          menuStrip.Size = new Size(330, 24);
@@ -56,7 +54,7 @@
          // 
          // fileToolStripMenuItem
          // 
-         fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { preferencesToolStripMenuItem, exitToolStripMenuItem });
+         fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { preferencesToolStripMenuItem });
          fileToolStripMenuItem.Name = "fileToolStripMenuItem";
          fileToolStripMenuItem.Size = new Size(37, 20);
          fileToolStripMenuItem.Text = "File";
@@ -69,16 +67,6 @@
          preferencesToolStripMenuItem.Text = "Preferences";
          preferencesToolStripMenuItem.Click += preferencesToolStripMenuItem_Click;
          // 
-         // exitToolStripMenuItem
-         // 
-         exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-         exitToolStripMenuItem.Size = new Size(135, 22);
-         // 
-         // helpToolStripMenuItem
-         // 
-         helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-         helpToolStripMenuItem.Size = new Size(44, 20);
-         helpToolStripMenuItem.Text = "Help";
          // 
          // Timer
          // 
@@ -151,9 +139,7 @@
       #endregion
       private MenuStrip menuStrip;
     private ToolStripMenuItem fileToolStripMenuItem;
-    private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem preferencesToolStripMenuItem;
-        private ToolStripMenuItem exitToolStripMenuItem;
       private System.Windows.Forms.Timer Timer;
       private StatusStrip statusStrip1;
       private ToolStripStatusLabel LockLabel;

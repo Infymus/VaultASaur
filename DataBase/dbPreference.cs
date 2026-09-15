@@ -131,11 +131,11 @@ namespace VaultASaur3.DataBase
       {
          if (PreferenceExists(inPrefName))
          {
-            string sqlStr = $@"UPDATE {MasterData.GetTableName_Preference} SET ASGUID = @ASBOOL WHERE PNAME = @PNAME";
+            string sqlStr = $@"UPDATE {MasterData.GetTableName_Preference} SET ASBOOL = @ASBOOL WHERE PNAME = @PNAME";
             var parameters = new Dictionary<string, object>
                 {
                     { "@PNAME", ToolBox.GetEnumName(inPrefName) },
-                    { "@ASBOOL", inValue}
+                    { "@ASBOOL", inValue ? 1 : 0 }
                 };
             MasterData.ExecuteSQL(sqlStr, parameters);
          }
@@ -152,11 +152,11 @@ namespace VaultASaur3.DataBase
       {
          if (PreferenceExists(inPrefName))
          {
-            string sqlStr = $@"UPDATE {MasterData.GetTableName_Preference} SET ASGUID = @ASINT WHERE PNAME = @PNAME";
+            string sqlStr = $@"UPDATE {MasterData.GetTableName_Preference} SET ASINT = @ASINT WHERE PNAME = @PNAME";
             var parameters = new Dictionary<string, object>
                 {
                     { "@PNAME", ToolBox.GetEnumName(inPrefName) },
-                    { "@ASINT", inValue}
+                    { "@ASINT", inValue }
                 };
             MasterData.ExecuteSQL(sqlStr, parameters);
          }
@@ -211,7 +211,7 @@ namespace VaultASaur3.DataBase
          }
       }
 
-      public static void SetSMemo(tPrefConstants inPrefName, string inValue)
+      public static void SetMemo(tPrefConstants inPrefName, string inValue)
       {
          if (PreferenceExists(inPrefName))
          {
@@ -232,6 +232,32 @@ namespace VaultASaur3.DataBase
          }
       }
 
+      public static double GetCurr(tPrefConstants inPrefName)
+      {
+         tPreferenceRec t = GetPrefByPrefName(inPrefName);
+         return t.ASCURR;
+      }
+
+      public static void SetCurr(tPrefConstants inPrefName, double inValue)
+      {
+         if (PreferenceExists(inPrefName))
+         {
+            string sqlStr = $@"UPDATE {MasterData.GetTableName_Preference} SET ASCURR = @ASCURR WHERE PNAME = @PNAME";
+            var parameters = new Dictionary<string, object>
+               {
+                  { "@PNAME", ToolBox.GetEnumName(inPrefName) },
+                  { "@ASCURR", inValue }
+               };
+            MasterData.ExecuteSQL(sqlStr, parameters);
+         }
+         else
+         {
+            tPreferenceRec t = InitializeRecord();
+            t.PNAME = ToolBox.GetEnumName(inPrefName);
+            t.ASCURR = inValue;
+            Add(t);
+         }
+      }
 
    }
 }

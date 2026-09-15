@@ -22,8 +22,8 @@ namespace VaultASaur3.Forms
    {
       private string fPasswordPhrase = string.Empty;
       private bool fPasswordCreated = false;
-      private int fVaultSecondsLimit = 300;
-      private int fVaultSecondsToLive = 300;
+      private int fVaultSecondsLimit;
+      private int fVaultSecondsToLive;
       private tToolStrip toolBar;
 
       public MainForm()
@@ -31,6 +31,7 @@ namespace VaultASaur3.Forms
          InitializeComponent();
          this.Text = $"{Constants.ProgramName} {ToolBox.GetBuildInfoAsString()}";
          ToolBox.WindowSizePosition(this, Constants.ProgramName, Constants.AppWidth, Constants.AppHeight);
+         RefreshAutoCloseSeconds();
 
          toolBar = new tToolStrip(menuPanel, toolStripSize.largeMenu);
          toolBar.CreateButton(Actions.CMD_VAULT, "Vault", buttonCmd => HandleAction(buttonCmd));
@@ -129,6 +130,19 @@ namespace VaultASaur3.Forms
       private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
       {
          MainFormControl.CreateItem(FormControls.FormPreferences, this.mainDockPanel);
+         // Relock the vault so any changes in preferences can be reloaded
+         LockVault();
+         RefreshAutoCloseSeconds();
+      }
+
+      private void RefreshAutoCloseSeconds()
+      {
+         fVaultSecondsLimit = dbPreference.GetInt(tPrefConstants.AutoClose);
+         if (fVaultSecondsLimit <= 0)
+         {
+            fVaultSecondsLimit = 300;
+         }
+         fVaultSecondsToLive = fVaultSecondsLimit;
       }
 
       /// <summary>
@@ -354,6 +368,12 @@ namespace VaultASaur3.Forms
       /// </summary>
       private void Timer_Tick(object sender, EventArgs e)
       {
+         fVaultSecondsLimit = dbPreference.GetInt(tPrefConstants.AutoClose);
+         if (fVaultSecondsLimit <= 0)
+         {
+            fVaultSecondsLimit = 300;
+         }
+
          if (fPasswordPhrase == "")
          {
             LockLabel.Text = "Vault: LOCKED";

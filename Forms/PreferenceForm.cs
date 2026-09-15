@@ -48,6 +48,7 @@ namespace VaultASaur3.Forms
             {
                 case Actions.CMD_SAVE:
                     SetPreferences();
+                    Close();
                     break;
             }
         }
