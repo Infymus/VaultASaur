@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Author: Infymus
  * Description: VaultASaur
  * Copyright (c) 2025, Infymus. All rights reserved.
@@ -350,12 +350,12 @@ namespace VaultASaur3.DataBase
 
       public static void Encrypt(ref tVaultRec t, string inPasswordPhrase)
       {
-         t.USERNAME = EncryptDecrypt.Encrypt(t.USERNAME, inPasswordPhrase);
-         t.PASSWORD = EncryptDecrypt.Encrypt(t.PASSWORD, inPasswordPhrase);
-         t.SECQUEST1 = EncryptDecrypt.Encrypt(t.SECQUEST1, inPasswordPhrase);
-         t.SECQUEST2 = EncryptDecrypt.Encrypt(t.SECQUEST2, inPasswordPhrase);
-         t.SECQUEST3 = EncryptDecrypt.Encrypt(t.SECQUEST3, inPasswordPhrase);
-         t.SECQUEST4 = EncryptDecrypt.Encrypt("", inPasswordPhrase);
+         t.USERNAME = EncryptDecrypt.Encrypt(t.USERNAME ?? string.Empty, inPasswordPhrase);
+         t.PASSWORD = EncryptDecrypt.Encrypt(t.PASSWORD ?? string.Empty, inPasswordPhrase);
+         t.SECQUEST1 = EncryptDecrypt.Encrypt(t.SECQUEST1 ?? string.Empty, inPasswordPhrase);
+         t.SECQUEST2 = EncryptDecrypt.Encrypt(t.SECQUEST2 ?? string.Empty, inPasswordPhrase);
+         t.SECQUEST3 = EncryptDecrypt.Encrypt(t.SECQUEST3 ?? string.Empty, inPasswordPhrase);
+         t.SECQUEST4 = EncryptDecrypt.Encrypt(t.SECQUEST4 ?? string.Empty, inPasswordPhrase);
       }
 
       public static bool CheckDuplicates(tVaultRec t)
@@ -367,124 +367,385 @@ namespace VaultASaur3.DataBase
             conn.Open();
             string sqlStr = $@"SELECT 1 FROM {MasterData.GetTableName_Vault} WHERE UPPER(SITENAME) = @SITENAMEUPPER LIMIT 1";
             using var cmd = new SQLiteCommand(sqlStr, conn);
-            cmd.Parameters.AddWithValue("@SITENAMEUPPER", t.SITENAME);
+            cmd.Parameters.AddWithValue("@SITENAMEUPPER", (t.SITENAME ?? string.Empty).ToUpperInvariant());
             var result = cmd.ExecuteScalar();
             if (result != null)
             {
                found = true;
             }
          }
-         catch (Exception ex)
+         catch (Exception)
          {
          }
          return found;
       }
 
-      public static void ExportDatabase(string inFileName, string inPasswordPhrase)
+      public static tErrorResult ExportDatabase(string inFileName, string inPasswordPhrase)
       {
-         using var conn = new SQLiteConnection(MasterData.ConnectionString());
-         conn.Open();
-         string sqlStr = @$"SELECT * FROM {MasterData.GetTableName_Vault}";
-         var cmd = new SQLiteCommand(sqlStr, conn);
-         var adapter = new SQLiteDataAdapter(cmd);
-         var dt = new DataTable();
-         adapter.Fill(dt);
-
-         var decryptedVaultEntries = new List<tVaultRec>();
-
-         foreach (DataRow row in dt.Rows)
+         var result = new tErrorResult();
+         if (string.IsNullOrWhiteSpace(inFileName))
          {
-            var decryptedRec = DecryptDataRow(row, inPasswordPhrase);
-            decryptedVaultEntries.Add(decryptedRec);
+            result.errorResult = true;
+            result.errorMessage = "Export file path cannot be empty.";
+            return result;
          }
-         var options = new JsonSerializerOptions { WriteIndented = true };
-         string jsonString = JsonSerializer.Serialize(decryptedVaultEntries, options);
+
+         if (string.IsNullOrEmpty(inPasswordPhrase))
+         {
+            result.errorResult = true;
+            result.errorMessage = "Vault password phrase is not set. Cannot decrypt records for export.";
+            return result;
+         }
 
          try
          {
+            using var conn = new SQLiteConnection(MasterData.ConnectionString());
+            conn.Open();
+            string sqlStr = @$"SELECT * FROM {MasterData.GetTableName_Vault}";
+            using var cmd = new SQLiteCommand(sqlStr, conn);
+            using var adapter = new SQLiteDataAdapter(cmd);
+            var dt = new DataTable();
+            adapter.Fill(dt);
+
+            var decryptedVaultEntries = new List<tVaultRec>();
+
+            foreach (DataRow row in dt.Rows)
+            {
+               var decryptedRec = DecryptDataRow(row, inPasswordPhrase);
+               decryptedVaultEntries.Add(decryptedRec);
+            }
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            string jsonString = JsonSerializer.Serialize(decryptedVaultEntries, options);
+
             File.WriteAllText(inFileName, jsonString);
+            result.errorResult = false;
+            result.AsInteger = decryptedVaultEntries.Count;
+            result.errorMessage = $"Successfully exported {decryptedVaultEntries.Count} site(s) to:\n{inFileName}";
          }
          catch (Exception ex)
          {
+            result.errorResult = true;
+            result.errorMessage = $"Failed to export database:\n{ex.Message}";
          }
+         return result;
       }
 
-      public static void ImportDatabase(string inFileName, string inPasswordPhrase)
+      public static tErrorResult ImportDatabase(string inFileName, string inPasswordPhrase)
       {
+         var result = new tErrorResult();
+
+         if (string.IsNullOrWhiteSpace(inFileName) || !File.Exists(inFileName))
+         {
+            result.errorResult = true;
+            result.errorMessage = $"The import file was not found:\n{inFileName}";
+            return result;
+         }
+
+         if (string.IsNullOrEmpty(inPasswordPhrase))
+         {
+            result.errorResult = true;
+            result.errorMessage = "Vault password phrase is not set. Please unlock the vault first.";
+            return result;
+         }
+
          try
          {
-            // 1. Read the raw, potentially encrypted content from the file.
-            string oldUNPWContent = File.ReadAllText(inFileName);
+            string content = File.ReadAllText(inFileName);
+            var records = ParseVaultRecords(content);
 
-            // 3. Deserialize the plaintext JSON string into a list of DTOs.
-            var jsonRecords = JsonSerializer.Deserialize<List<tJsonVaultRec>>(oldUNPWContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-            if (jsonRecords == null || !jsonRecords.Any())
+            if (records == null || records.Count == 0)
             {
-               return;
+               result.errorResult = true;
+               result.errorMessage = "No valid site records could be parsed from the file.";
+               return result;
             }
 
             int importCount = 0;
             int duplicateCount = 0;
+            int errorCount = 0;
 
-            foreach (var jsonRec in jsonRecords)
+            foreach (var rec in records)
             {
-               // 4. Map the JSON DTO to the database Vault Record structure (tVaultRec).
-               var vaultRec = new tVaultRec
-               {
-                  SITENAME = jsonRec.SiteName,
-                  USERNAME = jsonRec.Username,
-                  PASSWORD = jsonRec.Password,
-                  EMAIL = jsonRec.Email,
-                  SITEURL = jsonRec.URL,
-                  PASSHINT = jsonRec.PasswordHint,
-                  SITEDESC = jsonRec.Description,
-                  IsActive = jsonRec.Active ? 1 : 0,
-                  // Map Question fields (JSON only has 3, DB has 4)
-                  SECQUEST1 = jsonRec.Question1,
-                  SECQUEST2 = jsonRec.Question2,
-                  SECQUEST3 = jsonRec.Question3,
-                  SECQUEST4 = "" // SECQUEST4 is empty in JSON, set to empty string
-               };
+               if (string.IsNullOrWhiteSpace(rec.SITENAME))
+                  continue;
 
-               // 5. Check for duplicates before processing.
-               if (CheckDuplicates(vaultRec))
+               if (CheckDuplicates(rec))
                {
                   duplicateCount++;
-                  Console.WriteLine($"[Import] Skipping duplicate record for Site: {vaultRec.SITENAME}");
                   continue;
                }
 
-               // 6. Encrypt the sensitive fields BEFORE insertion.
+               var vaultRec = rec;
                Encrypt(ref vaultRec, inPasswordPhrase);
 
-               // 7. Add the encrypted record to the database.
-               var result = Add(vaultRec);
-
-               if (!result.errorResult)
+               var addResult = Add(vaultRec);
+               if (!addResult.errorResult)
                {
                   importCount++;
                }
                else
                {
-                  Console.WriteLine($"[Error] Failed to import record for {vaultRec.SITENAME}: {result.errorMessage}");
+                  errorCount++;
                }
             }
 
-            Console.WriteLine($"[Import] Import complete. Total records processed: {jsonRecords.Count}. Imported: {importCount}. Skipped Duplicates: {duplicateCount}.");
-         }
-         catch (FileNotFoundException)
-         {
-            Console.WriteLine($"[Error] The file was not found: {inFileName}");
-         }
-         catch (JsonException ex)
-         {
-            Console.WriteLine($"[Error] Failed to deserialize JSON. Check file format. Details: {ex.Message}");
+            result.errorResult = false;
+            result.AsInteger = importCount;
+            result.errorMessage = $"Import completed.\n\nTotal in file: {records.Count}\nImported: {importCount}\nSkipped Duplicates: {duplicateCount}";
+            if (errorCount > 0)
+            {
+               result.errorMessage += $"\nErrors: {errorCount}";
+            }
          }
          catch (Exception ex)
          {
-            Console.WriteLine($"[Critical Error] An unexpected error occurred during import: {ex.Message}");
+            result.errorResult = true;
+            result.errorMessage = $"An error occurred during import:\n{ex.Message}";
          }
+
+         return result;
+      }
+
+      private static List<tVaultRec> ParseVaultRecords(string content)
+      {
+         var parsedDicts = ParseRelaxedJson(content);
+         var list = new List<tVaultRec>();
+         foreach (var dict in parsedDicts)
+         {
+            var rec = MapToVaultRec(dict);
+            if (!string.IsNullOrWhiteSpace(rec.SITENAME))
+            {
+               list.Add(rec);
+            }
+         }
+         return list;
+      }
+
+      private static tVaultRec MapToVaultRec(Dictionary<string, string> dict)
+      {
+         var rec = new tVaultRec();
+
+         string GetVal(params string[] keys)
+         {
+            foreach (var k in keys)
+            {
+               if (dict.TryGetValue(k, out var v) && v != null)
+                  return v;
+            }
+            return string.Empty;
+         }
+
+         rec.SITENAME = GetVal("SiteName", "SITENAME").Trim();
+         rec.USERNAME = GetVal("Username", "USERNAME").TrimEnd('\r', '\n');
+         rec.PASSWORD = GetVal("Password", "PASSWORD").TrimEnd('\r', '\n');
+         rec.EMAIL = GetVal("Email", "EMAIL").TrimEnd('\r', '\n');
+         rec.SITEURL = GetVal("URL", "SITEURL").TrimEnd('\r', '\n');
+         rec.PASSHINT = GetVal("PasswordHint", "PASSHINT").TrimEnd('\r', '\n');
+         rec.SITEDESC = GetVal("Description", "SITEDESC").Trim();
+         rec.SECQUEST1 = GetVal("Question1", "SECQUEST1").TrimEnd('\r', '\n');
+         rec.SECQUEST2 = GetVal("Question2", "SECQUEST2").TrimEnd('\r', '\n');
+         rec.SECQUEST3 = GetVal("Question3", "SECQUEST3").TrimEnd('\r', '\n');
+         rec.SECQUEST4 = GetVal("Question4", "SECQUEST4").TrimEnd('\r', '\n');
+
+         string activeVal = GetVal("Active", "IsActive", "ISACTIVE");
+         if (bool.TryParse(activeVal, out bool bVal))
+         {
+            rec.IsActive = bVal ? 1 : 0;
+         }
+         else if (int.TryParse(activeVal, out int iVal))
+         {
+            rec.IsActive = iVal;
+         }
+         else
+         {
+            rec.IsActive = 1;
+         }
+
+         return rec;
+      }
+
+      private static List<Dictionary<string, string>> ParseRelaxedJson(string text)
+      {
+         var records = new List<Dictionary<string, string>>();
+         int i = 0;
+         int len = text.Length;
+
+         while (i < len)
+         {
+            // Find '{'
+            while (i < len && text[i] != '{')
+            {
+               if (text[i] == '/' && i + 1 < len)
+               {
+                  if (text[i + 1] == '/')
+                  {
+                     i += 2;
+                     while (i < len && text[i] != '\n' && text[i] != '\r') i++;
+                     continue;
+                  }
+                  else if (text[i + 1] == '*')
+                  {
+                     i += 2;
+                     while (i + 1 < len && !(text[i] == '*' && text[i + 1] == '/')) i++;
+                     if (i + 1 < len) i += 2;
+                     continue;
+                  }
+               }
+               i++;
+            }
+
+            if (i >= len) break;
+            i++; // skip '{'
+
+            var dict = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+            while (i < len)
+            {
+               // Skip whitespace, commas, and comments
+               while (i < len)
+               {
+                  if (char.IsWhiteSpace(text[i]) || text[i] == ',')
+                  {
+                     i++;
+                  }
+                  else if (text[i] == '/' && i + 1 < len && text[i + 1] == '/')
+                  {
+                     i += 2;
+                     while (i < len && text[i] != '\n' && text[i] != '\r') i++;
+                  }
+                  else if (text[i] == '/' && i + 1 < len && text[i + 1] == '*')
+                  {
+                     i += 2;
+                     while (i + 1 < len && !(text[i] == '*' && text[i + 1] == '/')) i++;
+                     if (i + 1 < len) i += 2;
+                  }
+                  else
+                  {
+                     break;
+                  }
+               }
+
+               if (i >= len || text[i] == '}')
+               {
+                  if (i < len) i++;
+                  break;
+               }
+
+               // Read key
+               string key = "";
+               if (text[i] == '"' || text[i] == '\'')
+               {
+                  char quote = text[i++];
+                  int start = i;
+                  while (i < len && text[i] != quote)
+                  {
+                     if (text[i] == '\\' && i + 1 < len) i += 2;
+                     else i++;
+                  }
+                  key = text.Substring(start, i - start);
+                  if (i < len) i++;
+               }
+               else
+               {
+                  int start = i;
+                  while (i < len && (char.IsLetterOrDigit(text[i]) || text[i] == '_' || text[i] == '$')) i++;
+                  key = text.Substring(start, i - start);
+               }
+
+               key = key.Trim();
+
+               // Skip to ':'
+               while (i < len && (char.IsWhiteSpace(text[i]) || text[i] == ':')) i++;
+
+               // Read value
+               string val = "";
+               if (i < len && (text[i] == '"' || text[i] == '\''))
+               {
+                  char quote = text[i++];
+                  var sb = new System.Text.StringBuilder();
+                  while (i < len)
+                  {
+                     if (text[i] == quote)
+                     {
+                        if (quote == '\'' && i + 1 < len && text[i + 1] == '\'')
+                        {
+                           sb.Append('\'');
+                           i += 2;
+                           continue;
+                        }
+                        break;
+                     }
+
+                     if (text[i] == '\\' && i + 1 < len)
+                     {
+                        char next = text[i + 1];
+                        if (next == quote || next == '\\' || next == '/')
+                        {
+                           sb.Append(next);
+                           i += 2;
+                           continue;
+                        }
+                        else if (next == 'n') { sb.Append('\n'); i += 2; continue; }
+                        else if (next == 'r') { sb.Append('\r'); i += 2; continue; }
+                        else if (next == 't') { sb.Append('\t'); i += 2; continue; }
+                        else if (next == 'b') { sb.Append('\b'); i += 2; continue; }
+                        else if (next == 'f') { sb.Append('\f'); i += 2; continue; }
+                        else if (next == 'u' && i + 5 < len)
+                        {
+                           string hex = text.Substring(i + 2, 4);
+                           if (int.TryParse(hex, System.Globalization.NumberStyles.HexNumber, null, out int codePoint))
+                           {
+                              sb.Append((char)codePoint);
+                              i += 6;
+                              continue;
+                           }
+                        }
+                        sb.Append('\\');
+                        i++;
+                        continue;
+                     }
+
+                     sb.Append(text[i]);
+                     i++;
+                  }
+                  val = sb.ToString();
+                  if (i < len) i++;
+               }
+               else
+               {
+                  int start = i;
+                  while (i < len && text[i] != ',' && text[i] != '}' && !char.IsWhiteSpace(text[i]))
+                  {
+                     i++;
+                  }
+                  val = text.Substring(start, i - start).Trim();
+                  if (string.Equals(val, "null", StringComparison.OrdinalIgnoreCase))
+                  {
+                     val = "";
+                  }
+               }
+
+               if (!string.IsNullOrEmpty(key))
+               {
+                  dict[key] = val;
+               }
+
+               // Skip whitespace, comma before next property or '}'
+               while (i < len && (char.IsWhiteSpace(text[i]) || text[i] == ',')) i++;
+               if (i < len && text[i] == '}')
+               {
+                  i++;
+                  break;
+               }
+            }
+
+            if (dict.Count > 0)
+            {
+               records.Add(dict);
+            }
+         }
+
+         return records;
       }
    }
 

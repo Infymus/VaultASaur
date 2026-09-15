@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Author: Infymus
  * Description: VaultASaur
  * Copyright (c) 2025, Infymus. All rights reserved.
@@ -496,7 +496,17 @@ namespace VaultASaur3.Forms
 
          if (saveFilename != "")
          {
-            dbVault.ExportDatabase(saveFilename, fPasswordPhrase);
+            tErrorResult result = dbVault.ExportDatabase(saveFilename, fPasswordPhrase);
+            if (result.errorResult)
+            {
+               Dialog_Box("Export Error", result.errorMessage, "Export Failed",
+                  new[] { DialogButton.OK }, TaskDialogIcon.Error);
+            }
+            else
+            {
+               Dialog_Box("Export Database", result.errorMessage, "Export Complete",
+                  new[] { DialogButton.OK }, TaskDialogIcon.Information);
+            }
          }
       }
 
@@ -505,6 +515,13 @@ namespace VaultASaur3.Forms
       /// </summary>
       public void ImportSites()
       {
+         if (string.IsNullOrEmpty(fPasswordPhrase))
+         {
+            Dialog_Box("Error", "Vault password phrase is not set. Please unlock the vault first.", "Import Failed",
+               new[] { DialogButton.OK }, TaskDialogIcon.Error);
+            return;
+         }
+
          TaskDialogButton warning;
          warning = Dialog_Box("Warning", $"Import a decrypted JSON file? It will avoid duplicates but Can't be sure.", "Are you sure?",
                       new[] { DialogButton.OK, DialogButton.Cancel }, TaskDialogIcon.Information);
@@ -526,7 +543,18 @@ namespace VaultASaur3.Forms
 
          if (openFileName != "")
          {
-            dbVault.ImportDatabase(openFileName, fPasswordPhrase);
+            tErrorResult result = dbVault.ImportDatabase(openFileName, fPasswordPhrase);
+            RefreshDB();
+            if (result.errorResult)
+            {
+               Dialog_Box("Import Error", result.errorMessage, "Import Failed",
+                  new[] { DialogButton.OK }, TaskDialogIcon.Error);
+            }
+            else
+            {
+               Dialog_Box("Import Sites", result.errorMessage, "Import Complete",
+                  new[] { DialogButton.OK }, TaskDialogIcon.Information);
+            }
          }
       }
 
