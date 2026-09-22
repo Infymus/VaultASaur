@@ -48,11 +48,13 @@
             // 
             // statusLabel
             // 
+            statusLabel.BorderStyle = BorderStyle.FixedSingle;
+            statusLabel.FlatStyle = FlatStyle.Popup;
             statusLabel.Font = new Font("Arial", 14F, FontStyle.Bold);
             statusLabel.ForeColor = Color.Red;
-            statusLabel.Location = new Point(12, 54);
+            statusLabel.Location = new Point(9, 56);
             statusLabel.Name = "statusLabel";
-            statusLabel.Size = new Size(429, 222);
+            statusLabel.Size = new Size(449, 159);
             statusLabel.TabIndex = 14;
             statusLabel.Text = resources.GetString("statusLabel.Text");
             // 
@@ -65,9 +67,9 @@
             passGroupBox.Controls.Add(ShowPasswordCheck);
             passGroupBox.Controls.Add(db_Password1);
             passGroupBox.Controls.Add(passLabel);
-            passGroupBox.Location = new Point(3, 279);
+            passGroupBox.Location = new Point(6, 214);
             passGroupBox.Name = "passGroupBox";
-            passGroupBox.Size = new Size(455, 178);
+            passGroupBox.Size = new Size(455, 184);
             passGroupBox.TabIndex = 13;
             passGroupBox.TabStop = false;
             // 
@@ -93,6 +95,7 @@
             // 
             // TrackBar
             // 
+            TrackBar.AutoSize = false;
             TrackBar.Location = new Point(93, 125);
             TrackBar.Maximum = 30;
             TrackBar.Name = "TrackBar";
@@ -142,7 +145,7 @@
             // 
             passLabel.AutoSize = true;
             passLabel.Font = new Font("Verdana", 9F, FontStyle.Bold);
-            passLabel.Location = new Point(0, 19);
+            passLabel.Location = new Point(6, 19);
             passLabel.Name = "passLabel";
             passLabel.Size = new Size(116, 14);
             passLabel.TabIndex = 0;
@@ -162,7 +165,7 @@
             // baseToolBar
             // 
             baseToolBar.Dock = DockStyle.Bottom;
-            baseToolBar.Location = new Point(0, 463);
+            baseToolBar.Location = new Point(0, 403);
             baseToolBar.Name = "baseToolBar";
             baseToolBar.Size = new Size(470, 48);
             baseToolBar.TabIndex = 10;
@@ -182,7 +185,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(470, 511);
+            ClientSize = new Size(470, 451);
             ControlBox = false;
             Controls.Add(statusLabel);
             Controls.Add(passGroupBox);

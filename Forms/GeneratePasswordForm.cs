@@ -31,9 +31,7 @@ namespace VaultASaur3.Forms
          toolBar.CreateButton(Actions.CMD_GENERATE, "Generate", buttonCmd => HandleAction(buttonCmd));
 
 
-         statusLabel.Text = $"A strong password has at least 15 characters, uppercase letters, lowercase letters, numbers, symbols, is not like your previous "+
-            "passwords, your name or your login, Is not a keyboard pattern, such as qwerty, asdfghjkl, or 12345 and"+
-            "Passphrases are best";
+         statusLabel.Text = $"A strong passphrase should be at least 15 characters long, unique across accounts, and free of personal info like your name or username. Avoid simple keyboard patterns like qwerty or 12345. Memorable, multi-word passphrases offer the ultimate security.";
 
          ShowPasswordCheck.Checked = false;
       }
