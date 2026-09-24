@@ -10,75 +10,68 @@ using TaskDialogIcon = Ookii.Dialogs.WinForms.TaskDialogIcon;
 
 namespace VaultASaur3.Forms
 {
-   public partial class GeneratePasswordForm : Form
-   {
-      private FormResult _PassResult;
-      private tToolStrip toolBar;
+    public partial class GeneratePasswordForm : Form
+    {
+        private FormResult _PassResult;
+        private tToolStrip toolBar;
 
 
-      public GeneratePasswordForm()
-      {
+        public GeneratePasswordForm()
+        {
+            InitializeComponent();
+            this.Text = $"{Constants.ProgramName} {ToolBox.GetBuildInfoAsString()}";
+            toolBar = new tToolStrip(baseToolBar, toolStripSize.smallMenu);
+            toolBar.RightToLeft = RightToLeft.Yes;
+            toolBar.CreateButton(Actions.CMD_CANCEL, "Cancel", buttonCmd => HandleAction(buttonCmd));
+            toolBar.CreateButton(Actions.CMD_OK, "Ok", buttonCmd => HandleAction(buttonCmd));
+            toolBar.CreateButtonSep();
+            toolBar.CreateButton(Actions.CMD_GENERATE, "Generate", buttonCmd => HandleAction(buttonCmd));
+            ShowPasswordCheck.Checked = false;
+        }
 
-         InitializeComponent();
+        private void HandleAction(int buttonCmd)
+        {
+            switch (buttonCmd)
+            {
+                case Actions.CMD_OK:
+                    _PassResult = FormResult.Ok;
+                    Close();
+                    break;
+                case Actions.CMD_CANCEL:
+                    _PassResult = FormResult.Cancel;
+                    Close();
+                    break;
+                case Actions.CMD_GENERATE:
+                    db_Password1.Text = ToolBox.GetRandomPassword(punctCheckBox.Checked, TrackBar.Value);
+                    break;
+            }
+        }
 
-         this.Text = $"{Constants.ProgramName} {ToolBox.GetBuildInfoAsString()}";
+        private void ShowPasswordCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ShowPasswordCheck.Checked == false)
+            {
+                db_Password1.PasswordChar = '*';
+            }
+            else
+            {
+                db_Password1.PasswordChar = '\0';
+            }
+        }
 
-         toolBar = new tToolStrip(baseToolBar, toolStripSize.smallMenu);
-         toolBar.RightToLeft = RightToLeft.Yes;
-         toolBar.CreateButton(Actions.CMD_CANCEL, "Cancel", buttonCmd => HandleAction(buttonCmd));
-         toolBar.CreateButton(Actions.CMD_OK, "Ok", buttonCmd => HandleAction(buttonCmd));
-         toolBar.CreateButtonSep();
-         toolBar.CreateButton(Actions.CMD_GENERATE, "Generate", buttonCmd => HandleAction(buttonCmd));
+        private void TrackBar_Scroll(object sender, EventArgs e)
+        {
+            GenLengthLabel.Text = TrackBar.Value.ToString();
+        }
 
+        public string Password
+        {
+            get { return db_Password1.Text; }
+        }
+        public FormResult PassResult
+        {
+            get { return _PassResult; }
+        }
 
-         statusLabel.Text = $"A strong passphrase should be at least 15 characters long, unique across accounts, and free of personal info like your name or username. Avoid simple keyboard patterns like qwerty or 12345. Memorable, multi-word passphrases offer the ultimate security.";
-
-         ShowPasswordCheck.Checked = false;
-      }
-
-      private void HandleAction(int buttonCmd)
-      {
-         switch (buttonCmd)
-         {
-            case Actions.CMD_OK:
-               _PassResult = FormResult.Ok;
-               Close();
-               break;
-            case Actions.CMD_CANCEL:
-               _PassResult = FormResult.Cancel;
-               Close();
-               break;
-            case Actions.CMD_GENERATE:
-               db_Password1.Text = ToolBox.GetRandomPassword(punctCheckBox.Checked, TrackBar.Value);
-               break;
-         }
-      }
-
-      private void ShowPasswordCheck_CheckedChanged(object sender, EventArgs e)
-      {
-         if (ShowPasswordCheck.Checked == false)
-         {
-            db_Password1.PasswordChar = '*';
-         }
-         else
-         {
-            db_Password1.PasswordChar = '\0';
-         }
-      }
-
-      private void TrackBar_Scroll(object sender, EventArgs e)
-      {
-         GenLengthLabel.Text = TrackBar.Value.ToString();
-      }
-
-      public string Password
-      {
-         get { return db_Password1.Text; }
-      }
-                                  public FormResult PassResult
-      {
-         get { return _PassResult; }
-      }
-
-   }
+    }
 }

@@ -54,7 +54,7 @@
             statusLabel.ForeColor = Color.Red;
             statusLabel.Location = new Point(9, 56);
             statusLabel.Name = "statusLabel";
-            statusLabel.Size = new Size(449, 159);
+            statusLabel.Size = new Size(452, 159);
             statusLabel.TabIndex = 14;
             statusLabel.Text = resources.GetString("statusLabel.Text");
             // 

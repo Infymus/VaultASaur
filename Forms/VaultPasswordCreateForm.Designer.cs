@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VaultPasswordCreateForm));
-            statusLabel = new Label();
             passGroupBox = new GroupBox();
             LabelPasswordMatch = new Label();
             db_PasswordHint = new TextBox();
@@ -41,17 +40,10 @@
             passVaultLabel = new Label();
             baseToolBar = new Panel();
             vaultImage = new PictureBox();
+            statusLabel = new Label();
             passGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)vaultImage).BeginInit();
             SuspendLayout();
-            // 
-            // statusLabel
-            // 
-            statusLabel.Font = new Font("Arial", 10F, FontStyle.Bold);
-            statusLabel.Location = new Point(10, 65);
-            statusLabel.Name = "statusLabel";
-            statusLabel.Size = new Size(437, 130);
-            statusLabel.TabIndex = 9;
             // 
             // passGroupBox
             // 
@@ -62,7 +54,7 @@
             passGroupBox.Controls.Add(retypeLabel);
             passGroupBox.Controls.Add(db_Password1);
             passGroupBox.Controls.Add(passLabel);
-            passGroupBox.Location = new Point(7, 198);
+            passGroupBox.Location = new Point(7, 218);
             passGroupBox.Name = "passGroupBox";
             passGroupBox.Size = new Size(444, 187);
             passGroupBox.TabIndex = 8;
@@ -156,9 +148,9 @@
             // baseToolBar
             // 
             baseToolBar.Dock = DockStyle.Bottom;
-            baseToolBar.Location = new Point(0, 399);
+            baseToolBar.Location = new Point(0, 415);
             baseToolBar.Name = "baseToolBar";
-            baseToolBar.Size = new Size(463, 48);
+            baseToolBar.Size = new Size(458, 48);
             baseToolBar.TabIndex = 4;
             // 
             // vaultImage
@@ -171,12 +163,24 @@
             vaultImage.TabIndex = 5;
             vaultImage.TabStop = false;
             // 
+            // statusLabel
+            // 
+            statusLabel.BorderStyle = BorderStyle.FixedSingle;
+            statusLabel.FlatStyle = FlatStyle.Popup;
+            statusLabel.Font = new Font("Arial", 14F, FontStyle.Bold);
+            statusLabel.ForeColor = Color.Red;
+            statusLabel.Location = new Point(8, 56);
+            statusLabel.Name = "statusLabel";
+            statusLabel.Size = new Size(442, 159);
+            statusLabel.TabIndex = 15;
+            statusLabel.Text = resources.GetString("statusLabel.Text");
+            // 
             // VaultPasswordCreateForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(463, 447);
+            ClientSize = new Size(458, 463);
             ControlBox = false;
             Controls.Add(statusLabel);
             Controls.Add(passGroupBox);
@@ -194,9 +198,7 @@
         }
 
         #endregion
-
-        private Label statusLabel;
-      private GroupBox passGroupBox;
+        private GroupBox passGroupBox;
       private Label LabelPasswordMatch;
       private TextBox db_PasswordHint;
       private Label hintLabel;
@@ -207,5 +209,6 @@
       private Label passVaultLabel;
       private Panel baseToolBar;
       private PictureBox vaultImage;
-   }
+        private Label statusLabel;
+    }
 }
